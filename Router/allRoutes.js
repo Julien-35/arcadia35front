@@ -9,7 +9,7 @@ export const allRoutes = [
     new Route("/connexion", "Connexion", "page/connexion.html", ["disconnected"], "js/auth/signin.js"),
     new Route("/admin", "Administrateur", "page/connecte/admin.html", ["ROLE_ADMIN"], "js/admin.js"),
     new Route("/employe", "Employe", "page/connecte/employe.html", ["ROLE_EMPLOYE"], "js/employe.js"),
-    new Route("/veterinaire", "Veterinaire", "page/connecte/veterinaire.html", ["ROLE_VETERINAIRE"], "js/veterinaire.js"),
+    new Route("/veterinaire", "Veterinaire", "page/connecte/veterinaire.html", [], "js/veterinaire.js"),
 ];
 
 // Le titre s'affiche comme ceci : Route.titre - websitename
