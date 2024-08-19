@@ -114,3 +114,8 @@ async function login(email, password) {
         alert(data.message);
     }
 }
+
+
+function getToken() {
+    return localStorage.getItem('apiToken');
+  }
