@@ -1,0 +1,106 @@
+
+<div class="container text-center text-justify text-dark">
+    <button class="btn btn-primary mb-5 text-dark d-none" data-show="admin">
+        <a class="navbar-brand" href="/admin">Page Administrateur</a>
+    </button>
+    <button class="btn btn-primary mb-5 text-dark d-none" data-show="employe">
+        <a class="navbar-brand" href="/employe">Page employe</a>
+    </button>
+    <button class="btn btn-primary mb-5 text-dark d-none" data-show="veterinaire">
+        <a class="navbar-brand" href="/veterinaire">Page Vétérinaire</a>
+    </button>
+    <div class="mb-5">
+        <p>José et Jossette vous présente le zoo</p>
+        <h1>L'ARCADIA</h1>
+        <p>Nicher dans la légendaire forêt de BROCELIANDE à côté des mythes du roi Arthur, s'est installé il y a de cela 60 ans le zoo ARCADIA</p>
+        <img class="rounded w-75 h-75" src="/image/vuciel.webp" alt="">
+    </div>
+
+    <div class="px-5">
+        <p>Le projet d'ARCADIA est avant tout de conserver et de préserver les différentes espèces menacées d'extinction, de les rendre heureuses tout en gardant une partie naturelle de la région en étant entièrement indépendant sur les différentes énergies.</p>
+        <img class="rounded w-75 h-75" src="/image/pandaheureux.jpg" alt="">
+    </div>
+
+    <div class="p-5">
+        <p>Pour cela, nous avons mis en place une routine quotidienne avec nos vétérinaires pour s'assurer du confort de nos résidents. En mesurant et en surveillant leur état de santé afin de leur donner la quantité de nourriture adéquate et de vous fournir des rapports sur leurs caractéristiques et leur santé.</p>
+        <img class="rounded w-75 h-75" src="/image/bienetre.avif" alt="">
+    </div>
+
+    <div>
+        <p>ARCADIA vous propose des animaux venant de différents habitats afin de vous immerger au plus près de leurs environnements.</p>
+        <p>Venez découvrir les terribles alligators des marais, le calme de la jungle avec nos éléphants d'Asie sans oublier le roi des animaux, les lions dans les plaines de la savane.</p>
+
+        <div class="container">
+            <div class="row row-cols-1 row-cols-lg-3 m-5">
+                <div class="col p-3"><img class="rounded w-100 h-100" src="/image/alligators.jpg" alt=""></div>
+                <div class="col p-3"><img class="rounded w-100 h-100" src="/image/elephant.jpg" alt=""></div>
+                <div class="col p-3"><img class="rounded w-100 h-100" src="/image/lion.avif" alt=""></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <h5>L'ensemble du ZOO vous propose plusieurs services :</h5>
+        <p class="text-start" id="service"><i class="bi bi-arrow-right-circle-fill"></i></p>
+        <p class="text-start" id="service2"><i class="bi bi-arrow-right-circle-fill"></i></p>
+        <p class="text-start" id="service3"><i class="bi bi-arrow-right-circle-fill"></i></p>
+        <p>Une petite pause fraîcheur ou un endroit où manger, nous vous proposons plusieurs lieux pour vous restaurer partout sur le domaine.</p>
+
+        <div class="row row-cols-1 row-cols-lg-3 m-5">
+            <div class="col p-3"><img class="rounded w-100 h-100" src="/image/visiteGuide.jpg" alt=""></div>
+            <div class="col p-3"><img class="rounded w-100 h-100" src="/image/restauration.jpg" alt=""></div>
+            <div class="col p-3"><img class="rounded w-100 h-100" src="/image/train.jpg" alt=""></div>
+        </div>
+    </div>
+
+    <div class="text-dark d-flex flex-column align-items-center">
+        <h3 class="m-4">Les avis de nos visiteurs</h3>
+        <ol id="VoirAvis" class="container overflow-scroll" style="height: 550px;"></ol>
+        <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal" data-bs-target="#EditionService">Laisser un avis</button>
+    </div>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="EditionService" tabindex="-1" aria-labelledby="EditionServiceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Laisser un avis</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="avisForm">
+                    <div class="mb-3">
+                        <label for="pseudo" class="form-label">Pseudo</label>
+                        <input type="text" class="form-control" id="pseudo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="commentaire" class="form-label">Commentaire</label>
+                        <textarea class="form-control" id="commentaire" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="MessageAvis" tabindex="-1" aria-labelledby="MessageAvisLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Validation de votre avis</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Merci pour votre avis. Ce dernier va être soumis à validation par nos équipes avant d'être publié.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="/home">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Revenir à l'accueil</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
