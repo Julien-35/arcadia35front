@@ -1,0 +1,42 @@
+<form class="container text-dark fs-4" id="formulaireInscription">
+    <div class="m-5">
+      <!-- Inscription prénom -->
+      <label for="PrenomInput" class="form-label">Votre prénom</label>
+      <input type="text" class="form-control" id="PrenomInput" placeholder="John" name="prenom">
+    </div>
+  
+    <div class="m-5">
+      <!-- Inscription nom -->
+      <label for="NomInput" class="form-label">Votre nom</label>
+      <input type="text" class="form-control" id="NomInput" placeholder="Doe" name="nom">
+    </div>
+  
+    <div class="m-5">
+      <!-- Adresse mail -->
+      <label for="EmailInput" class="form-label">Adresse mail</label>
+      <input type="email" class="form-control" id="EmailInput" value="zoo@arcadia.com" name="email">
+      <div class="invalid-feedback">Le mail ne fonctionne pas</div>
+    </div>
+  
+    <div class="m-5">
+      <!-- Mot de passe -->
+      <label for="PasswordInput" class="form-label">Mot de passe</label>
+      <input type="password" class="form-control" id="PasswordInput" value="Azerty12!" name="password">
+      <div class="invalid-feedback">Mot de passe non robuste</div>
+    </div>
+  
+    <div class="m-5">
+      <!-- Rôle -->
+      <label for="RoleInput" class="form-label">Rôle</label>
+      <select class="form-control" id="RoleInput" name="role">
+          <option value="">Sélectionnez un rôle</option>
+          <option value="employe">Employé</option>
+          <option value="veterinaire">Vétérinaire</option>
+      </select>
+      <div class="invalid-feedback">Veuillez sélectionner un rôle.</div>
+  </div>
+  
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary ms-5 mb-5" id="btnInscription" disabled>Inscription</button>
+    </div>
+  </form>
