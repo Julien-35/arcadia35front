@@ -28,21 +28,24 @@ if (document.readyState === "loading") {
 }
 
 
+function getToken() {
+    return localStorage.getItem('apiToken');
+  }
+
   async function voirService() {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-
+    myHeaders.append("Content-Type", "application/json");
     try {
         const items = await fetchData("https://127.0.0.1:8000/api/service/get", myHeaders);
         const servicesContainer = document.getElementById("getService");
-        servicesContainer.innerHTML = ''; // Clear existing content
+        servicesContainer.innerHTML = '';
 
         items.forEach(item => {
             const serviceElement = document.createElement('div');
 
             serviceElement.innerHTML = `
                     <div class="container text-center">
-                        <h2 class="m-4 ">${item.nom}</h2>
+                        <h2 class="my-4 ">${item.nom}</h2>
                         <div class="container text-center row row-cols-1 row-cols-lg-2 d-flex justify-content-evenly align-items-center">
                             <p class="col">${item.description}</p>
                             <div><img class="img-fluid rounded w-100 h-100"src="${item.image_data}" alt="Image de ${item.nom}"></div>

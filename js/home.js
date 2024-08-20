@@ -85,7 +85,7 @@ async function fetchData(url, headers) {
 
 async function voirService() {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
 
     try {
         const items = await fetchData("https://127.0.0.1:8000/api/service/get", myHeaders);

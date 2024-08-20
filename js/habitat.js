@@ -36,7 +36,6 @@ async function fetchData(url, headers) {
 // Fonction pour afficher les habitats
 async function voirHabitat() {
     const myHeaders = new Headers({
-        "X-AUTH-TOKEN": getToken(),
         "Content-Type": "application/json"
     });
 
@@ -102,7 +101,6 @@ async function voirHabitat() {
 // Fonction pour afficher les animaux d'un habitat spécifique
 async function fetchAnimals(habitatId) {
     const myHeaders = new Headers({
-        "X-AUTH-TOKEN": getToken(),
         "Content-Type": "application/json"
     });
 
