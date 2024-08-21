@@ -1,0 +1,101 @@
+<!--Créer un service -->
+
+<h2 class="text-center text-dark">Créer un nouveau service</h2>
+<form id="creerService" class="create-service-form container text-center text-dark border border-primary rounded">
+    <div class="form-group">
+        <label for="titreService">Titre:</label>
+        <input type="text" id="titreService" name="titreService" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="commentaireService">Commentaire:</label>
+        <textarea id="commentaireService" name="commentaireService" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+    <label for="image_dataService">Image:</label>
+    <input type="file" id="image_dataService" name="image_dataService" accept="image/*" class="form-control"><br><br>
+</div>
+
+    <button type="button" class="btn btn-primary my-3" onclick="creerUnService()">Créer</button>
+</form>
+
+
+
+<!--Créer un habitat -->
+
+<h2 class="text-center text-dark">Créer un nouvel habitat</h2>
+<form id="creerHabitat" class="create-Habitat-form container text-center text-dark border border-primary rounded">
+    <div class="form-group">
+        <label for="titreHabitat">Titre:</label>
+        <input type="text" id="titreHabitat" name="titreHabitat" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="descriptionHabitat">Description:</label>
+        <textarea id="descriptionHabitat" name="descriptionHabitat" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="commentaireHabitat">Commentaire:</label>
+        <textarea id="commentaireHabitat" name="commentaireHabitat" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+    <label for="image_dataHabitat">Image:</label>
+    <input type="file" id="image_dataHabitat" name="image_dataHabitat" accept="image/*" class="form-control"><br><br>
+</div>
+
+    <button type="button" class="btn btn-primary my-3" onclick="creerUnHabitat()">Créer</button>
+</form>
+
+
+<!--Créer un animal -->
+
+<h2 class="text-center text-dark">Créer un nouvel animal</h2>
+<form id="creerAnimal" class="create-Animal-form container text-center text-dark border border-primary rounded">
+    <div class="form-group">
+        <label for="prenomAnimal">Prenom de l'animal:</label>
+        <input type="text" id="prenomAnimal" name="prenomAnimal" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="etatAnimal">Etat de l'animal:</label>
+        <textarea id="etatAnimal" name="etatAnimal" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="nourritureAnimal">Sa nourriture:</label>
+        <textarea id="nourritureAnimal" name="nourritureAnimal" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="grammageAnimal">Quantité de la nourriture:</label>
+        <textarea id="grammageAnimal" name="grammageAnimal" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="feeding_timeAnimal">Heure d'alimentation:</label>
+        <input type="datetime-local" id="feeding_timeAnimal" name="feeding_timeAnimal" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="created_atAnimal">Heure du repas:</label>
+        <input type="datetime-local" id="created_atAnimal" name="created_atAnimal" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="image_dataAnimal">Image:</label>
+        <input type="file" id="image_dataAnimal" name="image_dataAnimal" accept="image/*" class="form-control"><br><br>
+    </div>
+
+    <div class="form-group">
+        <label for="habitat_id">Habitat:</label>
+        <select id="habitat_id" name="habitat_id" class="form-control" required>
+            <option value="">Sélectionner un habitat</option>
+        </select>
+    </div>
+
+    <button type="button" class="btn btn-primary my-3" onclick="creerUnAnimal()">Créer</button>
+</form>
+
+

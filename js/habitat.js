@@ -52,15 +52,15 @@ async function voirHabitat() {
 
             // Ajouter le titre, l'image de l'habitat et la description masquée
             habitatElement.innerHTML = `
-                <div class="container d-flex align-items-center flex-column">
+                <div class="container d-flex align-items-center flex-column ">
                     <h2 class="m-4">${habitat.nom}</h2>
-                    <div class="habitat-info d-flex flex-column flex-lg-row align-items-center d-flex justify-content-evenly">
+                    <div class="habitat-info d-flex flex-column flex-lg-row align-items-center d-flex justify-content-evenly ">
                         <img class="col-12 col-lg-3 img-fluid rounded" src="${habitat.image_data}" alt="Image de ${habitat.nom}" type="button" id="toggle-${habitat.id}" style="width: 648px; height: 435px;">
                         <div id="description-${habitat.id}" style="display: none;" class="col-12 col-lg-3 mt-3 mt-lg-0">
                             <p class="text-center">${habitat.description}</p>
                         </div>
                     </div>
-                    <div id="animals-${habitat.id}" class="animal-container" style="display: none;"></div>
+                    <div id="animals-${habitat.id}" class="animal-container " style="display: none;"></div>
                 </div>
                 <hr class="container-fluid">
             `;
@@ -115,11 +115,10 @@ async function fetchAnimals(habitatId) {
             const feedingTime = animal.feeding_time ? animal.feeding_time : 'N/A';
 
             animalContainer.innerHTML += `
-            <h3 class="py-5">Cliquez sur chacune des images d'animaux pour affichier leurs caractéristiques</h3>
                 <div class="col mt-3">
                     <img src="${animal.image_data}" alt="Image de ${animal.id}" style="width: 294px; height: 185px;" class="img-thumbnail img-responsive" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidth${animal.id}" aria-expanded="false" aria-controls="collapseWidth${animal.id}">
                     <div class="collapse" id="collapseWidth${animal.id}" style="width: 294px; height: 185px;">
-                        <div class="card card-body mx-auto mb-5">
+                        <div class="card card-body mx-auto mb-5 ">
                             <table class="table">
                                 <tbody class="text-center">
                                     <tr><th scope="row" class="text-dark">Race</th><td class="text-dark">${animal.race}</td></tr>
