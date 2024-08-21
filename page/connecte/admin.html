@@ -60,44 +60,44 @@
 
     <div class="form-group">
         <label for="race_id">RACE:</label>
-        <select id="race_id" name="race_id" class="form-control" required>
+        <select id="race_id" name="race_id" class="form-control text-center" required>
             <option value="">Sélectionner une race</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="etatAnimal">Etat de l'animal:</label>
-        <textarea id="etatAnimal" name="etatAnimal" class="form-control" rows="5" required></textarea>
+        <textarea id="etatAnimal" name="etatAnimal" class="form-control text-center" rows="5" required></textarea>
     </div>
 
     <div class="form-group">
         <label for="nourritureAnimal">Sa nourriture:</label>
-        <textarea id="nourritureAnimal" name="nourritureAnimal" class="form-control" rows="5" required></textarea>
+        <textarea id="nourritureAnimal" name="nourritureAnimal" class="form-control text-center" rows="5" required></textarea>
     </div>
 
     <div class="form-group">
         <label for="grammageAnimal">Quantité de la nourriture:</label>
-        <textarea id="grammageAnimal" name="grammageAnimal" class="form-control" rows="5" required></textarea>
+        <textarea id="grammageAnimal" name="grammageAnimal" class="form-control text-center" rows="5" required></textarea>
     </div>
 
     <div class="form-group">
         <label for="feeding_timeAnimal">Heure d'alimentation:</label>
-        <input type="datetime-local" id="feeding_timeAnimal" name="feeding_timeAnimal" class="form-control" required>
+        <input type="date" id="feeding_timeAnimal" name="feeding_timeAnimal" class="form-control text-center" required>
     </div>
 
     <div class="form-group">
         <label for="created_atAnimal">Heure du repas:</label>
-        <input type="datetime-local" id="created_atAnimal" name="created_atAnimal" class="form-control" required>
+        <input type="time" id="created_atAnimal" name="created_atAnimal" class="form-control text-center" required>
     </div>
 
     <div class="form-group">
         <label for="image_dataAnimal">Image:</label>
-        <input type="file" id="image_dataAnimal" name="image_dataAnimal" accept="image/*" class="form-control"><br><br>
+        <input type="file" id="image_dataAnimal" name="image_dataAnimal" accept="image/*" class="form-control text-center"><br><br>
     </div>
 
     <div class="form-group">
         <label for="habitat_id">Habitat:</label>
-        <select id="habitat_id" name="habitat_id" class="form-control" required>
+        <select id="habitat_id" name="habitat_id" class="form-control text-center" required>
             <option value="">Sélectionner un habitat</option>
         </select>
     </div>
@@ -106,3 +106,37 @@
 </form>
 
 
+<!--Modifier les horaires existants-->
+<div class="container text-center" id="voirDate"></div>
+<!-- Modale de confirmation -->
+<div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir modifier cet horaire ?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmBtn" type="button" class="btn btn-primary">Confirmer</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Créer une nouvelle race-->
+
+<h2 class="text-center text-dark">Créer une nouvelle race</h2>
+<form id="creerRace" class="create-label-form container text-center text-dark border border-primary rounded">
+    <div class="form-group m-5">
+        <label for="labelRace">Label de la race:</label>
+        <input type="text" id="labelRace" name="labelRace" class="form-control" required>
+    </div>
+    <button type="button" class="btn btn-primary my-3" onclick="creerUneRace()">Créer</button>
+</form>

@@ -1,7 +1,7 @@
-const SeeDates = document.getElementById("date");
+const SeeDates = document.getElementById("voirDate");
 
     if (document.readyState !== "loading") {
-    VoirDate();
+    voirHoraire();
     }
 
 
@@ -11,7 +11,7 @@ const SeeDates = document.getElementById("date");
 
       
 
-async function VoirDate() {
+async function voirHoraire() {
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -35,10 +35,10 @@ async function VoirDate() {
         result.forEach(item => {
         content += 
         `
-        <h3 class="fw-bold fs-4">${item.titre}</h3>
-        <p class="fw-normal fs-4">${item.message}</p>
-        <p class="fw-normal fs-4" >${item.jour} </p>
-        <p class="fw-normal fs-4" >${item.heure_debut} - ${item.heure_fin}</p>
+            <h3 class="fw-bold fs-4">${item.titre}</h3>
+            <p class="fw-normal fs-4">${item.message}</p>
+            <p class="fw-normal fs-4" >${item.jour} </p>
+            <p class="fw-normal fs-4" >${item.heure_debut} - ${item.heure_fin}</p>
         `
         })
 
