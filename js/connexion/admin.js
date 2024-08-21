@@ -1,11 +1,14 @@
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
     services-container.addEventListener('DOMContentLoaded', voirHabitat);
+    services-container.addEventListener('DOMContentLoaded', voirRace);
 
 
   } else {
     // `DOMContentLoaded` has already fired
     voirHabitat();
+    voirRace();
+
   }
 
 
@@ -196,10 +199,12 @@ async function creerUnAnimal() {
     const create = formData.get('created_atAnimal'); // Valeur datetime sous forme de chaîne
 
     const habitatId = formData.get('habitat_id');
+    const raceId = formData.get('race_id');
+
     const imageInput = document.getElementById('image_dataAnimal');
     let image_data = '';
 
-    if (!prenom || !etat || !nourriture || !grammage || !habitatId || !feeding || !create) {
+    if (!prenom || !etat || !nourriture || !grammage || !habitatId || !raceId || !feeding || !create) {
         alert("Tous les champs doivent être remplis.");
         return;
     }
@@ -223,7 +228,7 @@ async function creerUnAnimal() {
     }
 
     try {
-        await creationAnimal(prenom, etat, nourriture, grammage, habitatId, feeding, create, image_data);
+        await creationAnimal(prenom, etat, nourriture, grammage, habitatId, raceId, feeding, create, image_data);
         alert("L'animal a été créé avec succès");
     } catch (error) {
         alert("Erreur lors de la création de l'animal");
@@ -231,7 +236,7 @@ async function creerUnAnimal() {
     }
 }
 
-async function creationAnimal(prenomAnimal, etatAnimal, nourritureAnimal, grammageAnimal, habitatId, feeding_timeAnimal, created_atAnimal, image_dataAnimal) {
+async function creationAnimal(prenomAnimal, etatAnimal, nourritureAnimal, grammageAnimal, habitatId, raceId, feeding_timeAnimal, created_atAnimal, image_dataAnimal) {
     const myHeaders = new Headers();
     myHeaders.append("X-AUTH-TOKEN", getToken());
     myHeaders.append("Content-Type", "application/json");
@@ -242,8 +247,9 @@ async function creationAnimal(prenomAnimal, etatAnimal, nourritureAnimal, gramma
         "nourriture": nourritureAnimal,
         "grammage": grammageAnimal,
         "habitat_id": habitatId,
-        "feeding_time": feeding_timeAnimal, // Correction : utilisez la variable correcte
-        "created_at": created_atAnimal, // Correction : utilisez la variable correcte
+        "race_id": raceId,
+        "feeding_time": feeding_timeAnimal, 
+        "created_at": created_atAnimal, 
         "image_data": image_dataAnimal
     });
 
@@ -301,3 +307,40 @@ async function voirHabitat() {
     }
 }
 
+
+
+
+async function voirRace() {
+    const myHeaders = new Headers({
+        "Content-Type": "application/json"
+    });
+
+    try {
+        // Fonction fetchData non fournie, remplacez par fetch directement
+        const response = await fetch("https://127.0.0.1:8000/api/race/get", {
+            method: 'GET',
+            headers: myHeaders
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch races: ' + response.statusText);
+        }
+
+        const races = await response.json();
+
+        const raceSelect = document.getElementById("race_id");
+
+        // Vider le menu déroulant avant d’ajouter les nouvelles options
+        raceSelect.innerHTML = '<option value="">Sélectionner une race</option>';
+
+        races.forEach(race => {
+            const option = document.createElement('option');
+            option.value = race.id;
+            option.textContent = race.label;
+            raceSelect.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Erreur dans la récupération des races:", error);
+    }
+}
