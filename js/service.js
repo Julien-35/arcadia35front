@@ -28,15 +28,11 @@ if (document.readyState === "loading") {
 }
 
 
-function getToken() {
-    return localStorage.getItem('apiToken');
-  }
-
   async function voirService() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     try {
-        const items = await fetchData("https://127.0.0.1:8000/api/service/get", myHeaders);
+        const items = await fetchData("https://arcadia35380-f680d3a74682.herokuapp.com/api/service/get", myHeaders);
         const servicesContainer = document.getElementById("getService");
         servicesContainer.innerHTML = '';
 
@@ -45,7 +41,7 @@ function getToken() {
 
             serviceElement.innerHTML = `
                     <div class="container text-center">
-                        <h2 class="my-4 ">${item.nom}</h2>
+                        <h2 class="">${item.nom}</h2>
                         <div class="container text-center row row-cols-1 row-cols-lg-2 d-flex justify-content-evenly align-items-center">
                             <p class="col">${item.description}</p>
                             <div><img class="img-fluid rounded w-100 h-100"src="${item.image_data}" alt="Image de ${item.nom}"></div>

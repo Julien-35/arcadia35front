@@ -15,7 +15,7 @@ if (document.readyState === "loading") {
 
 async function getAvis() {
     try {
-        const response = await fetch("https://127.0.0.1:8000/api/avis/get");
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/get");
         if (!response.ok) throw new Error('Failed to fetch avis');
         const result = await response.json();
 
@@ -52,7 +52,7 @@ async function submitAvis() {
     };
 
     try {
-        const response = await fetch("https://127.0.0.1:8000/api/avis/post", {
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/post", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -88,21 +88,34 @@ async function voirService() {
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const items = await fetchData("https://127.0.0.1:8000/api/service/get", myHeaders);
+        const items = await fetchData("https://arcadia35380-f680d3a74682.herokuapp.com/api/service/get", myHeaders);
         const servicesContainer = document.getElementById("getService");
         servicesContainer.innerHTML = ''; // Clear existing content
 
         items.forEach(item => {
+            // Créer un nouvel élément sans utiliser innerHTML
             const serviceElement = document.createElement('div');
-            serviceElement.innerHTML = `
-                <div class="container">
-                    <h5 class="m-4">- ${item.nom}</h5>
-                </div>
-            `;
+            serviceElement.classList.add('container', 'border', 'border-primary', 'p-3', 'mb-3', 'rounded'); // Ajouter les classes
+
+            // Créer un élément pour le nom du service
+            const serviceTitle = document.createElement('h5');
+            serviceTitle.classList.add('my-4');
+            serviceTitle.textContent = `- ${item.nom}`; // Nom du service
+
+            // Créer un élément pour la description
+            const serviceDescription = document.createElement('p');
+            serviceDescription.textContent = item.description; // Description du service
+
+            // Ajouter les éléments au conteneur de service
+            serviceElement.appendChild(serviceTitle);  // Ajouter le titre
+            serviceElement.appendChild(serviceDescription);  // Ajouter la description
+
+            // Ajouter l'élément au conteneur principal
             servicesContainer.appendChild(serviceElement);
         });
     } catch (error) {
         console.error("Error in voirService:", error);
-        document.getElementById("getService").innerHTML = "<p>Impossible de récupérer les services.</p>";
+        document.getElementById("getService").textContent = "Impossible de récupérer les services.";
     }
 }
+

@@ -114,8 +114,23 @@ async function login(email, password) {
         alert(data.message);
     }
 }
-
-
 function getToken() {
     return localStorage.getItem('apiToken');
   }
+  
+// Fonction pour lire le fichier image en base64
+const readFileAsBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
+
+// Fonction pour nettoyer les entrées utilisateur avant de les envoyer au serveur.
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+}

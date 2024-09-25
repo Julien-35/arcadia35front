@@ -9,7 +9,7 @@ export const allRoutes = [
     new Route("/connexion", "Connexion", "page/connexion.html", ["disconnected"], "js/connexion.js"),
     new Route("/admin", "Administrateur", "page/connecte/admin.html", ["ROLE_ADMIN"], "js/connexion/admin.js"),
     new Route("/employe", "Employe", "page/connecte/employe.html", [], "js/connexion/employe.js"),
-    new Route("/veterinaire", "Veterinaire", "page/connecte/veterinaire.html", ["VETERINAIRE"], "js/connexion/veterinaire.js"),
+    new Route("/veterinaire", "Veterinaire", "page/connecte/veterinaire.html", ["ROLE_VETERINAIRE"], "js/connexion/veterinaire.js"),
     new Route("/inscription", "inscrire utilisateur", "page/connecte/inscription.html", [], "js/connexion/inscription.js"),
 
     new Route("/incrementation", "incrementation", "page/connecte/incrementation.html", [], "js/incrementation.js"),

@@ -111,7 +111,7 @@ function InscrireUtilisateur(event) {
         redirect: "follow"
     };
 
-    fetch("https://127.0.0.1:8000/api/registration", requestOptions)
+    fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/registration", requestOptions)
         .then(response => {
             if (!response.ok) {
                 return response.text().then(errorText => {
