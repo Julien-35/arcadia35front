@@ -1,7 +1,7 @@
 
 <h3 class="text-dark text-center pb-5">Modifier un service</h3>
 
-<div id="getService" class="text-dark d-flex justify-content-center container"></div>
+<div id="getService" class="text-dark"></div>
 
 <!-- Modale de confirmation -->
 <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
@@ -20,3 +20,36 @@
       </div>
     </div>
   </div>
+
+
+  <div class="container text-center text-primary">
+
+
+    <h2 class="accordion-header" id="flush-headingAvis">
+      <button class="btn btn-primary collapsed fs-4 mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseAvis" aria-expanded="false" aria-controls="flush-collapseAvis">
+        Voir tout les avis
+      </button>
+    </h2>
+    <div id="flush-collapseAvis" class="accordion-collapse collapse" aria-labelledby="flush-headingAvis" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+            <ol class="list-group list-group-numbered overflow-scroll" id="avis" style="height: 300px;">
+        </div>
+    </div>
+  </div>
+
+
+
+
+
+<hr class=" w-100 my-5">
+
+<!--Accordéon pour l'ouverture des Services-->
+<div class="container">
+
+
+<div class="text-center d-flex flex-column ">
+<h2 class="accordion-header" id="flush-headingAvis">
+   <button class="btn btn-primary collapsed fs-4 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseServices" aria-expanded="false" aria-controls="flush-collapseServices">
+    Afficher <br> les services</button></h2>
+ <div id="flush-collapseServices" class="accordion-collapse collapse" aria-labelledby="flush-headingServices" data-bs-parent="#accordionFlushExample">
+     <div class="accordion-body">

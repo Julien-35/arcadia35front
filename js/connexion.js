@@ -46,6 +46,17 @@ function updateValidationState(input, isValid) {
     }
 }
 
+// Fonction pour définir un cookie
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
 // Fonction pour la connexion de l'utilisateur
 async function ConnexionUtilisateur(event) {
     event.preventDefault();
@@ -63,7 +74,7 @@ async function ConnexionUtilisateur(event) {
     };
 
     try {
-        const response = await fetch("https://127.0.0.1:8000/api/login", {
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -78,9 +89,9 @@ async function ConnexionUtilisateur(event) {
 
         const result = await response.json();
 
-        // Stocker le token et les données dans le localStorage
-        localStorage.setItem('apiToken', result.apiToken); // Stocker le token d'authentification
-        localStorage.setItem('userRole', result.roles[0]); // Stocker le rôle utilisateur
+        // Stocker le token et les données dans les cookies
+        setCookie('accestoken', result.apiToken, 7); // Stocker le token d'authentification
+        setCookie('role', result.roles[0], 7); // Stocker le rôle utilisateur
 
         // Rediriger vers la page appropriée
         window.location.href = '/home'; // Modifier cette ligne en fonction de votre logique de redirection
@@ -93,7 +104,18 @@ async function ConnexionUtilisateur(event) {
 
 // Fonction pour obtenir le token
 function getToken() {
-    return localStorage.getItem('apiToken');
+    return getCookie('accestoken');
+}
+
+// Fonction pour obtenir la valeur d'un cookie
+function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let c of ca) {
+        while (c.charAt(0) === ' ') c = c.substring(1);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
 }
 
 // Fonction pour vérifier les champs requis (par exemple, non vides)

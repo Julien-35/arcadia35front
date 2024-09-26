@@ -22,7 +22,7 @@ async function voirHoraire() {
     redirect: "follow",
     };
 
-    await fetch("https://127.0.0.1:8000/api/horaire/get", requestOptions)
+    await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/horaire/get", requestOptions)
     .then((response) => {
         if  (response.ok === true){
             return response.json()

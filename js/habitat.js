@@ -40,7 +40,7 @@ async function voirHabitat() {
     });
 
     try {
-        const habitats = await fetchData("https://127.0.0.1:8000/api/habitat/get", myHeaders);
+        const habitats = await fetchData("https://arcadia35380-f680d3a74682.herokuapp.com/api/habitat/get", myHeaders);
 
         const habitatsContainer = document.getElementById("habitats-container");
         habitatsContainer.innerHTML = '';
@@ -106,7 +106,7 @@ async function fetchAnimals(habitatId) {
 
     try {
         // Récupérer les animaux pour un habitat spécifique
-        const animals = await fetchData(`https://127.0.0.1:8000/api/animal/get?habitat_id=${habitatId}`, myHeaders);
+        const animals = await fetchData(`https://arcadia35380-f680d3a74682.herokuapp.com/api/animal/get?habitat_id=${habitatId}`, myHeaders);
         const animalContainer = document.getElementById(`animals-${habitatId}`);
         animalContainer.innerHTML = '';
 

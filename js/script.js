@@ -12,8 +12,6 @@ btnSignout.addEventListener("click", deconnexion);
 function deconnexion() {
     eraseCookie(tokenCookieName);
     eraseCookie(roleCookieName);
-    localStorage.removeItem('apiToken');
-    localStorage.removeItem('userRole');
     window.location.reload(); 
 }
 
@@ -61,10 +59,13 @@ const isConnected = () => {
 
 // Fonction pour afficher ou masquer les éléments en fonction du rôle
 function showAndHideElementsForRoles() {
-    const userConnected = localStorage.getItem('apiToken') !== null;
-    const userRole = localStorage.getItem('userRole');
+    const userConnected = isConnected(); // Vérifie si l'utilisateur est connecté
+    const userRole = getCookie(roleCookieName); // Récupère le rôle de l'utilisateur
+    console.log("Utilisateur connecté :", userConnected); // Log de l'état de connexion
+    console.log("Rôle de l'utilisateur :", userRole); // Log du rôle
+
     document.querySelectorAll('[data-show]').forEach(element => {
-        const showRole = element.dataset.show;
+        const showRole = element.dataset.show; // Récupère le rôle requis pour afficher cet élément
         let shouldShow = false;
 
         switch (showRole) {
@@ -85,9 +86,11 @@ function showAndHideElementsForRoles() {
                 break;
         }
         
-        element.classList.toggle("d-none", !shouldShow);
+        element.classList.toggle("d-none", !shouldShow); // Affiche ou masque l'élément
+        console.log(`Élément ${element.id || element.className} affiché :`, shouldShow); // Log de l'affichage
     });
 }
+
 
 // Appeler la fonction lors du chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
@@ -95,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Fonction pour se connecter (exemple)
+// Fonction pour se connecter 
 async function login(email, password) {
     const response = await fetch('/api/login', {
         method: 'POST',
@@ -107,8 +110,9 @@ async function login(email, password) {
 
     const data = await response.json();
     if (response.ok) {
-        localStorage.setItem('apiToken', data.apiToken);
-        localStorage.setItem('userRole', data.roles[0]); 
+        // Enregistre le token et le rôle dans des cookies
+        setCookie(tokenCookieName, data.apiToken, 7); // Enregistre le token dans un cookie
+        setCookie(roleCookieName, data.roles[0], 7); // Enregistre le rôle dans un cookie
         window.location.href = '/'; 
     } else {
         alert(data.message);
@@ -116,6 +120,58 @@ async function login(email, password) {
 }
 
 
+
+// Fonction pour récupérer le token
 function getToken() {
-    return localStorage.getItem('apiToken');
-  }
+    return getCookie(tokenCookieName);
+}
+
+
+ async function fetchData(url, headers) {
+    const requestOptions = {
+        method: "GET",
+        headers: headers,
+        redirect: "follow",
+        mode: "cors",
+    };
+
+    try {
+        const response = await fetch(url, requestOptions);
+        if (!response.ok) throw new Error("Impossible de récupérer les informations");
+
+        const textResponse = await response.text();
+        console.log("Raw response:", textResponse); 
+
+        const cleanedResponse = textResponse.replace(/^#\s*/, ''); 
+
+        return JSON.parse(cleanedResponse); 
+    } catch (error) {
+        console.error("Fetch Error:", error);
+        throw error;
+    }
+}
+
+
+// Fonction pour décoder les entités HTML
+function decodeHtml(html) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = html;
+    return textArea.value;
+}
+
+function sanitizeInput(input){
+    const div = document.createElement("div");
+    div.textContent = input;
+    return div.innerHTML;
+}
+
+
+// Fonction pour lire les fichiers image en base64
+const readFileAsBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};

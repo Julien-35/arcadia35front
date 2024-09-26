@@ -32,7 +32,7 @@ async function voirRapport() {
     myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
 
     try {
-        const items = await fetchData("https://127.0.0.1:8000/api/rapportveterinaire/get", myHeaders);
+        const items = await fetchData("https://arcadia35380-f680d3a74682.herokuapp.com/api/rapportveterinaire/get", myHeaders);
         const servicesContainer = document.getElementById("getRapport");
 
         if (!servicesContainer) {

@@ -1,92 +1,79 @@
 
+const Avis = document.getElementById("avis");
 
+if (document.readyState === "loading") {
+  // Loading hasn't finished yet
+  Avis.addEventListener('DOMContentLoaded', voirAvis);
+} else {
+  voirAvis();
+  
+}
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
     services-container.addEventListener('DOMContentLoaded', voirService);
-
-
   } else {
     // `DOMContentLoaded` has already fired
     voirService();
   }
-  async function fetchData(url, headers) {
-    const requestOptions = {
-        method: "GET",
-        headers: headers,
-        redirect: "follow",
-        mode: "cors",
-    };
 
-    try {
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) throw new Error("Impossible de récupérer les informations");
-        return response.json();
-    } catch (error) {
-        console.error("Fetch Error:", error);
-        throw error;
-    }
-}
 
 
 async function voirService() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+
     try {
         const items = await fetchData("https://127.0.0.1:8000/api/service/get", myHeaders);
+
         const servicesContainer = document.getElementById("getService");
-        servicesContainer.innerHTML = '';
+        servicesContainer.innerHTML = ''; // Vide le conteneur avant d'ajouter les nouveaux éléments
 
-        let rowElement = document.createElement('div');
-        rowElement.classList.add('row', 'text-center', 'justify-content-center');
-
-        items.forEach((item, index) => {
+        items.forEach(item => {
+            // Création des éléments de manière sécurisée
             const serviceElement = document.createElement('div');
-            serviceElement.classList.add('col-lg-4', 'mb-4', 'd-flex', 'align-items-stretch');
+            serviceElement.classList.add("container", "text-center");
 
-            serviceElement.innerHTML = `
-                <div class="card shadow-sm h-100 text-dark">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h2 class="card-title">${item.nom}</h2>
-                        <div class="row">
-                            <p class="col-12">${item.description}</p>
-                            <div class="col-12">
-                                <img class="img-fluid rounded w-100" src="${item.image_data}" alt="Image de ${item.nom}">
-                            </div>
-                        </div>
-                        <div class="modifyForm create-Habitat-form container text-center text-dark border border-primary rounded mb-5">
-                            <h5 class="text-center my-2">Modifier le service</h5>
-                            <input type="text" id="nom-${item.id}" value="${item.nom}" placeholder="Nom du service" class="form-control text-center">
-                            <textarea rows="5" id="description-${item.id}" placeholder="Description" class="form-control my-5 text-center">${item.description}</textarea>
-                            <input type="file" id="image_data-${item.id}" class="form-control">
-                            <button class="validerBouton btn btn-primary my-5">Valider la modification</button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            // Créer et insérer le titre
+            const serviceTitle = document.createElement('h2');
+            serviceTitle.classList.add("my-4");
+            serviceTitle.textContent = decodeHtml(item.nom);  // Décoder le nom si nécessaire
+            serviceElement.appendChild(serviceTitle);
 
-            rowElement.appendChild(serviceElement);
+            // Créer la div contenant la description et l'image
+            const rowElement = document.createElement('div');
+            rowElement.classList.add("container", "text-center", "row", "row-cols-1", "row-cols-lg-2", "d-flex", "justify-content-evenly", "align-items-center");
 
-            if ((index + 1) % 3 === 0) {
-                servicesContainer.appendChild(rowElement);
-                rowElement = document.createElement('div');
-                rowElement.classList.add('row', 'text-center', 'justify-content-center');
-            }
+            // Créer et insérer la description
+            const descriptionElement = document.createElement('p');
+            descriptionElement.classList.add("col");
+            descriptionElement.textContent = decodeHtml(item.description);  // Décoder la description si nécessaire
+            rowElement.appendChild(descriptionElement);
 
-            // Ajouter l'événement pour le bouton de validation
-            const validerBouton = serviceElement.querySelector('.validerBouton');
-            validerBouton.addEventListener('click', () => {
-                ouvrirModal(item.id, item.image_data);
-            });
+            // Créer et insérer l'image
+            const imageElementContainer = document.createElement('div');
+            const imageElement = document.createElement('img');
+            imageElement.classList.add("img-fluid", "rounded", "w-100", "h-100");
+            imageElement.setAttribute('src', item.image_data);  // Utilisation de setAttribute pour l'URL de l'image
+            imageElement.setAttribute('alt', `Image de ${item.nom}`);
+            imageElementContainer.appendChild(imageElement);
+
+            rowElement.appendChild(imageElementContainer);
+            serviceElement.appendChild(rowElement);
+
+            // Ajouter un séparateur horizontal (hr)
+            const hrElement = document.createElement('hr');
+            serviceElement.appendChild(hrElement);
+
+            // Ajouter l'élément de service au conteneur principal
+            servicesContainer.appendChild(serviceElement);
         });
-
-        if (rowElement.childElementCount > 0) {
-            servicesContainer.appendChild(rowElement);
-        }
-
     } catch (error) {
         console.error("Error:", error);
     }
 }
+
+
+
 
 function ouvrirModal(serviceId, oldImageData) {
     $('#confirmationModal').modal('show');
@@ -135,7 +122,7 @@ async function modifierService(serviceId, oldImageData) {
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`https://127.0.0.1:8000/api/service/${serviceId}`, {
+        const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/service/${serviceId}`, {
             method: 'PUT', 
             headers: myHeaders,
             body: JSON.stringify(serviceData)
@@ -155,11 +142,90 @@ async function modifierService(serviceId, oldImageData) {
     }
 }
 
-function readFileAsBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
+
+
+
+async function voirAvis() {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", getToken()); // Assurez-vous que cette fonction renvoie le bon token
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+    };
+
+    try {
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/get", requestOptions);
+        if (!response.ok) throw new Error('Failed to fetch avis');
+
+        const result = await response.json();
+        let content = '';
+        result.forEach(item => {
+            const buttonText = item.isVisible ? "Cacher l'avis" : "Afficher l'avis";
+            const buttonClass = item.isVisible ? 'btn btn-danger toggle-avis-button' : 'btn btn-success toggle-avis-button';
+            content += `
+                <ol class="list-group">
+                    <li class="list-group-item justify-content-between align-items-start text-dark">
+                        <div class="ms-2">
+                            <div class="fw-bold">${item.pseudo}</div>
+                            <p>${item.commentaire}</p>
+                        </div>
+                        <button class="${buttonClass}" data-avis-id="${item.id}" data-avis-visible="${item.isVisible}">
+                            ${buttonText}
+                        </button>
+                    </li>
+                </ol>`;
+        });
+        document.getElementById("avis").innerHTML = content;
+
+        // Ajout des event listeners pour chaque bouton
+        document.querySelectorAll('.toggle-avis-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const avisId = button.getAttribute('data-avis-id');
+                const currentVisibility = JSON.parse(button.getAttribute('data-avis-visible'));
+                const newValue = !currentVisibility;
+
+                try {
+                    console.log(`Toggling visibility for avis ${avisId}. New value: ${newValue}`);
+
+                    // Préparer les options de la requête PUT
+                    const putRequestOptions = {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-AUTH-TOKEN': getToken() // Vérifiez ici si getToken renvoie un token valide
+                        },
+                        body: JSON.stringify({ isVisible: newValue })
+                    };
+
+                    // Envoyer la requête PUT
+                    const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/${avisId}`, putRequestOptions);
+                    const result = await response.json();
+
+                    console.log("Response from server:", result);
+                    if (!response.ok) {
+                        console.error("Server returned an error", result);
+                        throw new Error(`Failed to toggle visibility for avis ${avisId}`);
+                    }
+
+                    // Mettre à jour les attributs et le texte du bouton
+                    button.setAttribute('data-avis-visible', newValue);
+                    button.textContent = newValue ? "Cacher l'avis" : "Afficher l'avis";
+                    button.className = newValue ? 'btn btn-danger toggle-avis-button' : 'btn btn-success toggle-avis-button';
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(`An error occurred while toggling visibility for avis ${avisId}`);
+                }
+            });
+        });
+
+    } catch (error) {
+        console.error('Error fetching avis:', error);
+        console.log("Impossible de récupérer les informations d'avis");
+    }
 }
+
+

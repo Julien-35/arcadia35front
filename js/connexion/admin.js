@@ -11,14 +11,12 @@ if (document.readyState === "loading") {
 
   }
 
-
-
 async function creerUnService() {
     const form = document.getElementById("creerService");
     const formData = new FormData(form);
     const titre = formData.get('titreService');
     const commentaire = formData.get('commentaireService');
-    const imageInput = document.getElementById('image_dataService'); // Corrigez l'ID ici
+    const imageInput = document.getElementById('image_dataService'); 
     let image_data = '';
 
     // Vérification des champs requis
@@ -31,14 +29,14 @@ async function creerUnService() {
     if (imageInput && imageInput.files.length > 0) {
         const file = imageInput.files[0];
 
-        // Vérifiez le type de fichier (PNG, JPEG, etc.)
+    // Vérifiez le type de fichier (PNG, JPEG, etc.)
         const validImageTypes = ['image/png', 'image/jpeg', 'image/avif'];
         if (!validImageTypes.includes(file.type)) {
             alert('Format d\'image non supporté. Veuillez sélectionner une image PNG, JPEG ou AVIF.');
             return;
         }
 
-        // Fonction pour lire le fichier image en base64
+    // Fonction pour lire le fichier image en base64
         try {
             const base64Data = await readFileAsBase64(file);
 
@@ -79,7 +77,7 @@ async function createService(titreService, commentaireService, image_dataService
     };
 
     try {
-        const response = await fetch(`https://127.0.0.1:8000/api/service`, requestOptions);
+        const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/service`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -89,17 +87,6 @@ async function createService(titreService, commentaireService, image_dataService
         console.error('Error:', error);
     }
 }
-
-// Fonction pour lire le fichier image en base64
-const readFileAsBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-};
-
 
 
 // créer un habitat
@@ -172,7 +159,7 @@ async function creationHabitat(titreHabitat, commentaireHabitat, descriptionHabi
     };
 
     try {
-        const response = await fetch(`https://127.0.0.1:8000/api/habitat`, requestOptions);
+        const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/habitat`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -261,7 +248,7 @@ async function creationAnimal(prenomAnimal, etatAnimal, nourritureAnimal, gramma
     };
 
     try {
-        const response = await fetch(`https://127.0.0.1:8000/api/animal/post`, requestOptions);
+        const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/animal/post`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -279,7 +266,7 @@ async function voirHabitat() {
 
     try {
         // Fonction fetchData non fournie, remplacez par fetch directement
-        const response = await fetch("https://127.0.0.1:8000/api/habitat/get", {
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/habitat/get", {
             method: 'GET',
             headers: myHeaders
         });
@@ -317,7 +304,7 @@ async function voirRace() {
 
     try {
         // Fonction fetchData non fournie, remplacez par fetch directement
-        const response = await fetch("https://127.0.0.1:8000/api/race/get", {
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/race/get", {
             method: 'GET',
             headers: myHeaders
         });
@@ -366,7 +353,7 @@ const SeeDates = document.getElementById("voirDate");
         };
     
         try {
-            const response = await fetch("https://127.0.0.1:8000/api/horaire/get", requestOptions);
+            const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/horaire/get", requestOptions);
     
             if (!response.ok) {
                 throw new Error("Impossible de récupérer les informations horaire");
@@ -449,7 +436,7 @@ const SeeDates = document.getElementById("voirDate");
         myHeaders.append("Content-Type", "application/json");
     
         try {
-            const response = await fetch(`https://127.0.0.1:8000/api/horaire/${horaireId}`, {
+            const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/horaire/${horaireId}`, {
                 method: 'PUT',
                 headers: myHeaders,
                 body: JSON.stringify(horaireData)
@@ -511,7 +498,7 @@ const SeeDates = document.getElementById("voirDate");
         };
     
         try {
-            const response = await fetch(`https://127.0.0.1:8000/api/race`, requestOptions);
+            const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/race`, requestOptions);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
