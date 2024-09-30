@@ -1,5 +1,5 @@
 // Création des variables pour les cookies
-const tokenCookieName = "accestoken";
+const tokenCookieName = "apiToken";
 const roleCookieName = "role";
 
 // Création de la variable pour le bouton de déconnexion
@@ -59,13 +59,13 @@ const isConnected = () => {
 
 // Fonction pour afficher ou masquer les éléments en fonction du rôle
 function showAndHideElementsForRoles() {
-    const userConnected = isConnected(); // Vérifie si l'utilisateur est connecté
-    const userRole = getCookie(roleCookieName); // Récupère le rôle de l'utilisateur
-    console.log("Utilisateur connecté :", userConnected); // Log de l'état de connexion
-    console.log("Rôle de l'utilisateur :", userRole); // Log du rôle
+    const userConnected = isConnected(); 
+    const userRole = getCookie(roleCookieName);
+    console.log("Utilisateur connecté :", userConnected); 
+    console.log("Rôle de l'utilisateur :", userRole);
 
     document.querySelectorAll('[data-show]').forEach(element => {
-        const showRole = element.dataset.show; // Récupère le rôle requis pour afficher cet élément
+        const showRole = element.dataset.show; 
         let shouldShow = false;
 
         switch (showRole) {
@@ -86,8 +86,8 @@ function showAndHideElementsForRoles() {
                 break;
         }
         
-        element.classList.toggle("d-none", !shouldShow); // Affiche ou masque l'élément
-        console.log(`Élément ${element.id || element.className} affiché :`, shouldShow); // Log de l'affichage
+        element.classList.toggle("d-none", !shouldShow); 
+        console.log(`Élément ${element.id || element.className} affiché :`, shouldShow); 
     });
 }
 
@@ -119,15 +119,7 @@ async function login(email, password) {
     }
 }
 
-
-
-// Fonction pour récupérer le token
-function getToken() {
-    return getCookie(tokenCookieName);
-}
-
-
- async function fetchData(url, headers) {
+async function fetchData(url, headers) {
     const requestOptions = {
         method: "GET",
         headers: headers,
@@ -139,14 +131,14 @@ function getToken() {
         const response = await fetch(url, requestOptions);
         if (!response.ok) throw new Error("Impossible de récupérer les informations");
 
-        const textResponse = await response.text();
-        console.log("Raw response:", textResponse); 
+        const textResponse = await response.text(); 
+        console.log("Raw Response:", textResponse);
 
-        const cleanedResponse = textResponse.replace(/^#\s*/, ''); 
+        const cleanedResponse = textResponse.replace(/^#\s*/, '');
 
         return JSON.parse(cleanedResponse); 
     } catch (error) {
-        console.error("Fetch Error:", error);
+        console.error("Error fetching data:", error); // Log the error
         throw error;
     }
 }
@@ -166,7 +158,12 @@ function sanitizeInput(input){
 }
 
 
-// Fonction pour lire les fichiers image en base64
+function getToken() {
+    return localStorage.getItem('apiToken');
+  }
+  
+// Fonction pour lire le fichier image en base64
+
 const readFileAsBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

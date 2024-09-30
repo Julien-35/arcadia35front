@@ -122,7 +122,7 @@ async function modifierService(serviceId, oldImageData) {
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/service/${serviceId}`, {
+        const response = await fetch(`https://127.0.0.1:8000/api/service/${serviceId}`, {
             method: 'PUT', 
             headers: myHeaders,
             body: JSON.stringify(serviceData)
@@ -157,7 +157,7 @@ async function voirAvis() {
     };
 
     try {
-        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/get", requestOptions);
+        const response = await fetch("https://127.0.0.1:8000/api/avis/get", requestOptions);
         if (!response.ok) throw new Error('Failed to fetch avis');
 
         const result = await response.json();
@@ -201,7 +201,7 @@ async function voirAvis() {
                     };
 
                     // Envoyer la requête PUT
-                    const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/${avisId}`, putRequestOptions);
+                    const response = await fetch(`https://127.0.0.1:8000/api/avis/${avisId}`, putRequestOptions);
                     const result = await response.json();
 
                     console.log("Response from server:", result);

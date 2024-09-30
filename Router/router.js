@@ -16,46 +16,55 @@ const getRouteByUrl = (url) => {
 };
 
 // Fonction pour charger le contenu de la page
-  const LoadContentPage = async () => {
+// Fonction pour charger le contenu de la page
+const LoadContentPage = async () => {
   const path = window.location.pathname;
-  // Récupération de l'URL actuelle
   const actualRoute = getRouteByUrl(path);
-
 
   // Récupération du contenu HTML de la route
   const html = await fetch(actualRoute.pathHtml).then((data) => data.text());
-  // Ajout du contenu HTML à l'élément avec l'ID "main-page"  
   document.getElementById("main-page").innerHTML = html;
-
 
   // Vérifier les droits d'accès à la page
   const allRolesArray = actualRoute.authorize;
 
+  // Obtenir le rôle de l'utilisateur et l'état de connexion
+  const userRole = getCookie('role'); // Récupérer le rôle de l'utilisateur
+  const isUserConnected = userRole !== null; // Vérifier si l'utilisateur est connecté
+
+  // Logique d'accès
   if (allRolesArray.length > 0) {
-    if (allRolesArray.includes("disconnected")) {
-      if (isConnected()) {
-        window.location.replace("/home");
+      // Si l'itinéraire nécessite d'être déconnecté
+      if (allRolesArray.includes("disconnected")) {
+          if (isUserConnected) {
+              // Rediriger l'utilisateur connecté vers la page d'accueil
+              window.location.replace("/home");
+              return;
+          }
+      } else {
+          // Vérifier si le rôle de l'utilisateur est valide pour cet itinéraire
+          if (!allRolesArray.includes(userRole)) {
+              // Rediriger si le rôle n'est pas valide
+              window.location.replace("/home");
+              return;
+          }
       }
-    } else {
-      const roleUser = getRoles();
-      if (!allRolesArray.includes(localStorage.getItem("userRole"))) {
-        window.location.replace("/home");
-      }
-    }
   }
+
   // Ajout du contenu JavaScript
   if (actualRoute.pathJS !== "") {
-    var scriptTag = document.createElement("script");
-    scriptTag.setAttribute("type", "text/javascript");
-    scriptTag.setAttribute("src", actualRoute.pathJS);
+      var scriptTag = document.createElement("script");
+      scriptTag.setAttribute("type", "text/javascript");
+      scriptTag.setAttribute("src", actualRoute.pathJS);
 
-    // Ajout de la balise script au corps du document
-    document.querySelector("body").appendChild(scriptTag);
+      // Ajout de la balise script au corps du document
+      document.querySelector("body").appendChild(scriptTag);
   }
+
   // Changement du titre de la page
   document.title = actualRoute.title + " - " + websiteName;
 
-  //Afficher et masquer les éléments 
+  // Afficher et masquer les éléments
   showAndHideElementsForRoles();
 };
 

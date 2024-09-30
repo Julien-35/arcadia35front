@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Fonction pour mettre à jour les clics affichés
     function updateClicks() {
         $.ajax({
-            url: 'https://arcadia35380-f680d3a74682.herokuapp.com/api/image/clicks', // URL pour obtenir les clics
+            url: 'https://127.0.0.1:8000/api/image/clicks', // URL pour obtenir les clics
             type: 'GET',
             success: function(response) {
                 $.each(response, function(imageName, clicks) {
@@ -33,7 +33,7 @@ $(document).ready(function() {
         var imageName = $(this).data('name'); // Récupération du nom de l'image
 
         $.ajax({
-            url: 'https://arcadia35380-f680d3a74682.herokuapp.com/api/image/click',
+            url: 'https://127.0.0.1:8000/api/image/click',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ imageName: imageName }),

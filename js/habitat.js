@@ -1,112 +1,25 @@
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
     services-container.addEventListener('DOMContentLoaded', voirHabitat);
-
-
   } else {
-    // `DOMContentLoaded` has already fired
     voirHabitat();
   }
 
 
-// Fonction pour obtenir le token d'authentification
-function getToken() {
-    return localStorage.getItem('apiToken');
-}
-
-// Fonction pour récupérer les données depuis une URL
-async function fetchData(url, headers) {
-    const requestOptions = {
-        method: "GET",
-        headers: headers,
-        redirect: "follow",
-        mode: "cors",
-    };
-
-    try {
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) throw new Error("Impossible de récupérer les informations");
-        return response.json();
-    } catch (error) {
-        console.error("Fetch Error:", error);
-        throw error;
-    }
-}
-
-// Fonction pour afficher les habitats
-async function voirHabitat() {
-    const myHeaders = new Headers({
-        "Content-Type": "application/json"
-    });
-
-    try {
-        const habitats = await fetchData("https://arcadia35380-f680d3a74682.herokuapp.com/api/habitat/get", myHeaders);
-
-        const habitatsContainer = document.getElementById("habitats-container");
-        habitatsContainer.innerHTML = '';
-
-        habitats.forEach(habitat => {
-            // Créer le conteneur pour chaque habitat
-            const habitatElement = document.createElement('div');
-            habitatElement.className = 'habitat';
-
-            // Ajouter le titre, l'image de l'habitat et la description masquée
-            habitatElement.innerHTML = `
-                <div class="container d-flex align-items-center flex-column ">
-                    <h2 class="m-4">${habitat.nom}</h2>
-                    <div class="habitat-info d-flex flex-column flex-lg-row align-items-center d-flex justify-content-evenly ">
-                        <img class="col-12 col-lg-3 img-fluid rounded" src="${habitat.image_data}" alt="Image de ${habitat.nom}" type="button" id="toggle-${habitat.id}" style="width: 648px; height: 435px;">
-                        <div id="description-${habitat.id}" style="display: none;" class="col-12 col-lg-3 mt-3 mt-lg-0">
-                            <p class="text-center">${habitat.description}</p>
-                        </div>
-                    </div>
-                    <div id="animals-${habitat.id}" class="animal-container " style="display: none;"></div>
-                </div>
-                <hr class="container-fluid">
-            `;
-
-            habitatsContainer.appendChild(habitatElement);
-
-            // Ajouter un événement de clic sur l'image pour afficher/masquer la description
-            const toggleButton = document.getElementById(`toggle-${habitat.id}`);
-            const descriptionElement = document.getElementById(`description-${habitat.id}`);
-
-            toggleButton.addEventListener("click", () => {
-                if (descriptionElement.style.display === "none") {
-                    descriptionElement.style.display = "block";
-                } else {
-                    descriptionElement.style.display = "none";
-                }
-            });
-        });
-
-        // Ajouter les événements pour afficher/masquer les animaux
-        habitats.forEach(habitat => {
-            const toggleButton = document.getElementById(`toggle-${habitat.id}`);
-            toggleButton.addEventListener("click", () => {
-                const animalContainer = document.getElementById(`animals-${habitat.id}`);
-                if (animalContainer.style.display === "none") {
-                    animalContainer.style.display = "block";
-                    fetchAnimals(habitat.id);
-                } else {
-                    animalContainer.style.display = "none";
-                }
-            });
-        });
-    } catch (error) {
-        console.error("Erreur dans la récupération des habitats:", error);
-    }
-}
-
 // Fonction pour afficher les animaux d'un habitat spécifique
-async function fetchAnimals(habitatId) {
+async function fetchAnimals(habitatId, animalContainer) {
+    if (!animalContainer) {
+        console.error(`Container pour les animaux avec l'ID ${habitatId} est introuvable.`);
+        return;
+    }
+
     const myHeaders = new Headers({
         "Content-Type": "application/json"
     });
 
     try {
         // Récupérer les animaux pour un habitat spécifique
-        const animals = await fetchData(`https://arcadia35380-f680d3a74682.herokuapp.com/api/animal/get?habitat_id=${habitatId}`, myHeaders);
+        const animals = await fetchData(`https://127.0.0.1:8000/api/animal/get?habitat_id=${habitatId}`, myHeaders);
         const animalContainer = document.getElementById(`animals-${habitatId}`);
         animalContainer.innerHTML = '';
 
@@ -118,7 +31,7 @@ async function fetchAnimals(habitatId) {
                 <div class="col mt-3">
                     <img src="${animal.image_data}" alt="Image de ${animal.id}" style="width: 294px; height: 185px;" class="img-thumbnail img-responsive" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidth${animal.id}" aria-expanded="false" aria-controls="collapseWidth${animal.id}">
                     <div class="collapse" id="collapseWidth${animal.id}" style="width: 294px; height: 185px;">
-                        <div class="card card-body mx-auto mb-5 ">
+                        <div class="card card-body mx-auto mb-5">
                             <table class="table">
                                 <tbody class="text-center">
                                     <tr><th scope="row" class="text-dark">Race</th><td class="text-dark">${animal.race}</td></tr>
@@ -140,5 +53,63 @@ async function fetchAnimals(habitatId) {
     }
 }
 
-// Appeler la fonction pour afficher les habitats au chargement de la page
-document.addEventListener("DOMContentLoaded", voirHabitat);
+
+
+async function voirHabitat() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    try {
+        const items = await fetchData("https://127.0.0.1:8000/api/habitat/get", myHeaders);
+
+        const servicesContainer = document.getElementById("voirHabitat");
+        servicesContainer.innerHTML = ''; 
+
+        items.forEach(item => {
+            // Container principal
+            const serviceElement = document.createElement('div');
+            serviceElement.classList.add("container", "text-center");
+
+            // Titre de l'habitat
+            const serviceTitle = document.createElement('h2');
+            serviceTitle.classList.add("my-4");
+            serviceTitle.textContent = decodeHtml(item.nom);
+            serviceElement.appendChild(serviceTitle);
+
+            // Ligne pour la description et l'image
+            const rowElement = document.createElement('div');
+            rowElement.classList.add("container", "text-center", "row", "row-cols-1", "row-cols-lg-2", "d-flex", "justify-content-evenly", "align-items-center");
+
+            // Description de l'habitat
+            const descriptionElement = document.createElement('p');
+            descriptionElement.classList.add("col", "text-start"); // ajout 'text-start' pour aligner le texte à gauche
+            descriptionElement.textContent = decodeHtml(item.description);  
+            rowElement.appendChild(descriptionElement);
+
+            // Commentaire de l'habitat
+            const commentaireDescriptionElement = document.createElement('p');
+            commentaireDescriptionElement.classList.add("col", "text-start"); // ajout 'text-start' pour aligner le texte à gauche
+
+            // Conteneur de l'image
+            const imageElementContainer = document.createElement('div');
+            const imageElement = document.createElement('img');
+            imageElement.classList.add("img-fluid", "rounded", "w-100", "h-100");
+            imageElement.setAttribute('src', item.image_data);  
+            imageElement.setAttribute('alt', `Image de ${item.nom}`);
+            imageElementContainer.appendChild(imageElement);
+
+            // Ajouter l'image à la ligne
+            rowElement.appendChild(imageElementContainer);
+            serviceElement.appendChild(rowElement);
+
+            // Ajouter un séparateur (ligne horizontale)
+            const hrElement = document.createElement('hr');
+            serviceElement.appendChild(hrElement);
+
+            // Ajouter l'élément au conteneur principal
+            servicesContainer.appendChild(serviceElement);
+        });
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}

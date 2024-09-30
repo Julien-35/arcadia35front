@@ -74,7 +74,7 @@ async function ConnexionUtilisateur(event) {
     };
 
     try {
-        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/login", {
+        const response = await fetch("https://127.0.0.1:8000/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -83,14 +83,25 @@ async function ConnexionUtilisateur(event) {
             mode: "cors"
         });
 
+        // Log the response status
+        console.log("Response Status:", response.status);
+        
+        const responseText = await response.text();
+        console.log("Response Text:", responseText);
+
+        // Check if the response is okay
         if (!response.ok) {
             throw new Error('Erreur de connexion : ' + response.statusText);
         }
 
-        const result = await response.json();
+        // Clean the response text if it starts with '#'
+        const cleanedResponse = responseText.startsWith('#') ? responseText.slice(1) : responseText;
+
+        // Parse the cleaned response as JSON
+        const result = JSON.parse(cleanedResponse);
 
         // Stocker le token et les données dans les cookies
-        setCookie('accestoken', result.apiToken, 7); // Stocker le token d'authentification
+        setCookie('apiToken', result.apiToken, 7); // Stocker le token d'authentification
         setCookie('role', result.roles[0], 7); // Stocker le rôle utilisateur
 
         // Rediriger vers la page appropriée
@@ -98,13 +109,14 @@ async function ConnexionUtilisateur(event) {
 
     } catch (error) {
         console.error('Erreur:', error);
-        alert('Une erreur est survenue lors de la connexion.');
+        alert('Une erreur est survenue lors de la connexion. Détails : ' + error.message);
     }
 }
 
+
 // Fonction pour obtenir le token
 function getToken() {
-    return getCookie('accestoken');
+    return getCookie('apiToken');
 }
 
 // Fonction pour obtenir la valeur d'un cookie
