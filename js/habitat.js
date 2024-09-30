@@ -1,9 +1,8 @@
 if (document.readyState === "loading") {
-    // Loading hasn't finished yet
-    services-container.addEventListener('DOMContentLoaded', voirHabitat);
-  } else {
+    document.addEventListener('DOMContentLoaded', voirHabitat);
+} else {
     voirHabitat();
-  }
+}
 
 
 // Fonction pour afficher les animaux d'un habitat spécifique
@@ -20,7 +19,6 @@ async function fetchAnimals(habitatId, animalContainer) {
     try {
         // Récupérer les animaux pour un habitat spécifique
         const animals = await fetchData(`https://127.0.0.1:8000/api/animal/get?habitat_id=${habitatId}`, myHeaders);
-        const animalContainer = document.getElementById(`animals-${habitatId}`);
         animalContainer.innerHTML = '';
 
         animals.forEach(animal => {
@@ -86,21 +84,23 @@ async function voirHabitat() {
             descriptionElement.textContent = decodeHtml(item.description);  
             rowElement.appendChild(descriptionElement);
 
-            // Commentaire de l'habitat
-            const commentaireDescriptionElement = document.createElement('p');
-            commentaireDescriptionElement.classList.add("col", "text-start"); // ajout 'text-start' pour aligner le texte à gauche
-
             // Conteneur de l'image
             const imageElementContainer = document.createElement('div');
             const imageElement = document.createElement('img');
             imageElement.classList.add("img-fluid", "rounded", "w-100", "h-100");
             imageElement.setAttribute('src', item.image_data);  
             imageElement.setAttribute('alt', `Image de ${item.nom}`);
+            
+            // Ajouter l'image au conteneur
             imageElementContainer.appendChild(imageElement);
-
-            // Ajouter l'image à la ligne
             rowElement.appendChild(imageElementContainer);
             serviceElement.appendChild(rowElement);
+
+            // Ajouter un conteneur vide pour les animaux
+            const animalContainer = document.createElement('div');
+            animalContainer.id = `animals-${item.id}`; // Créer un ID unique pour chaque conteneur d'animaux
+            animalContainer.classList.add("row", "my-4", "d-none");
+            serviceElement.appendChild(animalContainer);
 
             // Ajouter un séparateur (ligne horizontale)
             const hrElement = document.createElement('hr');
@@ -108,6 +108,16 @@ async function voirHabitat() {
 
             // Ajouter l'élément au conteneur principal
             servicesContainer.appendChild(serviceElement);
+
+            // Ajouter un événement de clic sur l'image pour charger les animaux associés
+            imageElement.addEventListener('click', () => {
+                if (animalContainer.classList.contains('d-none')) {
+                    fetchAnimals(item.id, animalContainer);
+                    animalContainer.classList.remove('d-none');
+                } else {
+                    animalContainer.classList.add('d-none');
+                }
+            });
         });
     } catch (error) {
         console.error("Error:", error);
