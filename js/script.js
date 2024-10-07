@@ -1,6 +1,6 @@
 // Création des variables pour les cookies
 const tokenCookieName = "apiToken";
-const roleCookieName = "role";
+const roleCookieName = "userRole";
 
 // Création de la variable pour le bouton de déconnexion
 const btnSignout = document.getElementById("btnSignout");
@@ -47,6 +47,7 @@ function eraseCookie(name) {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
+
 // Fonction pour obtenir les rôles de l'utilisateur
 const getRoles = () => {
     return sessionStorage.getItem("userRole") || "disconnected";
@@ -61,8 +62,6 @@ const isConnected = () => {
 function showAndHideElementsForRoles() {
     const userConnected = isConnected(); 
     const userRole = getCookie(roleCookieName);
-    console.log("Utilisateur connecté :", userConnected); 
-    console.log("Rôle de l'utilisateur :", userRole);
 
     document.querySelectorAll('[data-show]').forEach(element => {
         const showRole = element.dataset.show; 
@@ -87,7 +86,6 @@ function showAndHideElementsForRoles() {
         }
         
         element.classList.toggle("d-none", !shouldShow); 
-        console.log(`Élément ${element.id || element.className} affiché :`, shouldShow); 
     });
 }
 
@@ -112,7 +110,7 @@ async function login(email, password) {
     if (response.ok) {
         // Enregistre le token et le rôle dans des cookies
         setCookie(tokenCookieName, data.apiToken, 7); // Enregistre le token dans un cookie
-        setCookie(roleCookieName, data.roles[0], 7); // Enregistre le rôle dans un cookie
+        setCookie(roleCookieName, data.roles[0], 7); // Enregistre le premier rôle dans un cookie
         window.location.href = '/'; 
     } else {
         alert(data.message);
@@ -132,7 +130,6 @@ async function fetchData(url, headers) {
         if (!response.ok) throw new Error("Impossible de récupérer les informations");
 
         const textResponse = await response.text(); 
-        console.log("Raw Response:", textResponse);
 
         const cleanedResponse = textResponse.replace(/^#\s*/, '');
 
@@ -159,8 +156,8 @@ function sanitizeInput(input){
 
 
 function getToken() {
-    return localStorage.getItem('apiToken');
-  }
+    return getCookie(tokenCookieName); // Utilise getCookie pour récupérer le token
+}
   
 // Fonction pour lire le fichier image en base64
 
@@ -172,3 +169,16 @@ const readFileAsBase64 = (file) => {
         reader.readAsDataURL(file);
     });
 };
+
+// Fonction pour détecter les scripts
+function containsScript(input) {
+    const scriptPattern = /<script.*?>.*?<\/script>/i; // RegEx pour détecter les balises <script>
+    
+    // Si un script est détecté, redirigez l'utilisateur
+    if (scriptPattern.test(input)) {
+        alert("Des scripts ont été détectés dans l'entrée. Vous allez être redirigé.");
+        window.location.href = "https://www.cybermalveillance.gouv.fr/"; // Remplacez par l'URL de redirection souhaitée
+        return true; // Retourne vrai si un script est détecté
+    }
+    return false; // Retourne faux si aucun script n'est détecté
+}

@@ -1,55 +1,67 @@
 
-<h3 class="text-dark text-center pb-5">Modifier un service</h3>
+<h3 class="text-dark text-center pb-5">Bienvenue sur la page employé</h3>
 
-<div id="getService" class="text-dark"></div>
-
-<!-- Modale de confirmation -->
-<div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Confirmation</h5>
-
-        </div>
-        <div class="modal-body">
-          <p>Êtes-vous sûr de vouloir modifier ce service ?</p>
-        </div>
-        <div class="modal-footer">
-          <button id="confirmBtn" type="button" class="btn btn-primary">Confirmer</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
   <div class="container text-center text-primary">
 
 
     <h2 class="accordion-header" id="flush-headingAvis">
-      <button class="btn btn-primary collapsed fs-4 mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseAvis" aria-expanded="false" aria-controls="flush-collapseAvis">
-        Voir tout les avis
+      <button class="btn btn-primary collapsed btn btn-primary mb-3 fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseAvis" aria-expanded="false" aria-controls="flush-collapseAvis">
+        Afficher les avis
       </button>
     </h2>
     <div id="flush-collapseAvis" class="accordion-collapse collapse" aria-labelledby="flush-headingAvis" data-bs-parent="#accordionFlushExample">
         <div class="accordion-body">
-            <ol class="list-group list-group-numbered overflow-scroll" id="avis" style="height: 300px;">
+            <ol class="list-group list-group-numbered overflow-scroll" id="voirAvis" style="height: 300px;">
         </div>
     </div>
   </div>
 
 
+<hr class=" w-100 my-5">
 
-
+<div class="container">
+  <div class="text-center d-flex flex-column ">
+      <h2 class="accordion-header" id="flush-headingServices">
+          <button class="btn btn-primary collapsed btn btn-primary mb-3 fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseServices" aria-expanded="false" aria-controls="flush-collapseServices">
+              Afficher <br> les services
+          </button>
+      </h2>
+      <div id="flush-collapseServices" class="accordion-collapse collapse" aria-labelledby="flush-headingServices" data-bs-parent="#accordionFlushExample">
+          <div id="voirService"></div>
+      </div>
+  </div>
+</div>
 
 <hr class=" w-100 my-5">
 
-<!--Accordéon pour l'ouverture des Services-->
+<!--Modal pour afficher les habitats-->
 <div class="container">
+  <div class="text-center d-flex flex-column ">
+      <h2 class="accordion-header" id="flush-headingHabitat">
+          <button class="btn btn-primary collapsed btn btn-primary mb-3 fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseHabitat" aria-expanded="false" aria-controls="flush-collapseHabitat">
+              Afficher <br> les habitats
+          </button>
+      </h2>
+      <div id="flush-collapseHabitat" class="accordion-collapse collapse" aria-labelledby="flush-headingHabitat" data-bs-parent="#accordionFlushExample">
+          <div id="voirHabitat"></div>
+      </div>
+  </div>
+</div>
+
+<hr class=" w-100 my-5">
 
 
-<div class="text-center d-flex flex-column ">
-<h2 class="accordion-header" id="flush-headingAvis">
-   <button class="btn btn-primary collapsed fs-4 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseServices" aria-expanded="false" aria-controls="flush-collapseServices">
-    Afficher <br> les services</button></h2>
- <div id="flush-collapseServices" class="accordion-collapse collapse" aria-labelledby="flush-headingServices" data-bs-parent="#accordionFlushExample">
-     <div class="accordion-body">
+<div class="container">
+  <div class="text-center d-flex flex-column ">
+      <h2 class="accordion-header" id="flush-headingAnimaux">
+          <button class="btn btn-primary collapsed btn btn-primary mb-3 fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseAnimaux" aria-expanded="false" aria-controls="flush-collapseAnimaux">
+              Afficher <br> les animaux
+          </button>
+      </h2>
+      <div id="flush-collapseAnimaux" class="accordion-collapse collapse" aria-labelledby="flush-headingAnimaux" data-bs-parent="#accordionFlushExample">
+          <div id="voirAnimal"></div>
+      </div>
+  </div>
+</div>

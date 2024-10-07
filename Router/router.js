@@ -8,9 +8,9 @@ const route404 = new Route("404", "Page introuvable", "/pages/404.html", []);
 const getRouteByUrl = (url) => {
   let currentRoute = null;
   allRoutes.forEach((element) => {
-    if (element.url === url) {
-      currentRoute = element;
-    }
+      if (element.url === url) {
+          currentRoute = element;
+      }
   });
   return currentRoute || route404;
 };
@@ -29,7 +29,7 @@ const LoadContentPage = async () => {
   const allRolesArray = actualRoute.authorize;
 
   // Obtenir le rôle de l'utilisateur et l'état de connexion
-  const userRole = getCookie('role'); // Récupérer le rôle de l'utilisateur
+  const userRole = getCookie('userRole'); // Récupérer le rôle de l'utilisateur
   const isUserConnected = userRole !== null; // Vérifier si l'utilisateur est connecté
 
   // Logique d'accès

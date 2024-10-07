@@ -11,37 +11,11 @@ if (document.readyState === "loading") {
     voirAvis();
   }
 
-  async function creerUnAvis() {
-    const pseudo = document.getElementById('pseudo').value;
-    const commentaire = document.getElementById('commentaire').value;
-
-    const avisData = {
-        pseudo: pseudo,
-        commentaire: commentaire,
-        is_visible: false  
-    };
-
-    try {
-        const response = await fetch("https://127.0.0.1:8000/api/avis/post", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(avisData)
-        });
-        if (!response.ok) throw new Error("Erreur lors de l'envoie de l'avis");
-        const myModal = new bootstrap.Modal(document.getElementById('MessageAvis'));
-        myModal.show();
-    } catch (error) {
-        console.error('Error in creerUnAvis:', error);
-        alert("Impossible d'envoyer l'avis. Veuillez réessayer plus tard.");
-    }
-}
 
 
   async function voirAvis() {
     try {
-        const response = await fetch("https://127.0.0.1:8000/api/avis/get");
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/get");
         const responseText = await response.text(); // Lire la réponse brute
         
         // Retirer tout caractère non désiré (comme le '#')
@@ -96,7 +70,7 @@ async function voirService() {
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const items = await fetchData("https://127.0.0.1:8000/api/service/get", myHeaders);
+        const items = await fetchData("https://arcadia35380-f680d3a74682.herokuapp.com/api/service/get", myHeaders);
         const servicesContainer = document.getElementById("voirService");
         servicesContainer.innerHTML = ''; // Clear existing content
 
@@ -130,3 +104,76 @@ async function voirService() {
     }
 }
 
+
+
+async function creerUnAvis() {
+    const form = document.getElementById("creerAvis");
+    const formData = new FormData(form);
+    const pseudo = formData.get('pseudoAvis');
+    const commentaire = formData.get('commentaireAvis');
+
+    // Vérification des champs requis
+    if (!pseudo || !commentaire) {
+        alert("Le champ pseudo et commentaire ne peuvent pas être vides");
+        return;
+    }
+
+    // Vérifiez si le pseudo ou le commentaire contiennent des scripts
+    if (containsScript(pseudo) || containsScript(commentaire)) {
+        return; // Si des scripts sont détectés, l'utilisateur est redirigé
+    }
+
+    // Sanitize les entrées utilisateur
+    const sanitizedpseudo = sanitizeInput(pseudo);
+    const sanitizedcommentaire = sanitizeInput(commentaire);
+
+    try {
+        // Appel de la fonction pour créer l'avis
+        await createAvis(sanitizedpseudo, sanitizedcommentaire);
+
+        // Ouvrir la modal après la création de l'avis
+        const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        confirmationModal.show();
+
+        // Ajouter un listener au bouton pour rediriger l'utilisateur vers l'accueil
+        document.getElementById('redirectHomeButton').addEventListener('click', function() {
+            window.location.href = "/home"; // Redirige vers la page principale
+        });
+
+    } catch (error) {
+        alert("Erreur lors de la création de l'avis");
+        console.error(error);
+    }
+}
+
+// Fonction pour créer l'avis dans l'API
+async function createAvis(pseudoAvis, commentaireAvis) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    // Préparation de l'objet JSON à envoyer
+    const raw = JSON.stringify({
+        "pseudo": pseudoAvis,
+        "commentaire": commentaireAvis,
+        "isVisible": false  // Utilisez la clé attendue par l'API
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+        mode: "cors"
+    };
+
+    try {
+        const response = await fetch(`https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/post`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP! Status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);  // Facultatif : affichage pour debug
+    } catch (error) {
+        console.error('Erreur dans createAvis:', error);
+    }
+}
