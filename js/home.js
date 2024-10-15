@@ -15,24 +15,24 @@ if (document.readyState === "loading") {
 
   async function voirAvis() {
     try {
-        const response = await fetch("https://localhost:8000/api/avis/get");
-        const responseText = await response.text(); // Lire la réponse brute
-        
-        // Retirer tout caractère non désiré (comme le '#')
-        const cleanResponseText = responseText.replace(/^#/, ''); // Supprime le '#' au début s'il est présent
-        
-        // Tentez d'analyser le JSON après nettoyage
-        const result = JSON.parse(cleanResponseText);
+        const response = await fetch("http://localhost:8000/api/avis/get");
+
+        // Vérifier si la réponse est OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+
+        const result = await response.json(); // Lire et analyser directement le JSON
 
         const avisContainer = document.getElementById("voirAvis");
-        avisContainer.innerHTML = ''; // Clear the existing content
+        avisContainer.innerHTML = ''; // Vider le contenu existant
 
         result.forEach(item => {
             if (item.isVisible) {
                 // Créer les éléments en toute sécurité sans utiliser innerHTML
                 const listItem = document.createElement('li');
                 listItem.classList.add('list-group-item', 'justify-content-between', 'align-items-start', 'text-dark', 'm-2', 'border', 'border-primary', 'rounded');
-                
+
                 const divContainer = document.createElement('div');
                 divContainer.classList.add('ms-2', 'p-2');
 
@@ -62,6 +62,7 @@ if (document.readyState === "loading") {
         document.getElementById("voirAvis").innerHTML = "<p>Impossible de récupérer les avis.</p>";
     }
 }
+
 
 
 
