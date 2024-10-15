@@ -14,10 +14,10 @@ if (document.readyState === "loading") {
 
 
   async function voirAvis() {
-    // Détecter l'environnement
+    // Détection de l'environnement
     const apiUrl = (window.location.hostname === "localhost")
-        ? "http://localhost:3000/"
-        : "https://arcadia35380-f680d3a74682.herokuapp.com/";
+        ? "http://localhost:8000/"  // URL de ton backend en local
+        : "https://arcadia35380-f680d3a74682.herokuapp.com/";  // URL de ton backend en production
 
     try {
         // Utiliser l'URL dynamique pour appeler l'API
