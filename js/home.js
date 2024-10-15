@@ -68,33 +68,27 @@ if (document.readyState === "loading") {
 
 async function voirService() {
     try {
-        // Récupérer les données depuis l'API des services
         const response = await fetch("http://localhost:8000/api/service/get", {
-            method: "GET", // S'assurer que le type de méthode est correct
+            method: "GET",
             headers: {
-                "Content-Type": "application/json",
-                // Ajoutez d'autres en-têtes si nécessaire
-            },
+                "Content-Type": "application/json"
+            }
         });
 
-        // Vérifiez que la réponse est OK
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        // Récupérer les données au format JSON directement
         const items = await response.json();
-
         const servicesContainer = document.getElementById("voirService");
-        servicesContainer.innerHTML = ''; // Nettoyer le contenu existant
+        servicesContainer.innerHTML = ''; 
 
-        // Parcourir les services et créer des éléments DOM
         items.forEach(item => {
             const serviceElement = document.createElement('div');
             serviceElement.classList.add('container', 'm-1', 'fw-bold');
 
             const serviceTitle = document.createElement('p');
-            serviceTitle.textContent = `- ${item.nom}`; // Nom du service
+            serviceTitle.textContent = `- ${item.nom}`;
 
             serviceElement.appendChild(serviceTitle);
             servicesContainer.appendChild(serviceElement);
@@ -104,6 +98,7 @@ async function voirService() {
         document.getElementById("voirService").textContent = "Impossible de récupérer les services.";
     }
 }
+
 
 
 
