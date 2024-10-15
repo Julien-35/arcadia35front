@@ -14,21 +14,8 @@ if (document.readyState === "loading") {
 
 
   async function voirAvis() {
-    // Détecter l'environnement
-    const apiUrl = (window.location.hostname === "localhost")
-        ? "http://localhost:8000/"
-        : "https://arcadia35380-f680d3a74682.herokuapp.com/";
-
     try {
-        // Utiliser l'URL dynamique pour appeler l'API
-        const response = await fetch(`${apiUrl}api/avis/get`);
-
-        // Vérifier si la réponse est OK
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
-        }
-
-        const result = await response.json();
+        const result = await fetchFromApi("api/avis/get"); // Utiliser la fonction générique
 
         const avisContainer = document.getElementById("voirAvis");
         avisContainer.innerHTML = ''; // Vider le contenu existant
@@ -73,18 +60,7 @@ if (document.readyState === "loading") {
 
 async function voirService() {
     try {
-        const response = await fetch("http://localhost:8000/api/service/get", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const items = await response.json();
+        const items = await fetchFromApi("api/service/get"); // Utiliser la fonction générique
         const servicesContainer = document.getElementById("voirService");
         servicesContainer.innerHTML = ''; 
 
@@ -103,8 +79,6 @@ async function voirService() {
         document.getElementById("voirService").textContent = "Impossible de récupérer les services.";
     }
 }
-
-
 
 
 
