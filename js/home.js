@@ -15,7 +15,7 @@ if (document.readyState === "loading") {
 
   async function voirAvis() {
     try {
-        const response = await fetch("http://localhost:8000/api/avis/get");
+        const response = await fetch("https://localhost:8000/api/avis/get");
         const responseText = await response.text(); // Lire la réponse brute
         
         // Retirer tout caractère non désiré (comme le '#')
@@ -68,7 +68,7 @@ if (document.readyState === "loading") {
 async function voirService() {
     try {
         // Récupérer les données depuis l'API des services
-        const response = await fetch("http://localhost:8000/api/service/get", {
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/service/get", {
             method: "GET", // S'assurer que le type de méthode est correct
             headers: {
                 "Content-Type": "application/json",

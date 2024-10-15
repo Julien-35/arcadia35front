@@ -7,7 +7,7 @@ const SeeDates = document.getElementById("voirLesHoraires");
 
     async function voirHoraire() {
         try {
-            const response = await fetch(" http://localhost:8000/api/horaire/get");
+            const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/horaire/get");
     
             // Afficher le statut de la réponse
             console.log('Response Status:', response.status);
