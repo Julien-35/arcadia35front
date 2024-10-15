@@ -11,6 +11,12 @@ if (document.readyState === "loading") {
     voirAvis();
   }
 
+  function getApiUrl() {
+    // Détecte si on est en local ou en production
+    return (window.location.hostname === "localhost")
+        ? "http://localhost:8000/"  // URL de ton backend en local
+        : "https://arcadia35380-f680d3a74682.herokuapp.com/";  // URL de ton backend en production
+}
 
 
   async function voirAvis() {
