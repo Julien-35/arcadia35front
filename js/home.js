@@ -15,7 +15,7 @@ if (document.readyState === "loading") {
 
   async function voirAvis() {
     try {
-        const response = await fetch("http://localhost:8000/api/avis/get");
+        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/get");
 
         // Vérifier si la réponse est OK
         if (!response.ok) {
