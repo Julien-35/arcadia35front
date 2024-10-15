@@ -1,6 +1,6 @@
 
 const avis = document.getElementById("voirAvis");
-const service = document.getElementById("voirServices")
+const service = document.getElementById("voirService")
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
     service.addEventListener('DOMContentLoaded', voirService);
