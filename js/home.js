@@ -68,7 +68,7 @@ if (document.readyState === "loading") {
 async function voirService() {
     try {
         // Récupérer les données depuis l'API des services
-        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/service/get", {
+        const response = await fetch("http://localhost:8000/api/service/get", {
             method: "GET", // S'assurer que le type de méthode est correct
             headers: {
                 "Content-Type": "application/json",

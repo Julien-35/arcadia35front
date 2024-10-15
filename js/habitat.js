@@ -18,7 +18,7 @@ async function fetchAnimals(habitatId, animalContainer) {
 
     try {
         // Récupérer les animaux pour un habitat spécifique
-        const animals = await fetchData(`https://localhost:8000/api/animal/get?habitat_id=${habitatId}`, myHeaders);
+        const animals = await fetchData(`http://localhost:8000/api/animal/get?habitat_id=${habitatId}`, myHeaders);
         animalContainer.innerHTML = '';
 
         // Créer une seule div.row pour tous les animaux
@@ -76,7 +76,7 @@ async function voirHabitat() {
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const items = await fetchData("https://localhost:8000/api/habitat/get", myHeaders);
+        const items = await fetchData("http://localhost:8000/api/habitat/get", myHeaders);
 
         const servicesContainer = document.getElementById("voirHabitat");
         servicesContainer.innerHTML = ''; 
