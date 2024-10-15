@@ -74,7 +74,7 @@ async function ConnexionUtilisateur(event) {
     };
 
     try {
-        const response = await fetch("https://127.0.0.1:8000/api/login", {
+        const response = await fetch("http://localhost:8000/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -102,7 +102,7 @@ async function ConnexionUtilisateur(event) {
 
         // Stocker le token et les données dans les cookies
         setCookie('apiToken', result.apiToken, 7); // Stocker le token d'authentification
-        setCookie('role', result.roles[0], 7); // Stocker le rôle utilisateur
+        setCookie('userRole', result.roles[0], 7); // Stocker le rôle utilisateur
 
         // Rediriger vers la page appropriée
         window.location.href = '/home'; // Modifier cette ligne en fonction de votre logique de redirection

@@ -1,4 +1,4 @@
-const SeeDates = document.getElementById("voirDate");
+const SeeDates = document.getElementById("voirLesHoraires");
 
     if (document.readyState !== "loading") {
         voirHoraire();
@@ -7,54 +7,53 @@ const SeeDates = document.getElementById("voirDate");
 
     async function voirHoraire() {
         try {
-            const response = await fetch("https://127.0.0.1:8000/api/horaire/get");
+            const response = await fetch(" http://localhost:8000/api/horaire/get");
+    
+            // Afficher le statut de la réponse
+            console.log('Response Status:', response.status);
+            console.log('Response Headers:', response.headers);
+    
+            // Vérifier si la réponse est OK
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+    
             const responseText = await response.text(); // Lire la réponse brute
-            
-            // Retirer tout caractère non désiré (comme le '#')
             const cleanResponseText = responseText.replace(/^#/, ''); // Supprime le '#' au début s'il est présent
+            const result = JSON.parse(cleanResponseText); // Analyser le JSON
             
-            // Tentez d'analyser le JSON après nettoyage
-            const result = JSON.parse(cleanResponseText);
-    
-            const horairesContainer = document.getElementById("voirDate");
-            horairesContainer.innerHTML = ''; // Clear the existing content
-    
-            // Titre pour la section horaires
-            const horairesTitle = document.createElement('h3');
-            horairesTitle.classList.add('fw-bold', 'fs-4');
-            horairesTitle.textContent = "NOS HORAIRES"; // Titre de la section horaires
-            horairesContainer.appendChild(horairesTitle);
+            // Récupérer l'élément pour afficher les horaires
+            const horairesContainer = document.getElementById("voirLesHoraires");
+            horairesContainer.innerHTML = ''; // Vider le contenu existant
     
             result.forEach(item => {
-                // Créer un élément pour le titre
-                const titreElement = document.createElement('p');
-                titreElement.classList.add('fw-bold', 'fs-4'); // Optionnel : ajouter des classes pour le style
-                titreElement.textContent = item.titre; // Titre
+                const horaireDiv = document.createElement('div');
+                horaireDiv.classList.add('fw-normal', 'fs-4');
     
-                // Créer un élément pour le message
-                const messageElement = document.createElement('p');
-                messageElement.classList.add('fw-normal', 'fs-4', 'pt-1'); // Optionnel : ajouter des classes pour le style
-                messageElement.textContent = item.message; // Message
-    
-                // Créer un élément pour le jour
+                const titreElement = document.createElement('h3');
+                titreElement.textContent = decodeHtml(item.titre);
+                
                 const jourElement = document.createElement('p');
-                jourElement.classList.add('fw-normal', 'fs-4', 'pt-1'); // Optionnel : ajouter des classes pour le style
-                jourElement.textContent = `Jour: ${item.jour}`; // Jour
-    
-                // Créer un élément pour les heures
+                jourElement.textContent = decodeHtml(item.jour);
+                
                 const heureElement = document.createElement('p');
-                heureElement.classList.add('fw-normal', 'fs-4', 'pt-1'); // Optionnel : ajouter des classes pour le style
-                heureElement.textContent = `Horaires: ${item.heure_debut} à ${item.heure_fin}`; // Heures
-    
-                // Ajouter les éléments au conteneur horaires
-                horairesContainer.appendChild(titreElement);
-                horairesContainer.appendChild(messageElement);
-                horairesContainer.appendChild(jourElement);
-                horairesContainer.appendChild(heureElement);
+                heureElement.textContent = `De ${decodeHtml(item.heure_debut)} à ${decodeHtml(item.heure_fin)}`;
+                
+                const messageElement = document.createElement('p');
+                messageElement.textContent = decodeHtml(item.message);
+                
+                horaireDiv.appendChild(titreElement);
+                horaireDiv.appendChild(messageElement);
+                horaireDiv.appendChild(jourElement);
+                horaireDiv.appendChild(heureElement);
+                
+                horairesContainer.appendChild(horaireDiv);
             });
-    
+            
         } catch (error) {
-            console.error('Error in getHoraire:', error);
-            document.getElementById("voirDate").innerHTML = "<p>Impossible de récupérer les horaires.</p>";
+            console.error('Error in voirHoraire:', error);
+            document.getElementById("voirLesHoraires").innerHTML = "<p>Impossible de récupérer les horaires.</p>";
         }
     }
+    
+    

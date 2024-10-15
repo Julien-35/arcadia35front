@@ -1,0 +1,23 @@
+# Utilise une image de base Node.js pour le front-end
+FROM node:16-alpine
+
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /usr/src/app
+
+# Copier package.json et package-lock.json pour installer les dépendances en premier
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste du code source dans le conteneur
+COPY . .
+
+# Construire le projet (si tu utilises une étape de build, sinon ignorer cette partie)
+# RUN npm run build
+
+# Exposer le port 3000 (ou le port que ton serveur front utilise)
+EXPOSE 3000
+
+# Démarrer l'application (remplacer par la commande de démarrage appropriée)
+CMD ["npm", "start"]

@@ -49,50 +49,53 @@
     <div class="text-dark d-flex flex-column align-items-center">
         <h3 class="m-4">Les avis de nos visiteurs</h3>
         <ol id="voirAvis" class="container overflow-scroll" style="height: 550px;"></ol>
-        <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal" data-bs-target="#EditionService">Laisser un avis</button>
+        <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal" data-bs-target="#EditionAvis">Laisser un avis</button>
     </div>
 </main>
 
-<!-- Modal -->
-<div class="modal fade" id="EditionService" tabindex="-1" aria-labelledby="EditionServiceLabel" aria-hidden="true">
+<!-- Modal création avis -->
+<div class="modal fade" id="EditionAvis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelAvis" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Laisser un avis</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="avisForm">
-                    <div class="mb-3">
-                        <label for="pseudo" class="form-label">Pseudo</label>
-                        <input type="text" class="form-control" id="pseudo" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="commentaire" class="form-label">Commentaire</label>
-                        <textarea class="form-control" id="commentaire" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
-                </form>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelAvis">Ajouter une Avis</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-    </div>
-</div>
+        <div class="modal-body">
+            <form id="creerAvis" class="create-label-form container text-center text-dark border border-primary rounded">
+                <div class="form-group m-5">
+                    <label for="pseudoAvis">Votre pseudo :</label>
+                    <input type="text" id="pseudoAvis" name="pseudoAvis" class="form-control" required>
+                </div>
 
-<!-- Confirmation Modal -->
-<div class="modal fade" id="MessageAvis" tabindex="-1" aria-labelledby="MessageAvisLabel" aria-hidden="true">
+                <div class="form-group m-5">
+                    <label for="commentaireAvis">Laisser votre commentaire :</label>
+                    <input type="text" id="commentaireAvis" name="commentaireAvis" class="form-control" required>
+                </div>
+
+                <button type="button" class="btn btn-primary my-3" onclick="creerUnAvis()">Créer</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal de confirmation après création de l'avis -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Validation de votre avis</h1>
+                <h5 class="modal-title" id="confirmationModalLabel">Merci pour votre avis !</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Merci pour votre avis. Ce dernier va être soumis à validation par nos équipes avant d'être publié.</p>
+                Votre avis a été soumis avec succès. Il sera visible après validation.
             </div>
             <div class="modal-footer">
-                <a href="/home">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Revenir à l'accueil</button>
-                </a>
+                <button type="button" class="btn btn-primary" id="redirectHomeButton">Fermer et retourner à l'accueil</button>
             </div>
         </div>
     </div>

@@ -111,16 +111,22 @@ function InscrireUtilisateur(event) {
         redirect: "follow"
     };
 
-    fetch("https://127.0.0.1:8000/api/registration", requestOptions)
+    fetch("http://localhost:8000/api/registration", requestOptions)
         .then(response => {
             if (!response.ok) {
                 return response.text().then(errorText => {
                     throw new Error(`Erreur ${response.status}: ${errorText}`);
                 });
             }
-            return response.json();
+            return response.text(); // Récupérer le texte brut
         })
-        .then(result => {
+        .then(textResponse => {
+            // Nettoyer la réponse en enlevant les caractères # au début
+            const cleanedResponse = textResponse.replace(/^#\s*/, '');
+
+            // Convertir la réponse nettoyée en JSON
+            const result = JSON.parse(cleanedResponse);
+            
             console.log("Inscription réussie:", result);
 
             let templateParams = {
@@ -143,3 +149,7 @@ function InscrireUtilisateur(event) {
             alert('Erreur lors de l\'inscription. Veuillez vérifier les données.');
         });
 }
+
+(function() {
+    emailjs.init("hiebLS3jQ2Yh7c-d-"); // Remplacez par votre ID utilisateur EmailJS
+})();

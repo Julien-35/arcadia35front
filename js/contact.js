@@ -65,7 +65,7 @@ document.getElementById('contact-form').addEventListener('submit', function(even
         reply_to: email.value
     };
 
-    emailjs.send('service_veuyjvv', 'template_qxe5e1n', templateParams) // Remplacez par votre Service ID , et votre Template ID
+    emailjs.send('service_veuyjvv', 'template_qxe5e1n', templateParams) 
         .then(function(response) {
             console.log('SUCCESS!', response.status, response.text);
             alert('Message envoyé avec succès!');

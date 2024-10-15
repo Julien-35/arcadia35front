@@ -11,37 +11,11 @@ if (document.readyState === "loading") {
     voirAvis();
   }
 
-  async function creerUnAvis() {
-    const pseudo = document.getElementById('pseudo').value;
-    const commentaire = document.getElementById('commentaire').value;
-
-    const avisData = {
-        pseudo: pseudo,
-        commentaire: commentaire,
-        is_visible: false  
-    };
-
-    try {
-        const response = await fetch("https://127.0.0.1:8000/api/avis/post", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(avisData)
-        });
-        if (!response.ok) throw new Error("Erreur lors de l'envoie de l'avis");
-        const myModal = new bootstrap.Modal(document.getElementById('MessageAvis'));
-        myModal.show();
-    } catch (error) {
-        console.error('Error in creerUnAvis:', error);
-        alert("Impossible d'envoyer l'avis. Veuillez réessayer plus tard.");
-    }
-}
 
 
   async function voirAvis() {
     try {
-        const response = await fetch("https://127.0.0.1:8000/api/avis/get");
+        const response = await fetch("http://localhost:8000/api/avis/get");
         const responseText = await response.text(); // Lire la réponse brute
         
         // Retirer tout caractère non désiré (comme le '#')
@@ -92,36 +66,36 @@ if (document.readyState === "loading") {
 
 
 async function voirService() {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     try {
-        const items = await fetchData("https://127.0.0.1:8000/api/service/get", myHeaders);
+        // Récupérer les données depuis l'API des services
+        const response = await fetch("http://localhost:8000/api/service/get", {
+            method: "GET", // S'assurer que le type de méthode est correct
+            headers: {
+                "Content-Type": "application/json",
+                // Ajoutez d'autres en-têtes si nécessaire
+            },
+        });
+
+        // Vérifiez que la réponse est OK
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Récupérer les données au format JSON directement
+        const items = await response.json();
+
         const servicesContainer = document.getElementById("voirService");
-        servicesContainer.innerHTML = ''; // Clear existing content
+        servicesContainer.innerHTML = ''; // Nettoyer le contenu existant
 
+        // Parcourir les services et créer des éléments DOM
         items.forEach(item => {
-            // Créer un nouvel élément sans utiliser innerHTML
             const serviceElement = document.createElement('div');
-            serviceElement.classList.add('container','m-1','fw-bold'); // Ajouter les classes
+            serviceElement.classList.add('container', 'm-1', 'fw-bold');
 
-            // Créer un élément pour le nom du service
             const serviceTitle = document.createElement('p');
             serviceTitle.textContent = `- ${item.nom}`; // Nom du service
 
-            // // Créer un élément pour la description
-            // const serviceDescription = document.createElement('p');
-            // serviceDescription.textContent = item.description; // Description du service
-
-            // // Ajouter les éléments au conteneur de service
-            serviceElement.appendChild(serviceTitle);  // Ajouter le titre
-            // serviceElement.appendChild(serviceDescription);  // Ajouter la description
-
-            // Ajouter un séparateur horizontal (hr)
-            //  const hrElement = document.createElement('hr');
-            // serviceElement.appendChild(hrElement);
-
-            // Ajouter l'élément au conteneur principal
+            serviceElement.appendChild(serviceTitle);
             servicesContainer.appendChild(serviceElement);
         });
     } catch (error) {
@@ -130,3 +104,77 @@ async function voirService() {
     }
 }
 
+
+
+
+async function creerUnAvis() {
+    const form = document.getElementById("creerAvis");
+    const formData = new FormData(form);
+    const pseudo = formData.get('pseudoAvis');
+    const commentaire = formData.get('commentaireAvis');
+
+    // Vérification des champs requis
+    if (!pseudo || !commentaire) {
+        alert("Le champ pseudo et commentaire ne peuvent pas être vides");
+        return;
+    }
+
+    // Vérifiez si le pseudo ou le commentaire contiennent des scripts
+    if (containsScript(pseudo) || containsScript(commentaire)) {
+        alert("Des caractères non valides ont été détectés."); // Avertir l'utilisateur
+        return; // Si des scripts sont détectés, on ne procède pas
+    }
+
+    // Sanitize les entrées utilisateur
+    const sanitizedpseudo = sanitizeInput(pseudo);
+    const sanitizedcommentaire = sanitizeInput(commentaire);
+
+    try {
+        // Appel de la fonction pour créer l'avis
+        await createAvis(sanitizedpseudo, sanitizedcommentaire);
+
+        // Ouvrir la modal après la création de l'avis
+        const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        confirmationModal.show();
+
+        // Ajouter un listener au bouton pour rediriger l'utilisateur vers l'accueil
+        document.getElementById('redirectHomeButton').addEventListener('click', function() {
+            window.location.href = "/home"; // Redirige vers la page principale
+        });
+
+    } catch (error) {
+        alert("Erreur lors de la création de l'avis");
+        console.error(error);
+    }
+}
+
+// Fonction pour créer l'avis dans l'API
+async function createAvis(pseudoAvis, commentaireAvis) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json"); // Assurez-vous d'envoyer JSON
+
+    const raw = JSON.stringify({
+        pseudo: pseudoAvis,
+        commentaire: commentaireAvis,
+        isVisible: false
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw, // Envoi du JSON
+        redirect: "follow",
+        mode: "cors"
+    };
+
+    try {
+        const response = await fetch(`http://localhost:8000/api/avis/post`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP! Status: ${response.status}`);
+        }
+        const result = await response.json(); // Récupération de la réponse JSON
+        console.log(result);  // Affichage pour debug
+    } catch (error) {
+        console.error('Erreur dans createAvis:', error);
+    }
+}

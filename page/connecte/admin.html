@@ -1,5 +1,11 @@
 <div class="text-center container my-4">
 
+
+<div>
+  <a href="/inscription"class="text-black"><button type="button" class="btn btn-primary mb-3">Inscire un <br> nouvelle utilisateur</button></a>
+</div>
+
+<hr class="container">
   <!-- Créer un service depuis la modal -->
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropServicePost">
       Créer un nouveau service
@@ -21,6 +27,9 @@
   </button>
 </div>
 
+<hr class="container">
+<!--Modal pour la modification des entités-->
+<div class="text-center container my-4">
   <!-- Modifier les horaires depuis la modal -->
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropHorairePut">
       Modifier les horaires
@@ -40,7 +49,7 @@
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropAnimalPut">
               Modifier les animaux
   </button>
-
+</div>
 
 
 
@@ -132,8 +141,8 @@
               </div>
           
               <div class="form-group">
-                  <label for="race_id">RACE:</label>
-                  <select id="race_id" name="race_id" class="form-control text-center" required>
+                  <label for="voirLabel">RACE:</label>
+                  <select id="voirLabel" name="voirLabel" class="form-control text-center" required>
                       <option value="">Sélectionner une race</option>
                   </select>
               </div>
@@ -169,8 +178,8 @@
               </div>
           
               <div class="form-group">
-                  <label for="habitat_id">Habitat:</label>
-                  <select id="habitat_id" name="habitat_id" class="form-control text-center" required>
+                  <label for="voirNomHabitat">Habitat:</label>
+                  <select id="voirNomHabitat" name="voirNomHabitat" class="form-control text-center" required>
                       <option value="">Sélectionner un habitat</option>
                   </select>
               </div>
@@ -215,7 +224,7 @@
         <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelHorairePut">Modifier les horaires</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-        <div class="container text-center" id="voirDate"></div>
+        <div class="container text-center" id="voirHoraire"></div>
 
       </div>
       <div class="modal-footer">
@@ -232,7 +241,7 @@
             <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelServicePut">Modifier les services</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div id="getService" class="d-flex flex-column"></div>
+          <div id="voirService" class="d-flex flex-column"></div>
           </div>
           <div class="modal-footer">
           </div>
@@ -240,21 +249,197 @@
       </div>
     </div>
 
-        <!-- Modal des habitats GET et PUT -->
-  <div class="modal fade" id="staticBackdropHabitatPut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelHabitatPut" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
+    <!-- Modal pour modifier les services -->
+<div class="modal fade text-center text-dark fs-5" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelHabitatPut">Modifier les habitats</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title" id="editServiceModalLabel">Modifier le service</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div id="getHabitat" class="d-flex flex-column"></div>
+          <div class="modal-body">
+              <form id="editServiceForm">
+                  <input type="hidden" id="serviceId" />
+                  <div class="mb-3">
+                      <label for="serviceName" class="form-label">Nom du service</label>
+                      <input type="text" class="form-control text-center text-dark" id="serviceName" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="serviceDescription" class="form-label">Description</label>
+                      <textarea class="form-control text-center text-dark" id="serviceDescription" required></textarea>
+                  </div>
+                  <div class="mb-3">
+                      <label for="image_data" class="form-label">Image</label>
+                      <input type="file" class="form-control text-center text-dark" id="image_data" />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Modifier</button>
+              </form>
           </div>
-          <div class="modal-footer">
+      </div>
+  </div>
+</div>
+
+
+
+    <!-- Modal pour modifier les horaires -->
+    <div class="modal fade text-dark text-center fs-5" id="editHoraireModal" tabindex="-1" aria-labelledby="editHoraireModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="editHoraireModalLabel">Modifier les horaires</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <form id="editHoraireForm">
+                      <input type="hidden" id="horaireId"/>
+                      <div class="mb-3">
+                          <label for="horaireTitre" class="form-label">Titre des horaires</label>
+                          <input type="text" class="form-control text-center text-dark" id="horaireTitre" required />
+                      </div>
+                      <div class="mb-3">
+                          <label for="horaireMessage" class="form-label">Message</label>
+                          <textarea class="form-control text-center text-dark" id="horaireMessage" required></textarea>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="horairDebut" class="form-label">Heure de début</label>
+                        <textarea class="form-control text-center text-dark" id="horairDebut" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="horaireFin" class="form-label">Heure de fin</label>
+                      <textarea class="form-control text-center text-dark" id="horaireFin" required></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="horaireJour" class="form-label">Jour</label>
+                    <textarea class="form-control text-center text-dark" id="horaireJour" required></textarea>
+                </div>
+                      <button type="submit" class="btn btn-primary">Modifier</button>
+                  </form>
+              </div>
           </div>
-        </div>
       </div>
     </div>
 
+   <!-- Modal des habitats GET et PUT -->
+<div class="modal fade" id="staticBackdropHabitatPut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelHabitatPut" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelHabitatPut">Modifier les habitats</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="voirHabitat" class="d-flex flex-column"></div>
+      </div>
+      <div class="modal-footer"></div>
+  </div>
+</div>
 
-    
+<!-- Modal pour modifier les habitats -->
+<div class="modal fade text-center text-dark fs-5" id="editHabitatModal" tabindex="-1" aria-labelledby="editHabitatModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="editHabitatModalLabel">Modifier l'habitat</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="editHabitatForm">
+                  <input type="hidden" id="habitatId"/>
+                  <div class="mb-3">
+                      <label for="habitatNom" class="form-label">Nom de l'habitat</label>
+                      <input type="text" class="form-control text-center text-dark" id="habitatNom" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="habitatDescription" class="form-label">Description de l'habitat</label>
+                      <textarea class="form-control text-center text-dark" id="habitatDescription" rows="3" required></textarea>
+                  </div>
+                  <div class="mb-3">
+                      <label for="habitatImage_data" class="form-label">Image de l'habitat</label>
+                      <input type="file" class="form-control" id="habitatImage_data" accept="image/*" />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Modifier</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+<!-- Modal des animaux GET et PUT -->
+<div class="modal fade text-center text-dark fs-5" id="staticBackdropAnimalPut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelAnimalPut" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelAnimalPut">Modifier les animaux</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id="voirAnimal" class="d-flex flex-column"></div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade text-center text-dark fs-5" id="editAnimalModal" tabindex="-1" aria-labelledby="editAnimalModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="editAnimalModalLabel">Modifier l'animal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="editAnimalForm">
+                  <input type="hidden" id="animalId" />
+                  <div class="mb-3">
+                      <label for="animalPrenom" class="form-label">Prénom</label>
+                      <input type="text" class="form-control text-center text-dark" id="animalPrenom" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="animalEtat" class="form-label">État</label>
+                      <input type="text" class="form-control text-center text-dark" id="animalEtat" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="animalNourriture" class="form-label">Nourriture</label>
+                      <input type="text" class="form-control text-center text-dark" id="animalNourriture" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="Animalgrammage" class="form-label">Grammage</label>
+                      <input type="number" class="form-control text-center text-dark" id="Animalgrammage" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="AnimalFeedingTime" class="form-label">Heure de Nourriture</label>
+                      <input type="time" class="form-control text-center text-dark" id="AnimalFeedingTime" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="animalCreatedAt" class="form-label">Date de Création</label>
+                      <input type="date" class="form-control text-center text-dark" id="animalCreatedAt" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="animalHabitat" class="form-label text-center text-dark">Habitat</label>
+                      <select class="form-select" id="animalHabitat" required>
+                          <option value="" disabled selected>Sélectionnez un habitat</option>
+                          <!-- Les options des habitats seront insérées ici -->
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label for="animalRace" class="form-label text-center text-dark">Race</label>
+                      <select class="form-select text-center text-dark" id="animalRace" required>
+                          <option value="" disabled selected>Sélectionnez une race</option>
+                          <!-- Les options des races seront insérées ici -->
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label for="image_dataAnimal" class="form-label text-center text-dark">Image</label>
+                      <input type="file" class="form-control" id="image_dataAnimal" />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Modifier</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
