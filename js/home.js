@@ -11,45 +11,54 @@ if (document.readyState === "loading") {
     voirAvis();
   }
 
-  function getApiUrl() {
-    // Détecte si on est en local ou en production
-    return (window.location.hostname === "localhost")
-        ? "http://localhost:8000/"  // URL de ton backend en local
-        : "https://arcadia35380-f680d3a74682.herokuapp.com/";  // URL de ton backend en production
-}
 
 
   async function voirAvis() {
+    // Détection de l'environnement
+    const apiUrl = (window.location.hostname === "localhost")
+        ? "http://localhost:8000/"  // URL de ton backend en local
+        : "https://arcadia35380-f680d3a74682.herokuapp.com/";  // URL de ton backend en production
+
     try {
         // Utiliser l'URL dynamique pour appeler l'API
-        const response = await fetch(`${getApiUrl()}api/avis/get`);
+        const response = await fetch(`${apiUrl}api/avis/get`);
 
+        // Vérifier si la réponse est OK
         if (!response.ok) {
             throw new Error('Network response was not ok: ' + response.statusText);
         }
 
         const result = await response.json();
+
         const avisContainer = document.getElementById("voirAvis");
         avisContainer.innerHTML = ''; // Vider le contenu existant
 
         result.forEach(item => {
             if (item.isVisible) {
+                // Créer les éléments en toute sécurité sans utiliser innerHTML
                 const listItem = document.createElement('li');
                 listItem.classList.add('list-group-item', 'justify-content-between', 'align-items-start', 'text-dark', 'm-2', 'border', 'border-primary', 'rounded');
 
                 const divContainer = document.createElement('div');
                 divContainer.classList.add('ms-2', 'p-2');
 
+                // Pseudo sécurisé
                 const pseudoElement = document.createElement('div');
                 pseudoElement.classList.add('fw-bold');
-                pseudoElement.textContent = item.pseudo;
+                pseudoElement.textContent = item.pseudo; // Utilisez textContent pour éviter XSS
 
+                // Commentaire sécurisé
                 const commentaireElement = document.createElement('p');
-                commentaireElement.textContent = item.commentaire;
+                commentaireElement.textContent = item.commentaire; // Utilisez textContent pour éviter XSS
 
+                // Ajouter le pseudo et le commentaire dans le conteneur
                 divContainer.appendChild(pseudoElement);
                 divContainer.appendChild(commentaireElement);
+
+                // Ajouter le conteneur à l'élément de liste
                 listItem.appendChild(divContainer);
+
+                // Ajouter l'élément de liste au conteneur principal
                 avisContainer.appendChild(listItem);
             }
         });
