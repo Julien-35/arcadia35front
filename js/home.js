@@ -1,6 +1,6 @@
 
 const avis = document.getElementById("voirAvis");
-const service = document.getElementById("voirService")
+const service = document.getElementById("voirServices")
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
     service.addEventListener('DOMContentLoaded', voirService);
@@ -22,7 +22,7 @@ if (document.readyState === "loading") {
             throw new Error('Network response was not ok: ' + response.statusText);
         }
 
-        const result = await response.json(); // Lire et analyser directement le JSON
+        const result = await response.json(); 
 
         const avisContainer = document.getElementById("voirAvis");
         avisContainer.innerHTML = ''; // Vider le contenu existant

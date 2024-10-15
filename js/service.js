@@ -1,5 +1,4 @@
-
- if (document.readyState === "loading") {
+  if (document.readyState === "loading") {
     // Loading hasn't finished yet
     services-container.addEventListener('DOMContentLoaded', voirService);
   } else {
@@ -7,15 +6,26 @@
     voirService();
   }
 
+
   async function voirService() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const items = await fetchData(`${config.apiUrl}/api/service/get`, myHeaders);
+        const response = await fetch("http://localhost:8000/api/service/get", {
+            method: "GET",
+            headers: myHeaders,
+        });
+
+        // Vérifier si la réponse est OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+
+        const items = await response.json(); // Lire et analyser directement le JSON
 
         const servicesContainer = document.getElementById("voirService");
-        servicesContainer.innerHTML = ''; 
+        servicesContainer.innerHTML = ''; // Vider le contenu existant
 
         items.forEach(item => {
             // Création des éléments de manière sécurisée
@@ -25,7 +35,7 @@
             // Créer et insérer le titre
             const serviceTitle = document.createElement('h2');
             serviceTitle.classList.add("my-4");
-            serviceTitle.textContent = decodeHtml(item.nom);
+            serviceTitle.textContent = decodeHtml(item.nom); // Utilisation de decodeHtml pour éviter XSS
             serviceElement.appendChild(serviceTitle);
 
             // Créer la div contenant la description et l'image
@@ -35,7 +45,7 @@
             // Créer et insérer la description
             const descriptionElement = document.createElement('p');
             descriptionElement.classList.add("col");
-            descriptionElement.textContent = decodeHtml(item.description);  
+            descriptionElement.textContent = decodeHtml(item.description); // Utilisation de decodeHtml pour éviter XSS
             rowElement.appendChild(descriptionElement);
 
             // Créer et insérer l'image
@@ -43,13 +53,12 @@
             const imageElement = document.createElement('img');
             imageElement.classList.add("img-fluid", "rounded", "w-100", "h-100");
             imageElement.setAttribute('src', item.image_data);  
-            imageElement.setAttribute('alt', `Image de ${item.nom}`);
+            imageElement.setAttribute('alt', `Image de ${item.nom}`); // Ajout d'un alt descriptif
             imageElementContainer.appendChild(imageElement);
 
             rowElement.appendChild(imageElementContainer);
             serviceElement.appendChild(rowElement);
 
-            
             // Ajouter un séparateur horizontal (hr)
             const hrElement = document.createElement('hr');
             serviceElement.appendChild(hrElement);
@@ -58,6 +67,7 @@
             servicesContainer.appendChild(serviceElement);
         });
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error in voirService:", error);
+        servicesContainer.innerHTML = "<p>Impossible de récupérer les services.</p>"; // Afficher un message d'erreur
     }
 }
