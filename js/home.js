@@ -14,15 +14,21 @@ if (document.readyState === "loading") {
 
 
   async function voirAvis() {
+    // Détecter l'environnement
+    const apiUrl = (window.location.hostname === "localhost")
+        ? "http://localhost:3000/"
+        : "https://arcadia35380-f680d3a74682.herokuapp.com/";
+
     try {
-        const response = await fetch("https://arcadia35380-f680d3a74682.herokuapp.com/api/avis/get");
+        // Utiliser l'URL dynamique pour appeler l'API
+        const response = await fetch(`${apiUrl}api/avis/get`);
 
         // Vérifier si la réponse est OK
         if (!response.ok) {
             throw new Error('Network response was not ok: ' + response.statusText);
         }
 
-        const result = await response.json(); 
+        const result = await response.json();
 
         const avisContainer = document.getElementById("voirAvis");
         avisContainer.innerHTML = ''; // Vider le contenu existant
