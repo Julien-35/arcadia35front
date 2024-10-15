@@ -14,10 +14,10 @@ if (document.readyState === "loading") {
 
 
   async function voirAvis() {
-    // Détection de l'environnement
+    // Détecter l'environnement
     const apiUrl = (window.location.hostname === "localhost")
-        ? "http://localhost:8000/"  // URL de ton backend en local
-        : "https://arcadia35380-f680d3a74682.herokuapp.com/";  // URL de ton backend en production
+        ? "http://localhost:8000/"
+        : "https://arcadia35380-f680d3a74682.herokuapp.com/";
 
     try {
         // Utiliser l'URL dynamique pour appeler l'API
@@ -62,7 +62,6 @@ if (document.readyState === "loading") {
                 avisContainer.appendChild(listItem);
             }
         });
-
     } catch (error) {
         console.error('Error in voirAvis:', error);
         document.getElementById("voirAvis").innerHTML = "<p>Impossible de récupérer les avis.</p>";
@@ -74,7 +73,7 @@ if (document.readyState === "loading") {
 
 async function voirService() {
     try {
-        const response = await fetch(`${getApiUrl()}api/service/get`, {
+        const response = await fetch("http://localhost:8000/api/service/get", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -104,7 +103,6 @@ async function voirService() {
         document.getElementById("voirService").textContent = "Impossible de récupérer les services.";
     }
 }
-
 
 
 
