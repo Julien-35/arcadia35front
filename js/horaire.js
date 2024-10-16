@@ -16,7 +16,7 @@ const SeeDates = document.getElementById("voirLesHoraires");
             const horairesContainer = document.getElementById("voirLesHoraires");
             horairesContainer.innerHTML = ''; // Vider le contenu existant
     
-            result.forEach(item => {
+            items.forEach(item => {
                 const horaireDiv = document.createElement('div');
                 horaireDiv.classList.add('fw-normal', 'fs-4');
     
