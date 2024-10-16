@@ -7,15 +7,8 @@ const SeeDates = document.getElementById("voirLesHoraires");
 
     async function voirHoraire() {
         try {
-            const response = await fetch("http://localhost:8000/api/horaire/get");
-    
-
-            // Vérifier si la réponse est OK
-            if (!response.ok) {
-                throw new Error('Network response was not ok: ' + response.statusText);
-            }
-    
-            const responseText = await response.text(); // Lire la réponse brute
+            // Ajout du token dans les headers
+            const items = await fetchFromApi("api/horaire/get");
             const cleanResponseText = responseText.replace(/^#/, ''); // Supprime le '#' au début s'il est présent
             const result = JSON.parse(cleanResponseText); // Analyser le JSON
             
