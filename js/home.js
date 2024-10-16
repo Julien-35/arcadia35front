@@ -60,7 +60,7 @@ if (document.readyState === "loading") {
 
 async function voirService() {
     try {
-        const items = await fetchFromApi("api/service/get"); // Utiliser la fonction générique
+        const items = await fetchFromApi("api/service/get");
         const servicesContainer = document.getElementById("voirService");
         servicesContainer.innerHTML = ''; 
 

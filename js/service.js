@@ -8,22 +8,13 @@
 
 
   async function voirService() {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     try {
-        const response = await fetch("http://localhost:8000/api/service/get", {
-            method: "GET",
-            headers: myHeaders,
-        });
-
-        // Vérifier si la réponse est OK
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
-        }
-
-        const items = await response.json(); // Lire et analyser directement le JSON
-
+      // Ajout du token dans les headers
+      const items = await fetchFromApi("api/service/get", {
+          headers: {
+              'X-AUTH-TOKEN': getToken(), 
+          },
+      });
         const servicesContainer = document.getElementById("voirService");
         servicesContainer.innerHTML = ''; // Vider le contenu existant
 
