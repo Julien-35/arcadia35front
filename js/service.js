@@ -9,14 +9,10 @@
 
   async function voirService() {
     try {
-      // Ajout du token dans les headers
-      const items = await fetchFromApi("api/service/get", {
-          headers: {
-              'X-AUTH-TOKEN': getToken(), 
-          },
-      });
+      const items = await fetchFromApi("api/service/get")
+      
         const servicesContainer = document.getElementById("voirService");
-        servicesContainer.innerHTML = ''; // Vider le contenu existant
+        servicesContainer.textContent = ''; // Vider le contenu existant
 
         items.forEach(item => {
             // Création des éléments de manière sécurisée
@@ -58,7 +54,6 @@
             servicesContainer.appendChild(serviceElement);
         });
     } catch (error) {
-        console.error("Error in voirService:", error);
-        servicesContainer.innerHTML = "<p>Impossible de récupérer les services.</p>"; // Afficher un message d'erreur
+        servicesContainer.textContent = "<p>Impossible de récupérer les services.</p>"; // Afficher un message d'erreur
     }
 }

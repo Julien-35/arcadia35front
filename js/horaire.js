@@ -1,4 +1,4 @@
-const SeeDates = document.getElementById("voirLesHoraires");
+const SeeDates = document.getElementById("voirHoraires");
 
     if (document.readyState !== "loading") {
         voirHoraire();
@@ -7,12 +7,11 @@ const SeeDates = document.getElementById("voirLesHoraires");
 
     async function voirHoraire() {
         try {
-            // Appel API sans en-tête particulier
-            const items = await fetchFromApi("api/horaire/get"); // Pas de token ici
+            const items = await fetchFromApi("api/horaire/get"); 
     
             // Récupérer l'élément pour afficher les horaires
-            const horairesContainer = document.getElementById("voirLesHoraires");
-            horairesContainer.innerHTML = ''; // Vider le contenu existant
+            const horairesContainer = document.getElementById("voirHoraires");
+            horairesContainer.innerHTML = ''; 
     
             // Parcourir chaque item pour construire l'affichage des horaires
             items.forEach(item => {
@@ -47,7 +46,7 @@ const SeeDates = document.getElementById("voirLesHoraires");
             
         } catch (error) {
             console.error('Error in voirHoraire:', error);
-            document.getElementById("voirLesHoraires").innerHTML = "<p>Impossible de récupérer les horaires.</p>";
+            document.getElementById("voirHoraire").innerHTML = "<p>Impossible de récupérer les horaires.</p>";
         }
     }
     

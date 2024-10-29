@@ -1,30 +1,17 @@
 <div class="text-center container my-4">
 
 
+<div class="text-dark d-flex flex-column align-items-center">
+  <h3 class="m-4">Les stats des animaux</h3>
+  <ol id="voirAnimalStats" class="container overflow-scroll text-dark" style="height: 550px;"></ol>
+</div>
+
 <div>
   <a href="/inscription"class="text-black"><button type="button" class="btn btn-primary mb-3">Inscire un <br> nouvelle utilisateur</button></a>
 </div>
 
-<hr class="container">
-  <!-- Créer un service depuis la modal -->
-  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropServicePost">
-      Créer un nouveau service
-  </button>
-  
-  <!-- Créer un habitat depuis la modal -->
-  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropHabitatPost">
-      Créer un nouvel habitat
-  </button>
-  
-  <!-- Créer un animal depuis la modal -->
-  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropAnimalPost">
-      Créer un nouvel animal
-  </button>
-  
-  <!-- Créer une race depuis la modal -->
-  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropRacePost">
-      Créer une nouvelle race
-  </button>
+<div>
+  <a href="/post"class="text-black"><button type="button" class="btn btn-primary mb-3">Accéder à la <br> page création</button></a>
 </div>
 
 <hr class="container">
@@ -49,171 +36,6 @@
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropAnimalPut">
               Modifier les animaux
   </button>
-</div>
-
-
-
-<!-- Modal des services -->
-<div class="modal fade" id="staticBackdropServicePost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelService" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelService">Ajouter un service</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="creerService" class="create-service-form container text-center text-dark border border-primary rounded">
-            <div class="form-group">
-                <label for="titreService">Titre:</label>
-                <input type="text" id="titreService" name="titreService" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="commentaireService">Commentaire:</label>
-                <textarea id="commentaireService" name="commentaireService" class="form-control" rows="5" required></textarea>
-            </div>
-        
-            <div class="form-group">
-            <label for="image_dataService">Image:</label>
-            <input type="file" id="image_dataService" name="image_dataService" accept="image/*" class="form-control"><br><br>
-        </div>
-             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-             <button type="button" class="btn btn-primary my-3" onclick="creerUnService()">Créer</button>
-        </form>     
-       </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal des habitats -->
-<div class="modal fade" id="staticBackdropHabitatPost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelHabitat" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelHabitat">Ajouter un habitat</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <form id="creerHabitat" class="create-Habitat-form container text-center text-dark border border-primary rounded">
-              <div class="form-group">
-                  <label for="titreHabitat">Titre:</label>
-                  <input type="text" id="titreHabitat" name="titreHabitat" class="form-control" required>
-              </div>
-          
-              <div class="form-group">
-                  <label for="descriptionHabitat">Description:</label>
-                  <textarea id="descriptionHabitat" name="descriptionHabitat" class="form-control" rows="5" required></textarea>
-              </div>
-          
-              <div class="form-group">
-                  <label for="commentaireHabitat">Commentaire:</label>
-                  <textarea id="commentaireHabitat" name="commentaireHabitat" class="form-control" rows="5" required></textarea>
-              </div>
-          
-              <div class="form-group">
-              <label for="image_dataHabitat">Image:</label>
-              <input type="file" id="image_dataHabitat" name="image_dataHabitat" accept="image/*" class="form-control"><br><br>
-          </div>
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary my-3" onclick="creerUnHabitat()">Créer</button>
-          </form>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal des animaux -->
-<div class="modal fade" id="staticBackdropAnimalPost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelAnimal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelAnimal">Ajouter un animal</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <form id="creerAnimal" class="create-Animal-form container text-center text-dark border border-primary rounded">
-              <div class="form-group">
-                  <label for="prenomAnimal">Prenom de l'animal:</label>
-                  <input type="text" id="prenomAnimal" name="prenomAnimal" class="form-control" required>
-              </div>
-          
-              <div class="form-group">
-                  <label for="voirLabel">RACE:</label>
-                  <select id="voirLabel" name="voirLabel" class="form-control text-center" required>
-                      <option value="">Sélectionner une race</option>
-                  </select>
-              </div>
-          
-              <div class="form-group">
-                  <label for="etatAnimal">Etat de l'animal:</label>
-                  <textarea id="etatAnimal" name="etatAnimal" class="form-control text-center" rows="5" required></textarea>
-              </div>
-          
-              <div class="form-group">
-                  <label for="nourritureAnimal">Sa nourriture:</label>
-                  <textarea id="nourritureAnimal" name="nourritureAnimal" class="form-control text-center" rows="5" required></textarea>
-              </div>
-          
-              <div class="form-group">
-                  <label for="grammageAnimal">Quantité de la nourriture:</label>
-                  <textarea id="grammageAnimal" name="grammageAnimal" class="form-control text-center" rows="5" required></textarea>
-              </div>
-          
-              <div class="form-group">
-                  <label for="feeding_timeAnimal">Jour du dernier repas :</label>
-                  <input type="date" id="feeding_timeAnimal" name="feeding_timeAnimal" class="form-control text-center" required>
-              </div>
-          
-              <div class="form-group">
-                  <label for="created_atAnimal">Heure du repas:</label>
-                  <input type="time" id="created_atAnimal" name="created_atAnimal" class="form-control text-center" required>
-              </div>
-          
-              <div class="form-group">
-                  <label for="image_dataAnimal">Image:</label>
-                  <input type="file" id="image_dataAnimal" name="image_dataAnimal" accept="image/*" class="form-control text-center"><br><br>
-              </div>
-          
-              <div class="form-group">
-                  <label for="voirNomHabitat">Habitat:</label>
-                  <select id="voirNomHabitat" name="voirNomHabitat" class="form-control text-center" required>
-                      <option value="">Sélectionner un habitat</option>
-                  </select>
-              </div>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary my-3" onclick="creerUnAnimal()">Créer</button>
-          </form>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal des races -->
-<div class="modal fade" id="staticBackdropRacePost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelRace" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelRace">Ajouter une race</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <form id="creerRace" class="create-label-form container text-center text-dark border border-primary rounded">
-              <div class="form-group m-5">
-                  <label for="labelRace">Label de la race:</label>
-                  <input type="text" id="labelRace" name="labelRace" class="form-control" required>
-              </div>
-              <button type="button" class="btn btn-primary my-3" onclick="creerUneRace()">Créer</button>
-          </form>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- Modal des horaires GET et PUT-->
@@ -377,7 +199,7 @@
         <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelAnimalPut">Modifier les animaux</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div id="voirAnimal" class="d-flex flex-column"></div>
+      <div id="voirAnimal"></div>
       </div>
       <div class="modal-footer">
       </div>
@@ -400,36 +222,37 @@
                       <input type="text" class="form-control text-center text-dark" id="animalPrenom" required />
                   </div>
                   <div class="mb-3">
-                      <label for="animalEtat" class="form-label">État</label>
+                      <label for="animalEtat" class="form-label">État de l'animal</label>
                       <input type="text" class="form-control text-center text-dark" id="animalEtat" required />
                   </div>
                   <div class="mb-3">
-                      <label for="animalNourriture" class="form-label">Nourriture</label>
+                      <label for="animalNourriture" class="form-label">Type de Nourriture</label>
                       <input type="text" class="form-control text-center text-dark" id="animalNourriture" required />
                   </div>
                   <div class="mb-3">
-                      <label for="Animalgrammage" class="form-label">Grammage</label>
-                      <input type="number" class="form-control text-center text-dark" id="Animalgrammage" required />
+                      <label for="animalGrammage" class="form-label">Quantité du dernier repas</label>
+                      <input type="text" class="form-control text-center text-dark" id="animalGrammage" required />
                   </div>
                   <div class="mb-3">
-                      <label for="AnimalFeedingTime" class="form-label">Heure de Nourriture</label>
-                      <input type="time" class="form-control text-center text-dark" id="AnimalFeedingTime" required />
+                      <label for="animalFeedingTime" class="form-label">Heure du dernnier repas</label>
+                      <input type="time" class="form-control text-center text-dark" id="animalFeedingTime" required />
                   </div>
                   <div class="mb-3">
-                      <label for="animalCreatedAt" class="form-label">Date de Création</label>
-                      <input type="date" class="form-control text-center text-dark" id="animalCreatedAt" required />
+                      <label for="animalCreatedAt" class="form-label">Jour du dernier repas</label>
+                      <input type="datetime" class="form-control text-center text-dark" id="animalCreatedAt" required />
                   </div>
                   <div class="mb-3">
-                      <label for="animalHabitat" class="form-label text-center text-dark">Habitat</label>
-                      <select class="form-select" id="animalHabitat" required>
-                          <option value="" disabled selected>Sélectionnez un habitat</option>
+                    <label for="voirNomHabitatPut">Habitat:</label>
+                    <select id="voirNomHabitatPut" name="voirNomHabitatPut" class="form-control text-center" required>
+                        <option value="">Sélectionner un habitat</option>
+                    </select>
                           <!-- Les options des habitats seront insérées ici -->
                       </select>
                   </div>
                   <div class="mb-3">
-                      <label for="animalRace" class="form-label text-center text-dark">Race</label>
-                      <select class="form-select text-center text-dark" id="animalRace" required>
-                          <option value="" disabled selected>Sélectionnez une race</option>
+                      <label for="voirNomRacePut" class="form-label text-center text-dark">Race</label>
+                      <select class="form-select text-center text-dark" id="voirNomRacePut" name="voirNomRacePut" required>
+                          <option value="">Sélectionnez une race</option>
                           <!-- Les options des races seront insérées ici -->
                       </select>
                   </div>

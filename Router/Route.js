@@ -7,7 +7,6 @@ export default class Route {
       this.pathHtml = pathHtml;
       this.authorize = authorize;
       this.pathJS = pathJS;
-      // On rajoute la ligne authorize pour ainsi donner des autorisations selons les utilisateurs
     }
 }
 

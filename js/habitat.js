@@ -6,61 +6,113 @@ if (document.readyState === "loading") {
 
 
 // Fonction pour afficher les animaux d'un habitat spécifique
-async function fetchAnimals(habitatId, animalContainer) {
+async function voirAnimal(habitatId, animalContainer) {
     if (!animalContainer) {
-        console.error(`Container pour les animaux avec l'ID ${habitatId} est introuvable.`);
         return;
     }
 
-    const myHeaders = new Headers({
-        "Content-Type": "application/json"
-    });
-
     try {
-        // Récupérer les animaux pour un habitat spécifique
-        const animals = await fetchData(`http://localhost:8000/api/animal/get?habitat_id=${habitatId}`, myHeaders);
-        animalContainer.innerHTML = '';
+        const animals = await fetchFromApi(`api/animal/get?habitat_id=${habitatId}`);
+        // Vider le contenu existant dans le conteneur
+        animalContainer.textContent = '';
 
-        // Créer une seule div.row pour tous les animaux
+        // Créer un élément row pour contenir les cartes d'animaux
         const rowElement = document.createElement('div');
-        rowElement.classList.add("row");
+        rowElement.classList.add("row", "g-3");
 
         animals.forEach(animal => {
-            const createdAt = animal.created_at ? animal.created_at : 'N/A';
-            const feedingTime = animal.feeding_time ? animal.feeding_time : 'N/A';
+            const animalElement = document.createElement('div');
+            animalElement.classList.add("col-lg-3", "col-md-4", "col-sm-6", "col-12", "mt-3");
 
-            // Créer une colonne pour chaque animal
-            const animalCard = `
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12 mt-3"> <!-- Ajout de col-12 pour les petits écrans -->
-                <div class="d-flex flex-column align-items-center">
-                    <img src="${animal.image_data}" alt="Image de ${animal.id}" style="width: 294px; height: 185px;" class="img-thumbnail img-responsive" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidth${animal.id}" aria-expanded="false" aria-controls="collapseWidth${animal.id}">
-                    
-                    <div class="collapse" id="collapseWidth${animal.id}" style="width: 100%;">
-                        <div class="card card-body mx-auto mb-5" style="width: 294px;">
-                            <div style="width: 100%;">
-                                <table class="table" style="width: 100%;">
-                                    <tbody class="text-center">
-                                        <tr><th scope="row" class="text-dark">Race</th><td class="text-dark">${animal.race}</td></tr>
-                                        <tr><th scope="row" class="text-dark">PRÉNOM</th><td class="text-dark">${animal.prenom}</td></tr>
-                                        <tr><th scope="row" class="text-dark">ÉTAT de l'animal</th><td class="text-dark">${animal.etat}</td></tr>
-                                        <tr><th scope="row" class="text-dark">La nourriture proposée</th><td class="text-dark">${animal.nourriture}</td></tr>
-                                        <tr><th scope="row" class="text-dark">Quantité du dernier repas</th><td class="text-dark">${animal.grammage}</td></tr>
-                                        <tr><th scope="row" class="text-dark">Dernier passage</th><td class="text-dark">${createdAt}</td></tr>
-                                        <tr><th scope="row" class="text-dark">Heure de passage</th><td class="text-dark">${feedingTime}</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-            // Ajouter la carte d'animal à la row
-            rowElement.innerHTML += animalCard;
+            const cardContainer = document.createElement('div');
+            cardContainer.classList.add("d-flex", "flex-column", "align-items-center", "h-100");
+
+            const imageElement = document.createElement('img');
+            imageElement.classList.add("img-thumbnail", "img-responsive");
+            imageElement.setAttribute('src', animal.image_data);
+            imageElement.setAttribute('alt', `Image de ${animal.prenom}`);
+            imageElement.setAttribute('type', 'button');
+            imageElement.setAttribute('data-bs-toggle', 'collapse');
+            imageElement.setAttribute('data-bs-target', `#collapseWidth${animal.id}`);
+            imageElement.setAttribute('aria-expanded', 'false');
+            imageElement.setAttribute('aria-controls', `collapseWidth${animal.id}`);
+            
+            // Style pour l'image
+            imageElement.setAttribute('style', `
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            `);
+
+            // Ajouter l'image au conteneur de la carte
+            cardContainer.appendChild(imageElement);
+
+            // Créer le conteneur collapse pour les détails de l'animal
+            const collapseContainer = document.createElement('div');
+            collapseContainer.classList.add("collapse");
+            collapseContainer.setAttribute('id', `collapseWidth${animal.id}`);
+            collapseContainer.setAttribute('style', 'width: 100%;'); 
+
+            // Reste du code pour construire la card
+            const cardBody = document.createElement('div');
+            cardBody.classList.add("card", "card-body", "mx-auto", "mt-3");
+            cardBody.setAttribute('style', 'width: 100%;'); 
+
+            // Table contenant les détails de l'animal
+            const tableElement = document.createElement('table');
+            tableElement.classList.add("table");
+            tableElement.setAttribute('style', 'width: 100%;');
+
+            const tableBody = document.createElement('tbody');
+            tableBody.classList.add("text-center");
+
+            const details = [
+                { label: "Race", value: animal.race },
+                { label: "Prénom", value: animal.prenom },
+                { label: "État de l'animal", value: animal.etat },
+                { label: "Nourriture", value: animal.nourriture },
+                { label: "Quantité du dernier repas", value: animal.grammage },
+                { label: "Dernier passage", value: animal.created_at ? animal.created_at : 'N/A' },
+                { label: "Heure de passage", value: animal.feeding_time ? animal.feeding_time : 'N/A' }
+            ];
+
+            details.forEach(detail => {
+                const row = document.createElement('tr');
+                const th = document.createElement('th');
+                th.setAttribute('scope', 'row');
+                th.classList.add("text-dark");
+                th.textContent = detail.label;
+
+                const td = document.createElement('td');
+                td.classList.add("text-dark");
+                td.textContent = detail.value;
+
+                row.appendChild(th);
+                row.appendChild(td);
+                tableBody.appendChild(row);
+            });
+
+            tableElement.appendChild(tableBody);
+            cardBody.appendChild(tableElement);
+            collapseContainer.appendChild(cardBody);
+            cardContainer.appendChild(collapseContainer);
+            animalElement.appendChild(cardContainer);
+            rowElement.appendChild(animalElement);
+
+            // Ajouter un événement d'incrémentation lors de l'ouverture du collapse
+            let hasBeenOpened = false;
+            collapseContainer.addEventListener('show.bs.collapse', async () => {
+                if (!hasBeenOpened) {
+                    try {
+                        await fetchFromApi(`api/animal/${animal.id}/increment`, { method: 'POST' });
+                        hasBeenOpened = true; // Marque l'animal comme déjà vu
+                    } catch (error) {
+                        console.error("Erreur lors de l'incrémentation de l'animal:", error);
+                    }
+                }
+            });
         });
 
-        // Ajouter la row contenant tous les animaux au conteneur
         animalContainer.appendChild(rowElement);
 
     } catch (error) {
@@ -68,15 +120,10 @@ async function fetchAnimals(habitatId, animalContainer) {
     }
 }
 
-
-
-
 async function voirHabitat() {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     try {
-        const items = await fetchData("http://localhost:8000/api/habitat/get", myHeaders);
+        // Ajout du token dans les headers
+        const items = await fetchFromApi("api/habitat/get")
 
         const servicesContainer = document.getElementById("voirHabitat");
         servicesContainer.innerHTML = ''; 
@@ -130,7 +177,7 @@ async function voirHabitat() {
             // Ajouter un événement de clic sur l'image pour charger les animaux associés
             imageElement.addEventListener('click', () => {
                 if (animalContainer.classList.contains('d-none')) {
-                    fetchAnimals(item.id, animalContainer);
+                    voirAnimal(item.id, animalContainer);
                     animalContainer.classList.remove('d-none');
                 } else {
                     animalContainer.classList.add('d-none');
@@ -138,6 +185,5 @@ async function voirHabitat() {
             });
         });
     } catch (error) {
-        console.error("Error:", error);
     }
 }

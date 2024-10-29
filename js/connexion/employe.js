@@ -9,33 +9,28 @@ if (document.readyState === "loading") {
   voirService();
   voirHabitat();
   voirAnimal();
-
 }
 
-
   async function voirService() {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     try {
-        const items = await fetchData("http://localhost:8000/api/service/get", myHeaders);
+        const items = await fetchFromApi("api/service/get")
+
         const servicesContainer = document.getElementById("voirService");
         servicesContainer.innerHTML = ''; // Effacer le contenu précédent
 
         items.forEach(item => {
-            // Création d'un conteneur pour le service
-            const serviceElement = document.createElement('div');
-            serviceElement.classList.add("container", "text-center", "mb-4"); // Ajout d'un espacement entre les services
 
+            const serviceElement = document.createElement('div');
+            serviceElement.classList.add("container", "text-center", "mb-4"); 
 
             // Ligne pour le nom
             const nameRow = document.createElement('div');
-            nameRow.classList.add("row", "mb-3"); // Ajouter une marge en bas
+            nameRow.classList.add("row", "mb-3"); 
             const nameCol = document.createElement('div');
-            nameCol.classList.add("col-md-12"); // Utiliser toute la largeur pour le nom
+            nameCol.classList.add("col-md-12"); 
 
             const nameInput = document.createElement('input',);
-            nameInput.classList.add("form-control", "text-center","text-dark"); // Ajout de la classe personnalisée
+            nameInput.classList.add("form-control", "text-center","text-dark"); 
             nameInput.type = "text";
             nameInput.value = decodeHtml(item.nom);
             nameCol.appendChild(nameInput);
@@ -48,7 +43,7 @@ if (document.readyState === "loading") {
 
             // Colonne pour la description
             const descriptionCol = document.createElement('div');
-            descriptionCol.classList.add("col-md-6"); // Utiliser 50% de la largeur
+            descriptionCol.classList.add("col-md-6"); 
             const descriptionInput = document.createElement('textarea');
             descriptionInput.classList.add("form-control","text-dark","text-center","py-4");
             descriptionInput.rows = 3;
@@ -98,11 +93,11 @@ if (document.readyState === "loading") {
 }
 
 async function modifierService(serviceId, oldImageData, nom, description, imageInput) {
-    const sanitizedNom = sanitizeInput(nom); // Gardez les caractères spéciaux
-    const sanitizedDescription = sanitizeInput(description); // Gardez les caractères spéciaux
-    let image_data = oldImageData; // Utiliser l'ancienne image par défaut
+    const sanitizedNom = sanitizeInput(nom); 
+    const sanitizedDescription = sanitizeInput(description); 
+    let image_data = oldImageData; 
 
-    // Vérifie si une image a été sélectionnée
+    // Vérifier si une image a été sélectionnée
     if (imageInput && imageInput.files.length > 0) {
         const file = imageInput.files[0];
         const validImageTypes = ['image/png', 'image/jpeg', 'image/avif'];
@@ -127,162 +122,163 @@ async function modifierService(serviceId, oldImageData, nom, description, imageI
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`http://localhost:8000/api/service/${serviceId}`, {
+        console.log("Données à envoyer :", serviceData);
+        
+        const response = await fetchFromApi(`api/service/${serviceId}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify(serviceData)
         });
-       
-        const textResponse = await response.text(); // Lire la réponse en tant que texte
 
-        // Supprimer le caractère '#' de la réponse si présent
-        const cleanedResponse = textResponse.replace(/#/g, '');
-
-        if (!response.ok) {
-            // Si la réponse n'est pas OK, tenter de l'analyser comme JSON
-            let errorResponse;
-            try {
-                errorResponse = JSON.parse(cleanedResponse);
-                alert(`Erreur lors de la modification du service: ${errorResponse.error || response.statusText}`);
-            } catch (e) {
-                // Afficher la réponse brute en cas d'erreur d'analyse
-                console.error("Erreur lors de l'analyse de la réponse:", e);
-                alert("Erreur lors de la mise à jour du service : " + cleanedResponse);
-            }
-            return; // Sortir de la fonction après une erreur
-        }
-
-        // Si la mise à jour a réussi, essayez de traiter la réponse
-        let updatedService;
-        try {
-            updatedService = JSON.parse(cleanedResponse); // Analyser la réponse comme JSON
-            alert("Service mis à jour avec succès !");
-            location.reload(); // Actualiser la page
-        } catch (e) {
-            console.error("Erreur lors de l'analyse de la réponse :", e);
-            alert("Le service a été mis à jour, mais une erreur s'est produite lors de l'analyse de la réponse.");
-        }
+        alert("Service mis à jour avec succès !");
+        console.log("Réponse de l'API :", response);
     } catch (error) {
-        console.error("Erreur :", error);
+        console.error("Erreur lors de la mise à jour du service :", error);
         alert("Erreur lors de la mise à jour du service : " + error.message);
     }
 }
 
-
 async function voirAvis() {
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", getToken()); // Utilisation de X-AUTH-TOKEN
-    myHeaders.append("Content-Type", "application/json");
-
     try {
-        // Récupération des avis
-        const items = await fetchData("http://localhost:8000/api/avis/get", myHeaders);
+        const items = await fetchFromApi("api/avis/get");
+
         const avissContainer = document.getElementById("voirAvis");
-        avissContainer.innerHTML = ''; // Vider le conteneur avant d'ajouter les nouveaux éléments
+        avissContainer.innerHTML = ''; 
 
         items.forEach(item => {
-            // Création des éléments de manière sécurisée
+            // Création du conteneur pour chaque avis
             const avisElement = document.createElement('div');
             avisElement.classList.add("container", "text-start", "text-dark", "py-4", 'my-1', "border", "border-primary", "rounded");
 
-            // Créer et insérer le titre (pseudo de l'utilisateur)
+            // Ajout du pseudo
             const avisPseudo = document.createElement('h5');
             avisPseudo.classList.add("ms-2");
-            avisPseudo.textContent = decodeHtml(item.pseudo);  // Décoder le pseudo si nécessaire
+            avisPseudo.textContent = decodeHtml(item.pseudo);
             avisElement.appendChild(avisPseudo);
 
-            // Créer la div contenant la description et le bouton de visibilité
+            // Création d'une ligne pour le commentaire et les boutons
             const rowElement = document.createElement('div');
-            rowElement.classList.add("d-flex", "align-items-center");
+            rowElement.classList.add("d-flex", "align-items-center", "justify-content-between");
 
-            // Créer et insérer la description (commentaire)
+            // Ajout du commentaire
             const commentaireElement = document.createElement('p');
             commentaireElement.classList.add("col", "text-start");
             commentaireElement.textContent = decodeHtml(item.commentaire);
             rowElement.appendChild(commentaireElement);
 
-            // Créer et insérer le bouton de visibilité
+            // Création du bouton pour afficher/cacher l'avis
             const visibleElement = document.createElement('button');
-            visibleElement.classList.add("btn", 'fw-bold', 'btn-sm'); // Ajout de 'p-0' pour enlever le padding
+            visibleElement.classList.add("btn", 'fw-bold', 'btn-sm');
+            btnModifierAvis(visibleElement, item.isVisible);
 
-            // Définir la couleur et le texte du bouton selon l'état de visibilité
-            if (item.isVisible) {
-                visibleElement.classList.add('btn-primary'); // Couleur pour "Affiché"
-                visibleElement.textContent = "Cacher"; // Texte simplifié
-            } else {
-                visibleElement.classList.add('btn-danger'); // Couleur pour "Caché"
-                visibleElement.textContent = "Afficher"; // Texte simplifié
-            }
-
-            // Ajouter l'événement de clic pour changer la visibilité
+            // Écouteur d'événements pour le bouton de visibilité
             visibleElement.addEventListener('click', async () => {
-                const newValue = !item.isVisible; // Inverser la visibilité actuelle
+                const newValue = !item.isVisible;
 
                 try {
-                    // Requête PUT pour changer l'état de visibilité
-                    const putRequestOptions = {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-AUTH-TOKEN': getToken() // Ajouter le X-AUTH-TOKEN
-                        },
-                        body: JSON.stringify({ isVisible: newValue }) // Envoyer comme un objet
-                    };
-
-                    // Envoyer la requête PUT
-                    const response = await fetch(`http://localhost:8000/api/avis/${item.id}`, putRequestOptions);
-
-                    // Vérification des erreurs de la réponse
-                    if (!response.ok) {
-                        const errorResponse = await response.text(); // Lire la réponse brute
-                        console.error(`Error lors de la mise à jour de l'avis ${item.id}:`, errorResponse);
-                        throw new Error(`Erreur lors de la mise à jour de l'avis ${item.id}: ${response.status} - ${errorResponse}`);
-                    }
-
-                    // Si la mise à jour est réussie, mettre à jour l'état local
+                    await modifierAvis(item.id, newValue);
                     item.isVisible = newValue;
-
-                    // Mettre à jour l'apparence du bouton en fonction du nouvel état
-                    visibleElement.textContent = newValue ? "Cacher" : "Afficher";
-                    visibleElement.classList.toggle('btn-primary', newValue);
-                    visibleElement.classList.toggle('btn-danger', !newValue);
-
+                    btnModifierAvis(visibleElement, newValue);
                 } catch (error) {
                     console.error(`Failed to toggle visibility for avis ${item.id}:`, error);
                     alert(`Une erreur est survenue lors de la mise à jour de la visibilité pour l'avis ${item.id}.`);
                 }
             });
 
-            // Ajouter le bouton de visibilité au rowElement
-            rowElement.appendChild(visibleElement);
-            
-            // Ajouter les éléments au conteneur d'avis
+            // Création du bouton de suppression
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('btn', 'btn-danger', 'fw-bold', 'btn-sm', 'ms-2');
+            deleteButton.textContent = "Supprimer";
+
+            // Écouteur d'événements pour le bouton de suppression
+            deleteButton.addEventListener('click', async () => {
+                const confirmDelete = confirm("Voulez-vous vraiment supprimer cet avis ?");
+                if (confirmDelete) {
+                    try {
+                        await supprimerAvis(item.id);
+                        avisElement.remove(); 
+                    } catch (error) {
+                        console.error(`Failed to delete avis ${item.id}:`, error);
+                        alert(`Une erreur s'est produite lors de la suppression de l'avis ${item.id}.`);
+                    }
+                }
+            });
+
+            // Regroupement des boutons
+            const buttonGroup = document.createElement('div');
+            buttonGroup.classList.add('d-flex', 'gap-2');
+
+            buttonGroup.appendChild(visibleElement);
+            buttonGroup.appendChild(deleteButton);
+            rowElement.appendChild(buttonGroup);
             avisElement.appendChild(rowElement);
             avissContainer.appendChild(avisElement);
         });
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Erreur lors de la récupération des avis :", error);
+        alert("Erreur lors de la récupération des avis : " + error.message);
     }
 }
 
+// Fonction pour mettre à jour le bouton de visibilité
+function btnModifierAvis(button, isVisible) {
+    button.classList.toggle('btn-primary', isVisible);
+    button.classList.toggle('btn-secondary', !isVisible);
+    button.innerHTML = isVisible ? 'Avis Affiché' : 'Avis Caché';
+}
 
-
-// Fonction pour voir et modifier les habitats
-
-async function voirHabitat() {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+async function modifierAvis(avisId, newValue) {
+    const requestData = {
+        isVisible: newValue
+    };
 
     try {
-        const items = await fetchData("http://localhost:8000/api/habitat/get", myHeaders);
+        const response = await fetchFromApi(`api/avis/${avisId}`, {
+            method: 'PUT',
+            body: JSON.stringify(requestData),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        return response; 
+    } catch (error) {
+        console.error(`Erreur lors de la mise à jour de l'avis ${avisId}:`, error);
+        alert(`Une erreur s'est produite lors de la mise à jour de l'avis. Détails : ${error.message}`);
+        throw error; 
+    }
+}
+
+async function supprimerAvis(id) {
+    try {
+        const deleteRequestOptions = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+
+        await fetchFromApi(`api/avis/${id}`, deleteRequestOptions);
+
+        alert(`L'avis a été supprimé avec succès.`);
+    } catch (error) {
+        console.error("Erreur lors de la suppression de l'avis:", error);
+        alert(`Une erreur s'est produite lors de la suppression de l'avis ${id}. Détails : ${error.message}`);
+        throw error; 
+    }
+}
+
+// Fonction pour voir et modifier les habitats
+async function voirHabitat() {
+    try {
+        const items = await fetchFromApi("api/habitat/get")
+
         const habitatsContainer = document.getElementById("voirHabitat");
-        habitatsContainer.innerHTML = ''; 
+        habitatsContainer.textContent = ''; 
 
         items.forEach(item => {
             // Création d'un conteneur pour le habitat
             const habitatElement = document.createElement('div');
             habitatElement.classList.add("container", "text-center", "py-4","border",'border-primary',"rounded",'my-3'); 
-
 
             // Ligne pour le nom
             const nameRow = document.createElement('div');
@@ -304,7 +300,7 @@ async function voirHabitat() {
 
             // Colonne pour la description
             const descriptionCol = document.createElement('div');
-            descriptionCol.classList.add("col-md-6"); // Utiliser 50% de la largeur
+            descriptionCol.classList.add("col-md-6"); 
             const descriptionInput = document.createElement('textarea');
             descriptionInput.classList.add("form-control","text-dark","text-center","py-4");
             descriptionInput.rows = 3;
@@ -343,7 +339,7 @@ async function voirHabitat() {
             // Créer un élément pour afficher le texte du commentaire
             const commentaireText = document.createElement('h3'); 
             commentaireText.classList.add("text-center", "text-dark"); 
-            commentaireText.innerHTML = decodeHtml(item.commentaire_habitat); 
+            commentaireText.textContent = decodeHtml(item.commentaire_habitat); 
 
             // Ajouter le texte au commentaireCol
             commentaireCol.appendChild(commentaireText);
@@ -374,9 +370,9 @@ async function voirHabitat() {
 }
 
 async function modifierHabitat(habitatId, oldImageData, nom, description, imageInput) {
-    const sanitizedNom = sanitizeInput(nom); // Gardez les caractères spéciaux
-    const sanitizedDescription = sanitizeInput(description); // Gardez les caractères spéciaux
-    let image_data = oldImageData; // Utiliser l'ancienne image par défaut
+    const sanitizedNom = sanitizeInput(nom); 
+    const sanitizedDescription = sanitizeInput(description);
+    let image_data = oldImageData; 
 
     // Vérifie si une image a été sélectionnée
     if (imageInput && imageInput.files.length > 0) {
@@ -403,70 +399,37 @@ async function modifierHabitat(habitatId, oldImageData, nom, description, imageI
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`http://localhost:8000/api/habitat/${habitatId}`, {
+        const response = await fetchFromApi(`api/habitat/${habitatId}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify(habitatData)
         });
 
-        const textResponse = await response.text(); // Lire la réponse en tant que texte
-
-        // Supprimer le caractère '#' de la réponse si présent
-        const cleanedResponse = textResponse.replace(/#/g, '');
-
-        if (!response.ok) {
-            // Si la réponse n'est pas OK, tenter de l'analyser comme JSON
-            let errorResponse;
-            try {
-                errorResponse = JSON.parse(cleanedResponse);
-                alert(`Erreur lors de la modification du habitat: ${errorResponse.error || response.statusText}`);
-            } catch (e) {
-                // Afficher la réponse brute en cas d'erreur d'analyse
-                console.error("Erreur lors de l'analyse de la réponse:", e);
-                alert("Erreur lors de la mise à jour du habitat : " + cleanedResponse);
-            }
-            return; // Sortir de la fonction après une erreur
-        }
-
-        // Si la mise à jour a réussi, essayez de traiter la réponse
-        let updatedHabitat;
-        try {
-            updatedHabitat = JSON.parse(cleanedResponse); // Analyser la réponse comme JSON
-            alert("Habitat mis à jour avec succès !");
-            location.reload(); // Actualiser la page
-        } catch (e) {
-            console.error("Erreur lors de l'analyse de la réponse :", e);
-            alert("L'Habitat a été mis à jour, mais une erreur s'est produite lors de l'analyse de la réponse.");
-        }
+        alert("Habitat mis à jour avec succès !");
+        console.log("Réponse de l'API :", response); 
     } catch (error) {
-        console.error("Erreur :", error);
-        alert("Erreur lors de la mise à jour du service : " + error.message);
+        console.error("Erreur lors de la mise à jour du habitat :", error);
+        alert("Erreur lors de la mise à jour du habitat : " + error.message);
     }
 }
 
-// fonction pour voir les animaux
-
+// fonction pour voir et modifier les animaux
 async function voirAnimal() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
     try {
-        const items = await fetchData("http://localhost:8000/api/animal/get", myHeaders);
+        const items = await fetchFromApi("api/animal/get")
         const animauxContainer = document.getElementById("voirAnimal");
-        animauxContainer.innerHTML = ''; // Effacer le contenu précédent
+        animauxContainer.innerHTML = ''; 
 
-        const row = document.createElement('div'); // Créez une ligne (row) Bootstrap pour contenir les cartes
+        const row = document.createElement('div');
         row.classList.add("row");
 
         items.forEach(item => {
-
             
             // Création d'un conteneur pour chaque animal
             const animalElement = document.createElement('div');
             animalElement.classList.add("col-lg-3", "col-md-6", "col-sm-12", "mt-3", "d-flex", "justify-content-center");
-
-            
-
             // Création de la carte de l'animal
             const card = document.createElement('div');
             card.classList.add("card", "shadow-sm", "p-3", "mb-5", "bg-white", "rounded");
@@ -492,14 +455,14 @@ async function voirAnimal() {
             const toggleButton = document.createElement('button');
             toggleButton.classList.add("btn", "btn-primary", "w-100");
             toggleButton.setAttribute("data-bs-toggle", "collapse");
-            toggleButton.setAttribute("data-bs-target", `#collapse${item.id}`); // Cible correcte ici
+            toggleButton.setAttribute("data-bs-target", `#collapse${item.id}`);
             toggleButton.innerText = "Voir détails";
             cardBody.appendChild(toggleButton);
 
             // Détails de l'animal (collapse)
             const detailsDiv = document.createElement('div');
             detailsDiv.classList.add("collapse");
-            detailsDiv.setAttribute("id", `collapse${item.id}`); // Correction de l'ID
+            detailsDiv.setAttribute("id", `collapse${item.id}`); 
 
             const detailsBody = document.createElement('div');
             detailsBody.classList.add("mt-3");
@@ -522,39 +485,33 @@ async function voirAnimal() {
             updateForm.classList.add("mt-3");
 
             const grammageInput = document.createElement('input');
-            grammageInput.type = 'text'; // Changer à 'text' pour accepter des chaînes
+            grammageInput.type = 'text'; 
             grammageInput.classList.add("form-control", "mb-2");
             grammageInput.placeholder = "Nouvelle quantité (en grammes)";
-            grammageInput.value = item.grammage || ''; // Valeur actuelle ou vide
+            grammageInput.value = item.grammage || ''; 
             
             const feedingTimeInput = document.createElement('input');
             feedingTimeInput.type = 'time';
             feedingTimeInput.classList.add("form-control", "mb-2");
-            // Assurez-vous que la valeur est au format "HH:mm"
-            feedingTimeInput.value = item.feeding_time || ''; // Valeur actuelle ou vide
+            feedingTimeInput.value = item.feeding_time || ''; 
             
             const createdAtInput = document.createElement('input');
             createdAtInput.type = 'date';
             createdAtInput.classList.add("form-control", "mb-2");
-            // Utilisez la valeur de created_at au format YYYY-MM-DD
-            createdAtInput.value = item.created_at ? item.created_at.split('T')[0] : ''; // Assurez-vous d'avoir une valeur
+            createdAtInput.value = item.created_at ? item.created_at.split('T')[0] : '';
 
             const updateButton = document.createElement('button');
-            updateButton.type = 'button'; // Empêcher le rechargement de la page
+            updateButton.type = 'button';
             updateButton.classList.add("btn", "btn-primary", "w-100");
             updateButton.innerText = "Mettre à jour";
             updateButton.onclick = async () => {
                 const newGrammage = grammageInput.value;
-                const newFeedingTime = feedingTimeInput.value; // Cela doit être en format "HH:mm"
-                const newCreatedAt = createdAtInput.value; // Cela doit être au format "YYYY-MM-DD"
+                const newFeedingTime = feedingTimeInput.value; 
+                const newCreatedAt = createdAtInput.value; 
             
-                const updatedAnimal = await updateAnimal(item.id, newGrammage, newFeedingTime, newCreatedAt);
+                const updatedAnimal = await modifierAnimal(item.id, newGrammage, newFeedingTime, newCreatedAt);
                 
-                if (updatedAnimal) {
-                    // Afficher le message de succès
-                    alert('Les données ont bien été modifiées.');
-            
-                    // Mettez à jour les détails affichés après la mise à jour
+                if (updatedAnimal) {        
                     detailsBody.innerHTML = `
                         <table class="table">
                             <tr><th class="text-dark">Habitat</th><td class="text-dark">${decodeHtml(item.habitat || 'Non spécifié')}</td></tr>
@@ -577,26 +534,24 @@ async function voirAnimal() {
 
             detailsBody.appendChild(updateForm);
 
-            // Ajouter les rapports vétérinaires (liste des détails)
+            // Ajout les rapports vétérinaires
             if (item.rapport_veterinaire && item.rapport_veterinaire.length > 0) {
                 const rapportTitle = document.createElement('h6');
                 rapportTitle.classList.add("text-dark", "mt-3");
                 rapportTitle.innerText = "Rapport du Vétérinaire:";
                 detailsBody.appendChild(rapportTitle);
 
-                const rapportList = document.createElement('ul');
-                rapportList.classList.add("list-group");
+                const rapportList = document.createElement('p');
 
                 item.rapport_veterinaire.forEach(rapport => {
-                    const rapportItem = document.createElement('li');
-                    rapportItem.classList.add("list-group-item", "text-dark");
+                    const rapportItem = document.createElement('p');
+                    rapportItem.classList.add("text-dark","border",'rounded');
                     rapportItem.innerText = decodeHtml(rapport.detail);
                     rapportList.appendChild(rapportItem);
                 });
 
                 detailsBody.appendChild(rapportList);
             } else {
-                // Si pas de rapport, afficher un message
                 const noRapportMessage = document.createElement('p');
                 noRapportMessage.classList.add("text-dark", "mt-3");
                 noRapportMessage.innerText = "Aucun rapport n'est disponible.";
@@ -606,15 +561,14 @@ async function voirAnimal() {
             detailsDiv.appendChild(detailsBody);
             cardBody.appendChild(detailsDiv);
 
-            // Ajouter le corps de la carte au conteneur principal
+            // Ajout le corps de la carte au conteneur principal
             card.appendChild(cardBody);
             animalElement.appendChild(card);
 
-            // Ajouter la carte dans la rangée
+            // Ajout la carte dans la rangée
             row.appendChild(animalElement);
         });
-
-        // Ajouter la rangée dans le conteneur d'animaux
+        // Ajout la rangée dans le conteneur d'animaux
         animauxContainer.appendChild(row);
 
     } catch (error) {
@@ -622,7 +576,7 @@ async function voirAnimal() {
     }
 }
 
-async function updateAnimal(id, grammage, feeding_time, created_at) {
+async function modifierAnimal(id, grammage, feeding_time, created_at) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -633,38 +587,17 @@ async function updateAnimal(id, grammage, feeding_time, created_at) {
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/animal/${id}`, {
+        const response = await fetchFromApi(`api/animal/${id}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify(data)
         });
 
-        const textResponse = await response.text(); // Lire la réponse en tant que texte
-
-        // Supprimer le caractère '#' de la réponse si présent
-        const cleanedResponse = textResponse.replace(/#/g, '');
-
-        if (!response.ok) {
-            let errorResponse;
-            try {
-                errorResponse = JSON.parse(cleanedResponse);
-                alert(`Erreur lors de la mise à jour de l'animal : ${errorResponse.error || response.statusText}`);
-            } catch (e) {
-                alert("Erreur lors de la mise à jour de l'animal : " + cleanedResponse);
-            }
-            return; // Sortir de la fonction après une erreur
-        }
-
-        let updatedAnimal;
-        try {
-            updatedAnimal = JSON.parse(cleanedResponse); // Analyser la réponse comme JSON
-            return updatedAnimal.animal; // Retourner l'animal mis à jour
-        } catch (e) {
-            alert("L'animal a été mis à jour, mais une erreur s'est produite lors de l'analyse de la réponse.");
-        }
+        alert("Animal mis à jour avec succès !");
+        console.log("Réponse de l'API :", response); 
+        return response.animal; 
     } catch (error) {
+        console.error("Erreur lors de la mise à jour de l'animal :", error);
         alert("Erreur lors de la mise à jour de l'animal : " + error.message);
     }
 }
-
-

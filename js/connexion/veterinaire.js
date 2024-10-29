@@ -3,12 +3,8 @@
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
     servicesContainer.addEventListener('DOMContentLoaded', voirAnimal);
-
-
   } else {
-
     voirAnimal();
-
   }
 
 
@@ -17,8 +13,8 @@ if (document.readyState === "loading") {
     myHeaders.append("Content-Type", "application/json");
 
     const data = {
-        animal_id: animalId, // Lier le rapport à l'animal
-        detail: rapport // Le contenu du rapport
+        animal_id: animalId,
+        detail: rapport
     };
 
     try {
@@ -40,7 +36,7 @@ if (document.readyState === "loading") {
             return null; // Sortir de la fonction après une erreur
         }
 
-        const createdRapport = await response.json(); // Analyser la réponse comme JSON
+        const createdRapport = await response.json();
         return createdRapport; // Retourner le rapport créé
     } catch (error) {
         alert("Erreur lors de la création du rapport : " + error.message);
@@ -48,18 +44,18 @@ if (document.readyState === "loading") {
 }
 
 
-// fonction pour voir les animaux
 
+// fonction pour voir les animaux
 async function voirAnimal() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const items = await fetchData("http://localhost:8000/api/animal/get", myHeaders);
+        const items = await fetchFromApi("api/animal/get");
         const animauxContainer = document.getElementById("voirAnimal");
-        animauxContainer.innerHTML = ''; // Effacer le contenu précédent
+        animauxContainer.innerHTML = ''; 
 
-        const row = document.createElement('div'); // Créez une ligne (row) Bootstrap pour contenir les cartes
+        const row = document.createElement('div'); 
         row.classList.add("row");
 
         items.forEach(item => {
@@ -92,18 +88,19 @@ async function voirAnimal() {
             const toggleButton = document.createElement('button');
             toggleButton.classList.add("btn", "btn-primary", "w-100");
             toggleButton.setAttribute("data-bs-toggle", "collapse");
-            toggleButton.setAttribute("data-bs-target", `#collapse${item.id}`); // Cible correcte ici
+            toggleButton.setAttribute("data-bs-target", `#collapse${item.id}`);
             toggleButton.innerText = "Voir détails";
             cardBody.appendChild(toggleButton);
 
             // Détails de l'animal (collapse)
             const detailsDiv = document.createElement('div');
             detailsDiv.classList.add("collapse");
-            detailsDiv.setAttribute("id", `collapse${item.id}`); // Correction de l'ID
+            detailsDiv.setAttribute("id", `collapse${item.id}`);
 
             const detailsBody = document.createElement('div');
             detailsBody.classList.add("mt-3");
 
+            // Table des détails de l'animal
             const detailsTable = `
                 <table class="table">
                     <tr><th class="text-dark">Habitat</th><td class="text-dark">${decodeHtml(item.habitat || 'Non spécifié')}</td></tr>
@@ -121,18 +118,30 @@ async function voirAnimal() {
             const updateForm = document.createElement('form');
             updateForm.classList.add("mt-3");
 
-            const etatInput = document.createElement('input');
-            etatInput.type = 'text'; // Pour l'état
-            etatInput.classList.add("form-control", "mb-2");
-            etatInput.placeholder = "Nouvel état de l'animal";
-            etatInput.value = item.etat || ''; // Valeur actuelle ou vide
+            // Champ pour l'état de l'animal
+            const etatLabel = document.createElement('label');
+            etatLabel.innerText = "Modifier son état :";
+            updateForm.appendChild(etatLabel);
 
-            const rapportInput = document.createElement('textarea'); // Pour le rapport
+            const etatInput = document.createElement('input');
+            etatInput.type = 'text';
+            etatInput.classList.add("form-control", "mb-2");
+            etatInput.placeholder = "Ajouter un état";
+            etatInput.value = item.etat || ''; 
+            updateForm.appendChild(etatInput);
+
+            // Champ pour le rapport vétérinaire
+            const rapportLabel = document.createElement('label');
+            rapportLabel.innerText = "Descrition détaillé de l'animal:";
+            updateForm.appendChild(rapportLabel);
+
+            const rapportInput = document.createElement('textarea');
             rapportInput.classList.add("form-control", "mb-2");
-            rapportInput.placeholder = "Nouveau rapport vétérinaire";
+            rapportInput.placeholder = "Rapport vétérinaire";
             rapportInput.value = item.rapport_veterinaire && item.rapport_veterinaire.length > 0 
                 ? item.rapport_veterinaire.map(r => r.detail).join('\n') 
                 : ''; // Valeur actuelle ou vide
+            updateForm.appendChild(rapportInput);
 
             const updateButton = document.createElement('button');
             updateButton.type = 'button'; // Empêcher le rechargement de la page
@@ -140,8 +149,8 @@ async function voirAnimal() {
             updateButton.innerText = "Mettre à jour";
 
             updateButton.onclick = async () => {
-                const newEtat = etatInput.value.trim(); // Supprimer les espaces
-                let newRapport = rapportInput.value.split('\n').map(r => r.trim()).filter(r => r); // Transformer et filtrer les rapports vides
+                const newEtat = etatInput.value.trim();
+                let newRapport = rapportInput.value.split('\n').map(r => r.trim()).filter(r => r);
 
                 if (newEtat === '' && newRapport.length === 0) {
                     alert("Veuillez entrer un nouvel état ou un rapport vétérinaire.");
@@ -149,7 +158,7 @@ async function voirAnimal() {
                 }
 
                 // Mettre à jour l'état de l'animal
-                const updatedAnimal = await updateAnimal(item.id, newEtat, newRapport);
+                const updatedAnimal = await modifierAnimal(item.id, newEtat, newRapport);
 
                 // Créer des rapports vétérinaires si nécessaire
                 if (newRapport.length > 0) {
@@ -175,7 +184,7 @@ async function voirAnimal() {
                     if (newRapport.length > 0) {
                         const rapportTitle = document.createElement('h6');
                         rapportTitle.classList.add("text-dark", "mt-3");
-                        rapportTitle.innerText = "Rapport du Vétérinaire:";
+                        rapportTitle.innerText = "Rapport du Vétérinaire :";
                         detailsBody.appendChild(rapportTitle);
 
                         const rapportList = document.createElement('ul');
@@ -195,17 +204,14 @@ async function voirAnimal() {
                 }
             };
 
-            updateForm.appendChild(etatInput);
-            updateForm.appendChild(rapportInput);
             updateForm.appendChild(updateButton);
-
             detailsBody.appendChild(updateForm);
 
             // Ajouter les rapports vétérinaires (liste des détails)
             if (item.rapport_veterinaire && item.rapport_veterinaire.length > 0) {
                 const rapportTitle = document.createElement('h6');
                 rapportTitle.classList.add("text-dark", "mt-3");
-                rapportTitle.innerText = "Rapport du Vétérinaire:";
+                rapportTitle.innerText = "Rapport du Vétérinaire :";
                 detailsBody.appendChild(rapportTitle);
 
                 const rapportList = document.createElement('ul');
@@ -247,46 +253,31 @@ async function voirAnimal() {
     }
 }
 
-async function updateAnimal(id, etat, rapport) {
+async function modifierAnimal(animalId, newEtat, newRapports) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const data = {
-        etat: etat,
-        rapport_veterinaire: rapport
+        etat: newEtat,
+        rapports: newRapports
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/animal/${id}`, {
-            method: 'PUT',
+        const response = await fetchFromApi(`api/animal/${animalId}`, {
+            method: 'PUT', 
             headers: myHeaders,
             body: JSON.stringify(data)
         });
 
-        const textResponse = await response.text(); // Lire la réponse en tant que texte
-
-        // Supprimer le caractère '#' de la réponse si présent
-        const cleanedResponse = textResponse.replace(/#/g, '');
-
         if (!response.ok) {
-            let errorResponse;
-            try {
-                errorResponse = JSON.parse(cleanedResponse);
-                alert(`Erreur lors de la mise à jour de l'animal : ${errorResponse.error || response.statusText}`);
-            } catch (e) {
-                alert("Erreur lors de la mise à jour de l'animal : " + cleanedResponse);
-            }
-            return; // Sortir de la fonction après une erreur
+            const errorText = await response.text();
+            console.error("Erreur de mise à jour de l'animal :", errorText);
+            return null;
         }
 
-        let updatedAnimal;
-        try {
-            updatedAnimal = JSON.parse(cleanedResponse); // Analyser la réponse comme JSON
-            return updatedAnimal.animal; // Retourner l'animal mis à jour
-        } catch (e) {
-            alert("L'animal a été mis à jour, mais une erreur s'est produite lors de l'analyse de la réponse.");
-        }
+        return await response.json(); 
     } catch (error) {
-        alert("Erreur lors de la mise à jour de l'animal : " + error.message);
+        console.error("Erreur lors de la mise à jour de l'animal :", error);
+        return null;
     }
 }

@@ -173,9 +173,9 @@ function containsScript(input) {
     if (scriptPattern.test(input)) {
         alert("Des scripts ont été détectés dans l'entrée. Vous allez être redirigé.");
         window.location.href = "https://www.cybermalveillance.gouv.fr/"; // Remplacez par l'URL de redirection souhaitée
-        return true; // Retourne vrai si un script est détecté
+        return true; 
     }
-    return false; // Retourne faux si aucun script n'est détecté
+    return false;
 }
 
 
