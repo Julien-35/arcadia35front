@@ -71,6 +71,7 @@ async function ConnexionUtilisateur(event) {
         password: password
     };
     try {
+        // Appel de l'API avec le bon endpoint
         const response = await fetchFromApi("api/login", {
             method: "POST",
             headers: {
