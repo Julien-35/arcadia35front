@@ -173,7 +173,12 @@ async function creationHabitat(titreHabitat, commentaireHabitat, descriptionHabi
     };
 
     try {
-        await fetchFromApi("api/habitat/get")
+        const response = await fetchFromApi(`api/habitat/post`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
     } catch (error) {
         console.error('Error:', error);
     }
