@@ -93,8 +93,8 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour l'horaire
-        const response = await fetchFromApi(`api/horaire/${horaireId}`, {
+        // Envoyer la requête PUT pour mettre à jour l'horaire
+        const response = await fetch(`http://localhost:8000/api/horaire/${horaireId}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify(horaireData)
@@ -229,31 +229,23 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
         myHeaders.append("Content-Type", "application/json");
     
         try {
-                const response = await fetchFromApi(`api/api/service/${serviceId}`, {
+            // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+            const response = await fetchFromApi(`api/service/${serviceId}`, {
                 method: 'PUT',
                 headers: myHeaders,
                 body: JSON.stringify(serviceData)
             });
     
-            const textResponse = await response.text(); // Lire la réponse en tant que texte
+            // Lire la réponse en tant que texte pour effectuer des opérations sur le contenu
+            const textResponse = typeof response === 'string' ? response : JSON.stringify(response);
     
             // Supprimer le caractère '#' de la réponse si présent
             const cleanedResponse = textResponse.replace(/#/g, '');
     
-            if (!response.ok) {
-                // Analyser uniquement si le format est correct
-                let errorResponse;
-                try {
-                    errorResponse = JSON.parse(cleanedResponse); // Analyser la réponse nettoyée
-                    throw new Error(`Erreur lors de la modification du service: ${errorResponse.error || response.statusText}`);
-                } catch (e) {
-                    throw new Error(`Erreur lors de la modification du service: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
-                }
-            }
-    
+            // Tenter de parser la réponse nettoyée en JSON
             let updatedService;
             try {
-                updatedService = JSON.parse(cleanedResponse); // Analyser la réponse nettoyée
+                updatedService = JSON.parse(cleanedResponse);
                 console.log("Service mis à jour avec succès :", updatedService);
                 alert("Service mis à jour avec succès !");
                 voirService(); // Appeler la fonction pour afficher le service mis à jour
@@ -266,13 +258,15 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
         }
     }
     
+    
     async function supprimerService(serviceId) {
         const myHeaders = new Headers();
         myHeaders.append("X-AUTH-TOKEN", getToken()); // Assurez-vous que la fonction getToken() retourne un jeton valide
         myHeaders.append("Content-Type", "application/json");
-    
         try {
-            const response = await fetch(`http://localhost:8000/api/service/${serviceId}`, { 
+            // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+            const response = await fetchFromApi(`api/service/${serviceId}`, { 
+
                 method: 'DELETE',
                 headers: myHeaders
             });
@@ -687,7 +681,7 @@ async function modifierAnimal(animalId, oldImageData) {
     const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race, image_data };
 
     try {
-        const response = await fetchFromApi(`api/animal/${animalId}`, {
+        const response = await fetch(`http://localhost:8000/api/animal/${animalId}`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"
