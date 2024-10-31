@@ -93,17 +93,12 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        // Envoyer la requête PUT pour mettre à jour l'horaire
-        const response = await fetch(`http://localhost:8000/api/horaire/${horaireId}`, {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+       await fetchFromApi(`api/horaire/${horaireId}`, { 
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify(horaireData)
         });
-
-        if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(`Erreur lors de la modification de l'horaire: ${errorResponse.error || response.statusText}`);
-        }
 
         alert("Horaire mis à jour avec succès !");
         location.reload(); // Actualiser la page après succès
@@ -396,27 +391,13 @@ async function modifierHabitat(habitatId, oldImageData) {
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`http://localhost:8000/api/habitat/${habitatId}`, {
+        await fetchFromApi(`api/habitat/${habitatId}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify(habitatData)
         });
 
-        const textResponse = await response.text(); // Lire la réponse en tant que texte
-
-        // Supprimer le caractère '#' de la réponse si présent
         const cleanedResponse = textResponse.replace(/#/g, '');
-
-        // Vérifier si la réponse n'est pas OK
-        if (!response.ok) {
-            let errorResponse;
-            try {
-                errorResponse = JSON.parse(cleanedResponse); // Analyser la réponse nettoyée
-                throw new Error(`Erreur lors de la modification de l'habitat: ${errorResponse.error || response.statusText}`);
-            } catch (e) {
-                throw new Error(`Erreur lors de la modification de l'habitat: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
-            }
-        }
 
         let updatedHabitat;
         try {
@@ -441,7 +422,8 @@ async function modifierHabitat(habitatId, oldImageData) {
         myHeaders.append("Content-Type", "application/json");
     
         try {
-            const response = await fetch(`http://localhost:8000/api/habitat/${habitatId}`, {
+            // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+           await fetchFromApi(`api/habitat/${habitatId}`, { 
                 method: 'DELETE',
                 headers: myHeaders
             });
@@ -675,9 +657,10 @@ async function modifierAnimal(animalId, oldImageData) {
     }
 
     const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race, image_data };
-
     try {
-        const response = await fetch(`http://localhost:8000/api/animal/${animalId}`, {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+       await fetchFromApi(`api/animal/${animalId}`, { 
+
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"
@@ -704,16 +687,13 @@ async function supprimerAnimal(animalId) {
         "X-AUTH-TOKEN": getToken(),
         "Content-Type": "application/json"
     });
-
     try {
-        const response = await fetch(`http://localhost:8000/api/animal/${animalId}`, {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+       await fetchFromApi(`api/animal/${animalId}`, { 
             method: 'DELETE',
             headers: myHeaders
         });
 
-        if (!response.ok) {
-            throw new Error(`Erreur lors de la suppression de l'animal: ${response.statusText}`);
-        }
         alert("Animal supprimé avec succès !");
         voirAnimal(); 
     } catch (error) {
