@@ -632,8 +632,8 @@ async function modifierAnimal(animalId, oldImageData) {
     const grammage = document.getElementById('animalGrammage').value;
     const feeding_time = document.getElementById('animalFeedingTime').value;
     const created_at = document.getElementById('animalCreatedAt').value;
-    const habitat = document.getElementById('voirNomHabitat').value;
-    const race = document.getElementById('animalRace').value;
+    const habitat = document.getElementById('voirNomHabitatPut').value;
+    const race = document.getElementById('voirNomRacePut').value;
     const imageInput = document.getElementById('image_dataAnimal');
     let image_data = oldImageData; // Utiliser l'ancienne image par défaut
 
