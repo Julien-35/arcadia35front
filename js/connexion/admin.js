@@ -687,7 +687,7 @@ async function modifierAnimal(animalId, oldImageData) {
     const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race, image_data };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/animal/${animalId}`, {
+        const response = await fetchFromApi(`api/animal/${animalId}`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"

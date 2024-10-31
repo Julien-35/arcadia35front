@@ -111,7 +111,6 @@ async function modifierService(serviceId, oldImageData, nom, description, imageI
             image_data = `data:${file.type};base64,${base64Image}`;
         } catch (error) {
             alert('Erreur lors de la lecture de l\'image.');
-            console.error(error);
             return;
         }
     }
@@ -122,7 +121,6 @@ async function modifierService(serviceId, oldImageData, nom, description, imageI
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        console.log("Données à envoyer :", serviceData);
         
         const response = await fetchFromApi(`api/service/${serviceId}`, {
             method: 'PUT',
@@ -133,8 +131,6 @@ async function modifierService(serviceId, oldImageData, nom, description, imageI
         alert("Service mis à jour avec succès !");
         console.log("Réponse de l'API :", response);
     } catch (error) {
-        console.error("Erreur lors de la mise à jour du service :", error);
-        alert("Erreur lors de la mise à jour du service : " + error.message);
     }
 }
 

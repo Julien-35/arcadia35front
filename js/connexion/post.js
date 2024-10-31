@@ -321,7 +321,7 @@ async function creationAnimal(prenomAnimal, etatAnimal, nourritureAnimal, gramma
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/animal/post`, requestOptions);
+        const response = await fetchFromApi(`api/animal/post`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
