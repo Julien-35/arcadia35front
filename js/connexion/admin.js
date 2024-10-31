@@ -93,8 +93,8 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        // Envoyer la requête PUT pour mettre à jour l'horaire
-        const response = await fetch(`http://localhost:8000/api/horaire/${horaireId}`, {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour l'horaire
+        const response = await fetchFromApi(`api/horaire/${horaireId}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify(horaireData)
@@ -229,7 +229,7 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
         myHeaders.append("Content-Type", "application/json");
     
         try {
-            const response = await fetch(`http://localhost:8000/api/service/${serviceId}`, {
+                const response = await fetchFromApi(`api/api/service/${serviceId}`, {
                 method: 'PUT',
                 headers: myHeaders,
                 body: JSON.stringify(serviceData)
