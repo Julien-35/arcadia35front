@@ -572,8 +572,8 @@ async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourritur
     document.getElementById('animalCreatedAt').value = created_at || '';
     
     // Sélectionner l'habitat et la race dans les listes déroulantes
-    document.getElementById('voirNomHabitat').value = habitat || '';
-    document.getElementById('voirLabel').value = race || ''; // Assurez-vous que `race` est bien l'ID ou la valeur attendue
+    document.getElementById('voirNomHabitatPut').value = habitat || '';
+    document.getElementById('voirNomRacePut').value = race || ''; // Assurez-vous que `race` est bien l'ID ou la valeur attendue
     
     // Réinitialiser l'input d'image
     document.getElementById('image_dataAnimal').value = '';
