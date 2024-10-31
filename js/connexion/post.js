@@ -334,12 +334,8 @@ async function creationAnimal(prenomAnimal, etatAnimal, nourritureAnimal, gramma
 
 // Fonction pour voir les races lors de la création d'un animal
 async function voirRaceHabitat() {
-    const myHeaders = new Headers({
-        "Content-Type": "application/json"
-    });
-
     try {
-        const races = await fetchData("http://localhost:8000/api/race/get", myHeaders);
+        const races = await fetchFromApi("api/race/get")
         
         // Trier les races par ordre alphabétique en fonction de la propriété 'label'
         races.sort((a, b) => a.label.localeCompare(b.label));
@@ -360,12 +356,8 @@ async function voirRaceHabitat() {
 }
 
 async function voirHabitatAnimal() {
-    const myHeaders = new Headers({
-        "Content-Type": "application/json"
-    });
-
     try {
-        const habitats = await fetchData("http://localhost:8000/api/habitat/get", myHeaders);
+        const habitats = await fetchFromApi("api/habitat/get")
 
         const habitatSelect = document.getElementById('voirNomHabitat');
         habitatSelect.innerHTML = '<option value="" disabled selected>Sélectionner un habitat</option>';
