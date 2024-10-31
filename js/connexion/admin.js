@@ -265,15 +265,11 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
         myHeaders.append("Content-Type", "application/json");
         try {
             // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
-            const response = await fetchFromApi(`api/service/${serviceId}`, { 
-
+           await fetchFromApi(`api/service/${serviceId}`, { 
                 method: 'DELETE',
                 headers: myHeaders
             });
     
-            if (!response.ok) {
-                throw new Error(`Erreur lors de la suppression du service: ${response.statusText}`);
-            }
             alert("Service supprimé avec succès !");
             voirService(); 
         } catch (error) {
