@@ -589,7 +589,7 @@ async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourritur
 
 async function voirHabitatAnimal() {
     try {
-        const items = await fetchFromApi("api/habitat/get")
+        const habitats = await fetchFromApi("api/habitat/get")
 
         const habitatSelect = document.getElementById('voirNomHabitatPut');
         habitatSelect.innerHTML = '<option value="" disabled selected>Sélectionner un habitat</option>';
@@ -608,7 +608,7 @@ async function voirHabitatAnimal() {
 // Fonction pour afficher et peupler la liste des races
 async function voirRaceAnimal() {
     try {
-        const items = await fetchFromApi("api/race/get")
+        const races = await fetchFromApi("api/race/get")
 
         const raceSelect = document.getElementById('voirNomRacePut');
         raceSelect.innerHTML = '<option value="" disabled selected>Sélectionner une race</option>';
