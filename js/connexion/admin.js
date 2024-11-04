@@ -241,14 +241,12 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
             let updatedService;
             try {
                 updatedService = JSON.parse(cleanedResponse);
-                console.log("Service mis à jour avec succès :", updatedService);
                 alert("Service mis à jour avec succès !");
                 voirService(); // Appeler la fonction pour afficher le service mis à jour
             } catch (e) {
                 throw new Error(`Erreur lors de la mise à jour du service: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
             }
         } catch (error) {
-            console.error("Erreur :", error);
             alert("Erreur lors de la mise à jour du service : " + error.message); // Afficher le message d'erreur
         }
     }
@@ -380,7 +378,6 @@ async function modifierHabitat(habitatId, oldImageData) {
             image_data = `data:${file.type};base64,${base64Image}`;
         } catch (error) {
             alert('Erreur lors de la lecture de l\'image.');
-            console.error(error);
             return;
         }
     }
@@ -402,17 +399,11 @@ async function modifierHabitat(habitatId, oldImageData) {
         let updatedHabitat;
         try {
             updatedHabitat = JSON.parse(cleanedResponse); // Analyser la réponse nettoyée
-            console.log("Habitat mis à jour avec succès :", updatedHabitat);
             alert("Habitat mis à jour avec succès !");
             voirHabitat(); // Recharger les habitats
         } catch (e) {
-            throw new Error(`Erreur lors de la mise à jour de l'habitat: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
         }
     } catch (error) {
-        console.error("Erreur :", error);
-        alert("Erreur lors de la mise à jour de l'habitat : " + error.message); // Afficher le message d'erreur
-        location.reload(); 
-
     }
 }
 
@@ -651,7 +642,6 @@ async function modifierAnimal(animalId, oldImageData) {
             image_data = `data:${file.type};base64,${base64Image}`;
         } catch (error) {
             alert('Erreur lors de la lecture de l\'image.');
-            console.error(error);
             return;
         }
     }
@@ -674,10 +664,9 @@ async function modifierAnimal(animalId, oldImageData) {
         }
 
         alert("Animal mis à jour avec succès !");
-        voirAnimal(); // Mettre à jour la liste des animaux
+        voirAnimal(); 
     } catch (error) {
-        console.error("Erreur lors de la mise à jour de l'animal :", error);
-        alert("Erreur lors de la mise à jour de l'animal : " + error.message);
+
     }
 }
 
@@ -688,7 +677,6 @@ async function supprimerAnimal(animalId) {
         "Content-Type": "application/json"
     });
     try {
-        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
        await fetchFromApi(`api/animal/${animalId}`, { 
             method: 'DELETE',
             headers: myHeaders
