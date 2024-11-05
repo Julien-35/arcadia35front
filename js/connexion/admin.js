@@ -565,7 +565,7 @@ async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourritur
     
     // Sélectionner l'habitat et la race dans les listes déroulantes
     document.getElementById('voirNomHabitatPut').value = habitat || '';
-    document.getElementById('voirNomRacePut').value = label || ''; 
+    document.getElementById('voirNomRacePut').value = race || ''; 
     
     // Réinitialiser l'input d'image
     document.getElementById('image_dataAnimal').value = '';
@@ -616,7 +616,6 @@ async function voirRaceAnimal() {
     }
 }
 
-// Fonction pour modifier l'animal
 async function modifierAnimal(animalId, oldImageData) {
     const prenom = sanitizeInput(document.getElementById('animalPrenom').value);
     const etat = sanitizeInput(document.getElementById('animalEtat').value);
@@ -625,11 +624,10 @@ async function modifierAnimal(animalId, oldImageData) {
     const feeding_time = document.getElementById('animalFeedingTime').value;
     const created_at = document.getElementById('animalCreatedAt').value;
     const habitat = document.getElementById('voirNomHabitatPut').value;
-    const race = document.getElementById('voirNomRacePut').value;
+    const label = document.getElementById('voirNomRacePut').value; // Renommer race à label
     const imageInput = document.getElementById('image_dataAnimal');
-    let image_data = oldImageData; // Utiliser l'ancienne image par défaut
+    let image_data = oldImageData;
 
-    // Vérifie si une nouvelle image a été sélectionnée
     if (imageInput && imageInput.files.length > 0) {
         const file = imageInput.files[0];
         const validImageTypes = ['image/png', 'image/jpeg', 'image/avif'];
@@ -647,11 +645,9 @@ async function modifierAnimal(animalId, oldImageData) {
         }
     }
 
-    const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race, image_data };
+    const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, label, image_data };
     try {
-        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
-       await fetchFromApi(`api/animal/${animalId}`, { 
-
+        const response = await fetchFromApi(`api/animal/${animalId}`, { 
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"
@@ -667,9 +663,11 @@ async function modifierAnimal(animalId, oldImageData) {
         alert("Animal mis à jour avec succès !");
         voirAnimal(); 
     } catch (error) {
-
+        console.error('Erreur lors de la mise à jour de l\'animal:', error);
+        alert('Une erreur est survenue lors de la mise à jour de l\'animal. Vérifiez la console pour plus de détails.');
     }
 }
+
 
 // Fonction pour supprimer un animal
 async function supprimerAnimal(animalId) {
