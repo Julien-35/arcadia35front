@@ -4,6 +4,7 @@ if (document.readyState !== "loading") {
   voirService();
   voirHoraire();
   voirHabitat();
+  voirRace();
   voirAnimalStat();
 }
 
@@ -756,4 +757,126 @@ async function voirAnimalStat() {
     } catch (error) {
         console.error("Erreur dans la récupération des statistiques des animaux:", error);
     }
+}
+
+
+
+async function voirRace() {
+    try {
+        const items = await fetchFromApi("api/race/get")
+
+        const racesContainer = document.getElementById("voirRace");
+        racesContainer.textContent = ''; 
+
+        items.forEach(item => {
+            // Création des éléments de manière sécurisée
+            const raceElement = document.createElement('div');
+            raceElement.classList.add("container", "text-center","text-dark");
+
+            // Créer et insérer le label de la race
+            const raceLabel = document.createElement('h2');
+            raceLabel.classList.add("my-4");
+            raceLabel.textContent = decodeHtml(item.label); // Décoder le nom
+            raceElement.appendChild(raceLabel);
+
+            // Ajouter le bouton Modifier
+            const modifyRaceButton = document.createElement('button');
+            modifyRaceButton.classList.add("btn", "btn-primary", "m-2");
+            modifyRaceButton.textContent = "Modifier";
+            modifyRaceButton.onclick = () => {
+                ouvrirModalRace(item.id, item.label); 
+            };
+           raceElement.appendChild(modifyRaceButton);
+
+            // Ajouter le bouton Supprimer
+            const deleteButtonRace = document.createElement('button');
+            deleteButtonRace.classList.add("btn", "btn-danger", "m-2");
+            deleteButtonRace.textContent = "Supprimer";
+            deleteButtonRace.onclick = () => {
+                supprimerRace(item.id); 
+            };
+            raceElement.appendChild(deleteButtonRace);
+
+            const hrElement = document.createElement('hr');
+            raceElement.appendChild(hrElement);
+
+           racesContainer.appendChild(raceElement);
+        });
+    } catch (error) {
+    }
+}
+
+async function modifierRace(raceId) {
+    const label = sanitizeInput(document.getElementById('raceLabel').value); 
+
+    const raceData = { label };
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    try {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+        const response = await fetchFromApi(`api/race/${raceId}`, {
+            method: 'PUT',
+            headers: myHeaders,
+            body: JSON.stringify(raceData)
+        });
+
+        // Lire la réponse en tant que texte pour effectuer des opérations sur le contenu
+        const textResponse = typeof response === 'string' ? response : JSON.stringify(response);
+
+        // Supprimer le caractère '#' de la réponse si présent
+        const cleanedResponse = textResponse.replace(/#/g, '');
+
+        // Tenter de parser la réponse nettoyée en JSON
+        let updatedRace;
+        try {
+            updatedRace = JSON.parse(cleanedResponse);
+            alert("La race est mis à jour avec succès !");
+            voirRace(); 
+        } catch (e) {
+            throw new Error(`Erreur lors de la mise à jour de la race: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
+        }
+    } catch (error) {
+        alert("Erreur lors de la mise à jour du service : " + error.message); // Afficher le message d'erreur
+    }
+}
+
+
+async function supprimerRace(raceId) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", getToken()); // Assurez-vous que la fonction getToken() retourne un jeton valide
+    myHeaders.append("Content-Type", "application/json");
+    try {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+       await fetchFromApi(`api/race/${raceId}`, { 
+            method: 'DELETE',
+            headers: myHeaders
+        });
+
+        alert("Race supprimé avec succès !");
+        voirRace(); 
+    } catch (error) {
+        alert("Erreur lors de la suppression de la race : " + error.message);
+    }
+}
+
+function ouvrirModalRace(raceId, label) {
+    // Ouvrir le modal
+    $('#editRaceModal').modal('show');
+
+    // Pré-remplir les champs du modal avec les données du service
+    const raceIdInput = document.getElementById('raceId');
+    const raceLabelInput = document.getElementById('raceName');
+
+
+    if (raceIdInput) raceIdInput.value = raceId;
+    if (raceLabelInput) raceLabelInput.value = decodeHtml(label); 
+
+    const confirmBtn = document.getElementById('editRaceForm');
+    confirmBtn.onsubmit = (event) => {
+        event.preventDefault(); // Empêche la soumission par défaut du formulaire
+        modifierRace(raceId); 
+        $('#editRaceModal').modal('hide'); // Fermer le modal après soumission
+    };
 }
