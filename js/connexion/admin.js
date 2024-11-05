@@ -565,7 +565,7 @@ async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourritur
     
     // Sélectionner l'habitat et la race dans les listes déroulantes
     document.getElementById('voirNomHabitatPut').value = habitat || '';
-    document.getElementById('voirNomRacePut').value = race || ''; 
+    document.getElementById('voirNomRacePut').value = label || ''; 
     
     // Réinitialiser l'input d'image
     document.getElementById('image_dataAnimal').value = '';
@@ -628,9 +628,6 @@ async function modifierAnimal(animalId, oldImageData) {
     const imageInput = document.getElementById('image_dataAnimal');
     let image_data = oldImageData;
 
-        // Log des valeurs des champs
-        console.log('Habitat:', habitat);
-        console.log('Label (Race):', label);
 
     if (imageInput && imageInput.files.length > 0) {
         const file = imageInput.files[0];
