@@ -628,6 +628,10 @@ async function modifierAnimal(animalId, oldImageData) {
     const imageInput = document.getElementById('image_dataAnimal');
     let image_data = oldImageData;
 
+        // Log des valeurs des champs
+        console.log('Habitat:', habitat);
+        console.log('Label (Race):', label);
+
     if (imageInput && imageInput.files.length > 0) {
         const file = imageInput.files[0];
         const validImageTypes = ['image/png', 'image/jpeg', 'image/avif'];
@@ -663,7 +667,6 @@ async function modifierAnimal(animalId, oldImageData) {
         alert("Animal mis à jour avec succès !");
         voirAnimal(); 
     } catch (error) {
-        console.error('Erreur lors de la mise à jour de l\'animal:', error);
         alert('Une erreur est survenue lors de la mise à jour de l\'animal. Vérifiez la console pour plus de détails.');
     }
 }
