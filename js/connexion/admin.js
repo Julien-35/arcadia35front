@@ -546,7 +546,7 @@ async function voirAnimal() {
 }
 
 // Fonction pour ouvrir la modal d'édition de l'animal
-async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourriture, grammage, feeding_time, created_at, habitat,label) {
+async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourriture, grammage, feeding_time, created_at, habitat,race) {
     // Charger les options d'habitats et de races
     await voirHabitatAnimal(); // Fonction pour peupler les habitats
     await voirRaceAnimal(); // Fonction pour peupler les races
@@ -565,7 +565,7 @@ async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourritur
     
     // Sélectionner l'habitat et la race dans les listes déroulantes
     document.getElementById('voirNomHabitatPut').value = habitat || '';
-    document.getElementById('voirNomRacePut').value = label || ''; 
+    document.getElementById('voirNomRacePut').value = race || ''; 
     
     // Réinitialiser l'input d'image
     document.getElementById('image_dataAnimal').value = '';
@@ -624,7 +624,7 @@ async function modifierAnimal(animalId, oldImageData) {
     const feeding_time = document.getElementById('animalFeedingTime').value;
     const created_at = document.getElementById('animalCreatedAt').value;
     const habitat = document.getElementById('voirNomHabitatPut').value;
-    const label = document.getElementById('voirNomRacePut').value; // Renommer race à label
+    const race = document.getElementById('voirNomRacePut').value; // Renommer race à label
     const imageInput = document.getElementById('image_dataAnimal');
     let image_data = oldImageData;
 
@@ -646,7 +646,7 @@ async function modifierAnimal(animalId, oldImageData) {
         }
     }
 
-    const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, label, image_data };
+    const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race, image_data };
     try {
         const response = await fetchFromApi(`api/animal/${animalId}`, { 
             method: 'PUT',
