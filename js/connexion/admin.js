@@ -664,7 +664,6 @@ async function modifierAnimal(animalId, oldImageData) {
         alert("Animal mis à jour avec succès !");
         voirAnimal(); 
     } catch (error) {
-        alert('Une erreur est survenue lors de la mise à jour de l\'animal. Vérifiez la console pour plus de détails.');
     }
 }
 
