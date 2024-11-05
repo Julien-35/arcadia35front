@@ -546,7 +546,7 @@ async function voirAnimal() {
 }
 
 // Fonction pour ouvrir la modal d'édition de l'animal
-async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race) {
+async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourriture, grammage, feeding_time, created_at, habitat,label) {
     // Charger les options d'habitats et de races
     await voirHabitatAnimal(); // Fonction pour peupler les habitats
     await voirRaceAnimal(); // Fonction pour peupler les races
