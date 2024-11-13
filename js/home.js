@@ -69,7 +69,6 @@ async function voirService() {
             servicesContainer.appendChild(serviceElement);
         });
     } catch (error) {
-        console.error("Error in voirService:", error);
         document.getElementById("voirService").textContent = "Impossible de récupérer les services.";
     }
 }
