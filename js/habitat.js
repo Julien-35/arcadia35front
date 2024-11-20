@@ -39,7 +39,7 @@ async function voirAnimal(habitatId, animalContainer) {
             
             // Style pour l'image
             imageElement.setAttribute('style', `
-                width: 100%;
+                width: 75%;
                 height: auto;
                 object-fit: cover;
             `);
@@ -51,17 +51,17 @@ async function voirAnimal(habitatId, animalContainer) {
             const collapseContainer = document.createElement('div');
             collapseContainer.classList.add("collapse");
             collapseContainer.setAttribute('id', `collapseWidth${animal.id}`);
-            collapseContainer.setAttribute('style', 'width: 100%;'); 
+            collapseContainer.setAttribute('style', 'width: 75%;'); 
 
             // Reste du code pour construire la card
             const cardBody = document.createElement('div');
             cardBody.classList.add("card", "card-body", "mx-auto", "mt-3");
-            cardBody.setAttribute('style', 'width: 100%;'); 
+            cardBody.setAttribute('style', 'width: 75%;'); 
 
             // Table contenant les détails de l'animal
             const tableElement = document.createElement('table');
             tableElement.classList.add("table");
-            tableElement.setAttribute('style', 'width: 100%;');
+            tableElement.setAttribute('style', 'width: 75%;');
 
             const tableBody = document.createElement('tbody');
             tableBody.classList.add("text-center");
