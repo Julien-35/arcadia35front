@@ -515,6 +515,16 @@ async function voirAnimal() {
                 );
             };
 
+            // Ajouter l'image en dessous des informations et des boutons
+            const imageElement = document.createElement('img');
+            imageElement.classList.add("img-fluid", "rounded", "w-100", "h-auto", "my-3");
+            imageElement.setAttribute('src', item.image_data);
+            imageElement.setAttribute('alt', `Image de ${decodeHtml(item.prenom)}`); // Décoder le prénom pour l'alt
+            animalElement.appendChild(imageElement);
+
+            // Ajouter l'élément de l'animal au conteneur principal
+            animalsContainer.appendChild(animalElement);
+
             const deleteButton = document.createElement('button');
             deleteButton.classList.add("btn", "btn-danger", "m-2");
             deleteButton.textContent = "Supprimer";
@@ -526,15 +536,7 @@ async function voirAnimal() {
             buttonRow.appendChild(deleteButton);
             animalElement.appendChild(buttonRow);
 
-            // Ajouter l'image en dessous des informations et des boutons
-            const imageElement = document.createElement('img');
-            imageElement.classList.add("img-fluid", "rounded", "w-100", "h-auto", "my-3");
-            imageElement.setAttribute('src', item.image_data);
-            imageElement.setAttribute('alt', `Image de ${decodeHtml(item.prenom)}`); // Décoder le prénom pour l'alt
-            animalElement.appendChild(imageElement);
-
-            // Ajouter l'élément de l'animal au conteneur principal
-            animalsContainer.appendChild(animalElement);
+          
 
             // Ajouter un séparateur horizontal (hr)
             const hrElement = document.createElement('hr');
@@ -624,7 +626,7 @@ async function modifierAnimal(animalId, oldImageData) {
     const feeding_time = document.getElementById('animalFeedingTime').value;
     const created_at = document.getElementById('animalCreatedAt').value;
     const habitat = document.getElementById('voirNomHabitatPut').value;
-    const race = document.getElementById('voirNomRacePut').value; // Renommer race à label
+    const race = document.getElementById('voirNomRacePut').value; 
     const imageInput = document.getElementById('image_dataAnimal');
     let image_data = oldImageData;
 
