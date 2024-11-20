@@ -452,11 +452,11 @@ async function voirAnimal() {
 
             // Créer un conteneur pour les informations (labels et valeurs en deux colonnes)
             const infoRow = document.createElement('div');
-            infoRow.classList.add("row", "w-100", "mb-4",'border','border-primary','rounded'); 
+            infoRow.classList.add("row", "w-100", "mb-4"); 
 
             // Colonne pour les valeurs
             const valueColumn = document.createElement('div');
-            valueColumn.classList.add("col-md-12", "text-center"); 
+            valueColumn.classList.add("col-md-12", "text-center",'border','border-primary','rounded'); 
 
             const values = [
                 { label: 'Son ETAT:', value: decodeHtml(item.etat) },
