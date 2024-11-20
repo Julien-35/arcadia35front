@@ -40,7 +40,7 @@ async function voirAnimal(habitatId, animalContainer) {
             // Style pour l'image
             imageElement.setAttribute('style', `
                 width: 100%;
-                height: 200px;
+                height: auto;
                 object-fit: cover;
             `);
 
