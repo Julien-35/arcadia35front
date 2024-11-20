@@ -442,7 +442,7 @@ async function voirAnimal() {
         items.forEach(item => {
             // Création de l'élément principal de l'animal
             const animalElement = document.createElement('div');
-            animalElement.classList.add("container", "my-4");
+            animalElement.classList.add("container", "my-4",);
 
             // Créer et insérer le titre de l'animal
             const animalTitle = document.createElement('h2');
@@ -452,7 +452,7 @@ async function voirAnimal() {
 
             // Créer un conteneur pour les informations (labels et valeurs en deux colonnes)
             const infoRow = document.createElement('div');
-            infoRow.classList.add("row", "w-100", "mb-4"); 
+            infoRow.classList.add("row", "w-100", "mb-4",'border','border-primary','rounded'); 
 
             // Colonne pour les valeurs
             const valueColumn = document.createElement('div');
@@ -470,7 +470,7 @@ async function voirAnimal() {
             
             values.forEach(({ label, value }) => {
                 const rowElement = document.createElement('div');
-                rowElement.classList.add('row','ms-2','mb-2','border','border-primary','rounded');
+                rowElement.classList.add('row','ms-2','mb-2');
 
                 // Label en gras
                 const labelElement = document.createElement('div');
@@ -688,8 +688,6 @@ async function supprimerAnimal(animalId) {
         alert("Erreur lors de la suppression de l'animal : " + error.message);
     }
 }
-
-
 
 async function voirAnimalStat() {
     try {
