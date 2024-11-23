@@ -1,4 +1,3 @@
-// Ajout de validateForm à l'export pour qu'elle soit accessible dans les tests
 export function validateForm() {
     const inputEmail = document.getElementById("EmailInput");
     const inputPassword = document.getElementById("PasswordInput");
