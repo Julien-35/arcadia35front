@@ -36,6 +36,10 @@
   <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropAnimalPut">
               Modifier les animaux
   </button>
+
+  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdropRacePut">
+    Modifier les races
+</button>
 </div>
 
 <!-- Modal des horaires GET et PUT-->
@@ -47,6 +51,24 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
         <div class="container text-center" id="voirHoraire"></div>
+
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal les races GET et PUT-->
+<div class="modal fade" id="staticBackdropRacePut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelRacePut" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabelRacePut">Modifier les races</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="container text-center" id="voirRace"></div>
 
       </div>
       <div class="modal-footer">
@@ -103,6 +125,37 @@
 
 
 
+    <!-- Modal pour modifier les services -->
+<div class="modal fade text-center text-dark fs-5" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="editServiceModalLabel">Modifier le service</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="editServiceForm">
+                  <input type="hidden" id="serviceId" />
+                  <div class="mb-3">
+                      <label for="serviceName" class="form-label">Nom du service</label>
+                      <input type="text" class="form-control text-center text-dark" id="serviceName" required />
+                  </div>
+                  <div class="mb-3">
+                      <label for="serviceDescription" class="form-label">Description</label>
+                      <textarea class="form-control text-center text-dark" id="serviceDescription" required></textarea>
+                  </div>
+                  <div class="mb-3">
+                      <label for="image_data" class="form-label">Image</label>
+                      <input type="file" class="form-control text-center text-dark" id="image_data" />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Modifier</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
     <!-- Modal pour modifier les horaires -->
     <div class="modal fade text-dark text-center fs-5" id="editHoraireModal" tabindex="-1" aria-labelledby="editHoraireModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -143,6 +196,30 @@
           </div>
       </div>
     </div>
+
+
+        <!-- Modal pour modifier les horaires -->
+        <div class="modal fade text-dark text-center fs-5" id="editRaceModal" tabindex="-1" aria-labelledby="editRaceModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="editRaceModalLabel">Modifier les races</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <form id="editRaceForm">
+                          <input type="hidden" id="raceId"/>
+                          <div class="mb-3">
+                              <label for="raceLabel" class="form-label">Label de la race</label>
+                              <input type="text" class="form-control text-center text-dark" id="raceLabel" required />
+                          </div>
+                          <button type="submit" class="btn btn-primary">Modifier</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+        </div>
+    
 
    <!-- Modal des habitats GET et PUT -->
 <div class="modal fade" id="staticBackdropHabitatPut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelHabitatPut" aria-hidden="true">

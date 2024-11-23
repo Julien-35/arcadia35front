@@ -39,9 +39,9 @@ async function voirAnimal(habitatId, animalContainer) {
             
             // Style pour l'image
             imageElement.setAttribute('style', `
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
+                width: 100%;  
+                height: 200px;  
+                object-fit: cover;  
             `);
 
             // Ajouter l'image au conteneur de la carte

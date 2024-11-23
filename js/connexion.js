@@ -1,24 +1,33 @@
-// Références aux éléments du DOM
-const inputEmail = document.getElementById("EmailInput");
-const inputPassword = document.getElementById("PasswordInput");
-const btnConnexion = document.getElementById("btnConnexion");
+// mettez en export vos fonctions pour les tests unitaires
+export function validateForm() {
+    const inputEmail = document.getElementById("EmailInput");
+    const inputPassword = document.getElementById("PasswordInput");
+    const btnConnexion = document.getElementById("btnConnexion");
 
-// Ajouter des écouteurs d'événements pour la validation en temps réel
-inputEmail.addEventListener("keyup", validateForm);
-inputPassword.addEventListener("keyup", validateForm);
-
-// Ajouter un écouteur d'événement pour le bouton de connexion
-btnConnexion.addEventListener("click", ConnexionUtilisateur);
-
-// Fonction pour valider le formulaire de connexion
-function validateForm() {
     const pwdOk = validatePassword(inputPassword);
     const mailOk = validateMail(inputEmail);
     btnConnexion.disabled = !(pwdOk && mailOk);
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const inputEmail = document.getElementById("EmailInput");
+    const inputPassword = document.getElementById("PasswordInput");
+    const btnConnexion = document.getElementById("btnConnexion");
+
+    if (inputEmail) {
+        inputEmail.addEventListener("keyup", validateForm);
+    }
+    if (inputPassword) {
+        inputPassword.addEventListener("keyup", validateForm);
+    }
+
+    if (btnConnexion) {
+        btnConnexion.addEventListener("click", ConnexionUtilisateur);
+    }
+});
+
 // Fonction pour vérifier la configuration de l'e-mail via un regex
-function validateMail(input) {
+export function validateMail(input) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const mailUser = input.value;
     const isValid = emailRegex.test(mailUser);
@@ -27,7 +36,7 @@ function validateMail(input) {
 }
 
 // Fonction pour définir la validité du mot de passe
-function validatePassword(input) {
+export function validatePassword(input) {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
     const passwordUser = input.value;
     const isValid = passwordRegex.test(passwordUser);
@@ -60,6 +69,9 @@ function setCookie(name, value, days) {
 // Fonction pour la connexion de l'utilisateur
 async function ConnexionUtilisateur(event) {
     event.preventDefault();
+    const inputEmail = document.getElementById("EmailInput");
+    const inputPassword = document.getElementById("PasswordInput");
+
     const email = inputEmail.value.trim();
     const password = inputPassword.value.trim();
 
@@ -71,7 +83,6 @@ async function ConnexionUtilisateur(event) {
         password: password
     };
     try {
-        // Appel de l'API avec le bon endpoint
         const response = await fetchFromApi("api/login", {
             method: "POST",
             headers: {
@@ -88,8 +99,6 @@ async function ConnexionUtilisateur(event) {
         alert('Une erreur est survenue lors de la connexion. Détails : ' + error.message);
     }
 }
-
-
 
 // Fonction pour obtenir le token
 function getToken() {

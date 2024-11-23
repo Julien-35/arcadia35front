@@ -4,6 +4,7 @@ if (document.readyState !== "loading") {
   voirService();
   voirHoraire();
   voirHabitat();
+  voirRace();
   voirAnimalStat();
 }
 
@@ -241,14 +242,12 @@ async function modifierHoraire(horaireId, { titre, message, jour, heure_debut, h
             let updatedService;
             try {
                 updatedService = JSON.parse(cleanedResponse);
-                console.log("Service mis à jour avec succès :", updatedService);
                 alert("Service mis à jour avec succès !");
                 voirService(); // Appeler la fonction pour afficher le service mis à jour
             } catch (e) {
                 throw new Error(`Erreur lors de la mise à jour du service: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
             }
         } catch (error) {
-            console.error("Erreur :", error);
             alert("Erreur lors de la mise à jour du service : " + error.message); // Afficher le message d'erreur
         }
     }
@@ -380,7 +379,6 @@ async function modifierHabitat(habitatId, oldImageData) {
             image_data = `data:${file.type};base64,${base64Image}`;
         } catch (error) {
             alert('Erreur lors de la lecture de l\'image.');
-            console.error(error);
             return;
         }
     }
@@ -402,17 +400,11 @@ async function modifierHabitat(habitatId, oldImageData) {
         let updatedHabitat;
         try {
             updatedHabitat = JSON.parse(cleanedResponse); // Analyser la réponse nettoyée
-            console.log("Habitat mis à jour avec succès :", updatedHabitat);
             alert("Habitat mis à jour avec succès !");
             voirHabitat(); // Recharger les habitats
         } catch (e) {
-            throw new Error(`Erreur lors de la mise à jour de l'habitat: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
         }
     } catch (error) {
-        console.error("Erreur :", error);
-        alert("Erreur lors de la mise à jour de l'habitat : " + error.message); // Afficher le message d'erreur
-        location.reload(); 
-
     }
 }
 
@@ -450,7 +442,7 @@ async function voirAnimal() {
         items.forEach(item => {
             // Création de l'élément principal de l'animal
             const animalElement = document.createElement('div');
-            animalElement.classList.add("container", "my-4");
+            animalElement.classList.add("container", "my-4",);
 
             // Créer et insérer le titre de l'animal
             const animalTitle = document.createElement('h2');
@@ -464,7 +456,7 @@ async function voirAnimal() {
 
             // Colonne pour les valeurs
             const valueColumn = document.createElement('div');
-            valueColumn.classList.add("col-md-12", "text-center"); 
+            valueColumn.classList.add("col-md-12","ms-2", "text-center",'border','border-primary','rounded'); 
 
             const values = [
                 { label: 'Son ETAT:', value: decodeHtml(item.etat) },
@@ -478,7 +470,7 @@ async function voirAnimal() {
             
             values.forEach(({ label, value }) => {
                 const rowElement = document.createElement('div');
-                rowElement.classList.add('row','ms-2','mb-2','border','border-primary','rounded');
+                rowElement.classList.add('row','ms-2','mb-2');
 
                 // Label en gras
                 const labelElement = document.createElement('div');
@@ -523,6 +515,16 @@ async function voirAnimal() {
                 );
             };
 
+            // Ajouter l'image en dessous des informations et des boutons
+            const imageElement = document.createElement('img');
+            imageElement.classList.add("img-fluid", "rounded", "w-100", "h-auto", "my-3");
+            imageElement.setAttribute('src', item.image_data);
+            imageElement.setAttribute('alt', `Image de ${decodeHtml(item.prenom)}`); // Décoder le prénom pour l'alt
+            animalElement.appendChild(imageElement);
+
+            // Ajouter l'élément de l'animal au conteneur principal
+            animalsContainer.appendChild(animalElement);
+
             const deleteButton = document.createElement('button');
             deleteButton.classList.add("btn", "btn-danger", "m-2");
             deleteButton.textContent = "Supprimer";
@@ -534,15 +536,7 @@ async function voirAnimal() {
             buttonRow.appendChild(deleteButton);
             animalElement.appendChild(buttonRow);
 
-            // Ajouter l'image en dessous des informations et des boutons
-            const imageElement = document.createElement('img');
-            imageElement.classList.add("img-fluid", "rounded", "w-100", "h-auto", "my-3");
-            imageElement.setAttribute('src', item.image_data);
-            imageElement.setAttribute('alt', `Image de ${decodeHtml(item.prenom)}`); // Décoder le prénom pour l'alt
-            animalElement.appendChild(imageElement);
-
-            // Ajouter l'élément de l'animal au conteneur principal
-            animalsContainer.appendChild(animalElement);
+          
 
             // Ajouter un séparateur horizontal (hr)
             const hrElement = document.createElement('hr');
@@ -554,7 +548,7 @@ async function voirAnimal() {
 }
 
 // Fonction pour ouvrir la modal d'édition de l'animal
-async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race) {
+async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourriture, grammage, feeding_time, created_at, habitat,race) {
     // Charger les options d'habitats et de races
     await voirHabitatAnimal(); // Fonction pour peupler les habitats
     await voirRaceAnimal(); // Fonction pour peupler les races
@@ -572,8 +566,8 @@ async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourritur
     document.getElementById('animalCreatedAt').value = created_at || '';
     
     // Sélectionner l'habitat et la race dans les listes déroulantes
-    document.getElementById('voirNomHabitat').value = habitat || '';
-    document.getElementById('voirLabel').value = race || ''; // Assurez-vous que `race` est bien l'ID ou la valeur attendue
+    document.getElementById('voirNomHabitatPut').value = habitat || '';
+    document.getElementById('voirNomRacePut').value = race || ''; 
     
     // Réinitialiser l'input d'image
     document.getElementById('image_dataAnimal').value = '';
@@ -589,7 +583,7 @@ async function ouvrirModalAnimal(animalId, oldImageData, prenom, etat, nourritur
 
 async function voirHabitatAnimal() {
     try {
-        const items = await fetchFromApi("api/habitat/get")
+        const habitats = await fetchFromApi("api/habitat/get")
 
         const habitatSelect = document.getElementById('voirNomHabitatPut');
         habitatSelect.innerHTML = '<option value="" disabled selected>Sélectionner un habitat</option>';
@@ -608,7 +602,7 @@ async function voirHabitatAnimal() {
 // Fonction pour afficher et peupler la liste des races
 async function voirRaceAnimal() {
     try {
-        const items = await fetchFromApi("api/race/get")
+        const races = await fetchFromApi("api/race/get")
 
         const raceSelect = document.getElementById('voirNomRacePut');
         raceSelect.innerHTML = '<option value="" disabled selected>Sélectionner une race</option>';
@@ -624,7 +618,6 @@ async function voirRaceAnimal() {
     }
 }
 
-// Fonction pour modifier l'animal
 async function modifierAnimal(animalId, oldImageData) {
     const prenom = sanitizeInput(document.getElementById('animalPrenom').value);
     const etat = sanitizeInput(document.getElementById('animalEtat').value);
@@ -632,12 +625,12 @@ async function modifierAnimal(animalId, oldImageData) {
     const grammage = document.getElementById('animalGrammage').value;
     const feeding_time = document.getElementById('animalFeedingTime').value;
     const created_at = document.getElementById('animalCreatedAt').value;
-    const habitat = document.getElementById('voirNomHabitat').value;
-    const race = document.getElementById('animalRace').value;
+    const habitat = document.getElementById('voirNomHabitatPut').value;
+    const race = document.getElementById('voirNomRacePut').value; 
     const imageInput = document.getElementById('image_dataAnimal');
-    let image_data = oldImageData; // Utiliser l'ancienne image par défaut
+    let image_data = oldImageData;
 
-    // Vérifie si une nouvelle image a été sélectionnée
+
     if (imageInput && imageInput.files.length > 0) {
         const file = imageInput.files[0];
         const validImageTypes = ['image/png', 'image/jpeg', 'image/avif'];
@@ -651,16 +644,13 @@ async function modifierAnimal(animalId, oldImageData) {
             image_data = `data:${file.type};base64,${base64Image}`;
         } catch (error) {
             alert('Erreur lors de la lecture de l\'image.');
-            console.error(error);
             return;
         }
     }
 
     const animalData = { prenom, etat, nourriture, grammage, feeding_time, created_at, habitat, race, image_data };
     try {
-        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
-       await fetchFromApi(`api/animal/${animalId}`, { 
-
+        const response = await fetchFromApi(`api/animal/${animalId}`, { 
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"
@@ -674,12 +664,11 @@ async function modifierAnimal(animalId, oldImageData) {
         }
 
         alert("Animal mis à jour avec succès !");
-        voirAnimal(); // Mettre à jour la liste des animaux
+        voirAnimal(); 
     } catch (error) {
-        console.error("Erreur lors de la mise à jour de l'animal :", error);
-        alert("Erreur lors de la mise à jour de l'animal : " + error.message);
     }
 }
+
 
 // Fonction pour supprimer un animal
 async function supprimerAnimal(animalId) {
@@ -688,7 +677,6 @@ async function supprimerAnimal(animalId) {
         "Content-Type": "application/json"
     });
     try {
-        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
        await fetchFromApi(`api/animal/${animalId}`, { 
             method: 'DELETE',
             headers: myHeaders
@@ -700,8 +688,6 @@ async function supprimerAnimal(animalId) {
         alert("Erreur lors de la suppression de l'animal : " + error.message);
     }
 }
-
-
 
 async function voirAnimalStat() {
     try {
@@ -768,4 +754,126 @@ async function voirAnimalStat() {
     } catch (error) {
         console.error("Erreur dans la récupération des statistiques des animaux:", error);
     }
+}
+
+
+
+async function voirRace() {
+    try {
+        const items = await fetchFromApi("api/race/get")
+
+        const racesContainer = document.getElementById("voirRace");
+        racesContainer.textContent = ''; 
+
+        items.forEach(item => {
+            // Création des éléments de manière sécurisée
+            const raceElement = document.createElement('div');
+            raceElement.classList.add("container", "text-center","text-dark");
+
+            // Créer et insérer le label de la race
+            const raceLabel = document.createElement('h2');
+            raceLabel.classList.add("my-4");
+            raceLabel.textContent = decodeHtml(item.label); // Décoder le nom
+            raceElement.appendChild(raceLabel);
+
+            // Ajouter le bouton Modifier
+            const modifyRaceButton = document.createElement('button');
+            modifyRaceButton.classList.add("btn", "btn-primary", "m-2");
+            modifyRaceButton.textContent = "Modifier";
+            modifyRaceButton.onclick = () => {
+                ouvrirModalRace(item.id, item.label); 
+            };
+           raceElement.appendChild(modifyRaceButton);
+
+            // Ajouter le bouton Supprimer
+            const deleteButtonRace = document.createElement('button');
+            deleteButtonRace.classList.add("btn", "btn-danger", "m-2");
+            deleteButtonRace.textContent = "Supprimer";
+            deleteButtonRace.onclick = () => {
+                supprimerRace(item.id); 
+            };
+            raceElement.appendChild(deleteButtonRace);
+
+            const hrElement = document.createElement('hr');
+            raceElement.appendChild(hrElement);
+
+           racesContainer.appendChild(raceElement);
+        });
+    } catch (error) {
+    }
+}
+
+async function modifierRace(raceId) {
+    const label = sanitizeInput(document.getElementById('raceLabel').value); 
+
+    const raceData = { label };
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    try {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+        const response = await fetchFromApi(`api/race/${raceId}`, {
+            method: 'PUT',
+            headers: myHeaders,
+            body: JSON.stringify(raceData)
+        });
+
+        // Lire la réponse en tant que texte pour effectuer des opérations sur le contenu
+        const textResponse = typeof response === 'string' ? response : JSON.stringify(response);
+
+        // Supprimer le caractère '#' de la réponse si présent
+        const cleanedResponse = textResponse.replace(/#/g, '');
+
+        // Tenter de parser la réponse nettoyée en JSON
+        let updatedRace;
+        try {
+            updatedRace = JSON.parse(cleanedResponse);
+            alert("La race est mis à jour avec succès !");
+            voirRace(); 
+        } catch (e) {
+            throw new Error(`Erreur lors de la mise à jour de la race: ${cleanedResponse}`); // Afficher le texte brut si l'analyse échoue
+        }
+    } catch (error) {
+        alert("Erreur lors de la mise à jour du service : " + error.message); // Afficher le message d'erreur
+    }
+}
+
+
+async function supprimerRace(raceId) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", getToken()); // Assurez-vous que la fonction getToken() retourne un jeton valide
+    myHeaders.append("Content-Type", "application/json");
+    try {
+        // Utiliser fetchFromApi pour envoyer la requête PUT pour mettre à jour le service
+       await fetchFromApi(`api/race/${raceId}`, { 
+            method: 'DELETE',
+            headers: myHeaders
+        });
+
+        alert("Race supprimé avec succès !");
+        voirRace(); 
+    } catch (error) {
+        alert("Erreur lors de la suppression de la race : " + error.message);
+    }
+}
+
+function ouvrirModalRace(raceId, label) {
+    // Ouvrir le modal
+    $('#editRaceModal').modal('show');
+
+    // Pré-remplir les champs du modal avec les données du service
+    const raceIdInput = document.getElementById('raceId');
+    const raceLabelInput = document.getElementById('raceName');
+
+
+    if (raceIdInput) raceIdInput.value = raceId;
+    if (raceLabelInput) raceLabelInput.value = decodeHtml(label); 
+
+    const confirmBtn = document.getElementById('editRaceForm');
+    confirmBtn.onsubmit = (event) => {
+        event.preventDefault(); // Empêche la soumission par défaut du formulaire
+        modifierRace(raceId); 
+        $('#editRaceModal').modal('hide'); // Fermer le modal après soumission
+    };
 }

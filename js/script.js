@@ -117,25 +117,6 @@ async function login(email, password) {
     }
 }
 
-async function fetchData(url, headers) {
-    const requestOptions = {
-        method: "GET",
-        headers: headers,
-        redirect: "follow",
-        mode: "cors",
-    };
-
-    try {
-        const response = await fetch(url, requestOptions);
-        if (!response.ok) throw new Error("Impossible de récupérer les informations");
-
-        return await response.json(); // Récupération directe du JSON
-    } catch (error) {
-        console.error("Error fetching data:", error); // Log the error
-        throw error;
-    }
-}
-
 // Fonction pour décoder les entités HTML
 function decodeHtml(html) {
     const textArea = document.createElement('textarea');
@@ -149,13 +130,9 @@ function sanitizeInput(input){
     return div.innerHTML;
 }
 
-
 function getToken() {
-    return getCookie(tokenCookieName); // Utilise getCookie pour récupérer le token
+    return getCookie(tokenCookieName); 
 }
-  
-// Fonction pour lire le fichier image en base64
-
 const readFileAsBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

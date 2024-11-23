@@ -173,7 +173,7 @@ async function creationHabitat(titreHabitat, commentaireHabitat, descriptionHabi
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/habitat`, requestOptions);
+        const response = await fetchFromApi(`api/habitat/post`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -232,7 +232,7 @@ async function createRace(labelRace) {
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/race/post`, requestOptions);
+        const response = await fetchFromApi(`api/race/post`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
