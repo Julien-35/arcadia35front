@@ -1,4 +1,4 @@
-export function validateForm() {
+function validateForm() {
     const inputEmail = document.getElementById("EmailInput");
     const inputPassword = document.getElementById("PasswordInput");
     const btnConnexion = document.getElementById("btnConnexion");
