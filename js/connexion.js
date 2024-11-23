@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Fonction pour vérifier la configuration de l'e-mail via un regex mettre export pour NPM test
-function validateMail(input) {
+export function validateMail(input) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const mailUser = input.value;
     const isValid = emailRegex.test(mailUser);
@@ -38,7 +38,7 @@ function validateMail(input) {
 }
 
 // Fonction pour définir la validité du mot de passe mettre export pour NPM test
-function validatePassword(input) {
+export function validatePassword(input) {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
     const passwordUser = input.value;
     const isValid = passwordRegex.test(passwordUser);
