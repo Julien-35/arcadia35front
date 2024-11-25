@@ -53,8 +53,7 @@ async function creerUnService() {
         await createService(sanitizedTitre, sanitizedCommentaire, image_data);
         alert("Le service a été créé avec succès");
         location.reload();
-    } catch (error) {
-        alert("Erreur lors de la création du service: " + error.message);
+    } catch  {
     }
 }
 
