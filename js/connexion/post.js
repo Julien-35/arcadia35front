@@ -42,16 +42,13 @@ async function creerUnService() {
             const base64Data = await readFileAsBase64(file);
             image_data = `data:${file.type};base64,${base64Data}`;
         } catch (error) {
-            alert('Erreur lors de la lecture de l\'image.');
             return;
         }
     } else {
-        alert("Aucune image sélectionnée.");
         return;
     }
     try {
         await createService(sanitizedTitre, sanitizedCommentaire, image_data);
-        alert("Le service a été créé avec succès");
         location.reload();
     } catch  {
     }
